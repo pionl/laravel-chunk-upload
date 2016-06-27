@@ -3,7 +3,7 @@ namespace Pion\Laravel\ChunkUpload\Save;
 
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Http\UploadedFile;
 
 class ChunkSave extends AbstractSave
 {

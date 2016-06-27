@@ -2,7 +2,7 @@
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Http\UploadedFile;
 
 /**
  * The handler that will detect if we can continue the chunked upload

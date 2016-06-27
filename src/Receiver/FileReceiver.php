@@ -6,6 +6,7 @@ use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Save\SingleSave;
+use Illuminate\Http\UploadedFile;
 
 class FileReceiver
 {
@@ -15,7 +16,7 @@ class FileReceiver
     protected $request;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\File\UploadedFile|null
+     * @var UploadedFile|null
      */
     protected $file;
 
