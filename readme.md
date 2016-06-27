@@ -8,12 +8,29 @@ ___Project in progress___
     
 ## Usage
 
-In your own controller create the `FileReceiver`, more in example
+In your own controller create the `FileReceiver`, more in example.
 
 ## Supports
 
 * Laravel 5+
 * [blueimp-file-upload](https://github.com/blueimp/jQuery-File-Upload) - partial support (simple chunked and single upload)
+
+## Basic documentation
+
+### FileReceiver
+You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
+
+Then you can use methods:
+
+#### `isUploaded()`
+determines if the file object is in the request
+
+####`receive()`
+Tries to handle the upload request. If the file is not uploaded, returns false. If the file
+is present in the request, it will create the save object.
+
+If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
+which doesnt nothing at this moment.
 
 ## Example
 
@@ -100,6 +117,20 @@ Add a route to your controller
 Route::post('upload', 'UploadController@upload');
 ```
 
+## Providers/Handlers
+
+### ContentRangeUploadHandler
+
+* supported by blueimp-file-upload
+* uses the Content-range header with the bytes range
+
+#### Aditional methods
+
+* `getBytesStart()` - returns the starting bytes for current request
+* `getBytesEnd()` - returns the ending bytes for current request
+* `getBytesTotal()` - returns the total bytes for the file
+
+
 ## Todo
 
 - [ ] add more providers (like pbupload)
@@ -107,7 +138,18 @@ Route::post('upload', 'UploadController@upload');
 - [ ] cron to delete uncompleted files
 - [ ] file per session (to support multiple)
 - [ ] add a config with custom storage location 
+- [ ] add an example project
 
 ## Contribution
 Are welcome. To add a new provider, just add a new Handler (which extends AbstractHandler), implement the chunk
 upload and progress
+
+### Handler class
+The basic handler `AbstractHandler` allows to implement own detection of the chunk mode and file naming. Stored in the Handler namespace.
+
+You must implement:
+
+- `getChunkFileName()` - Returns the chunk file name for a storing the tmp file
+- `isFirstChunk()` - Checks if the request has first chunk
+- `isLastChunk()` - Checks if the current request has the last chunk
+- `isChunkedUpload()` - Checks if the current request is chunked upload

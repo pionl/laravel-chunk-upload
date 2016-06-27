@@ -34,27 +34,28 @@ abstract class AbstractHandler
     }
 
     /**
-     * Returns the chunk file name
+     * Returns the chunk file name for a storing the tmp file
      *
      * @return string
      */
     abstract public function getChunkFileName();
 
     /**
-     * Returns the first chunk
+     * Checks if the request has first chunk
+     *
      * @return bool
      */
     abstract public function isFirstChunk();
 
     /**
-     * Returns the chunks count
+     * Checks if the current request has the last chunk
      *
-     * @return int
+     * @return bool
      */
     abstract public function isLastChunk();
 
     /**
-     * Returns the current chunk index
+     * Checks if the current request is chunked upload
      *
      * @return bool
      */

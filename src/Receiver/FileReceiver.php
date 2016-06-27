@@ -54,7 +54,12 @@ class FileReceiver
     }
 
     /**
-     * Returns the save instance for handling the uploaded file
+     * Tries to handle the upload request. If the file is not uploaded, returns false. If the file
+     * is present in the request, it will create the save object.
+     *
+     * If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
+     * which doesnt nothing at this moment.
+     *
      * @return bool|AbstractSave
      */
     public function receive()

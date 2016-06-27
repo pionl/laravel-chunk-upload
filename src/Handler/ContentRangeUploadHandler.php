@@ -107,7 +107,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int
+     * @return int returns the starting bytes for current request
      */
     public function getBytesStart()
     {
@@ -115,7 +115,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int
+     * @return int returns the ending bytes for current request
      */
     public function getBytesEnd()
     {
@@ -123,7 +123,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int
+     * @return int returns the total bytes for the file
      */
     public function getBytesTotal()
     {
@@ -131,9 +131,11 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * Returns the chunk file name
+     * Returns the chunk file name. Uses the original client name and the total bytes
      *
-     * @return string
+     * @return string returns the original name with the part extension
+     *
+     * @see UploadedFile::getClientOriginalName()
      */
     public function getChunkFileName()
     {
