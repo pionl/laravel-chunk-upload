@@ -135,11 +135,11 @@ class ContentRangeUploadHandler extends AbstractHandler
      *
      * @return string returns the original name with the part extension
      *
-     * @see UploadedFile::getClientOriginalName()
+     * @see createChunkFileName()
      */
     public function getChunkFileName()
     {
-        return $this->file->getClientOriginalName()."-".$this->bytesTotal.".part";
+        return $this->createChunkFileName($this->bytesTotal.".part");
     }
     
 }

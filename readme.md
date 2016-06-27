@@ -15,6 +15,12 @@ In your own controller create the `FileReceiver`, more in example.
 * Laravel 5+
 * [blueimp-file-upload](https://github.com/blueimp/jQuery-File-Upload) - partial support (simple chunked and single upload)
 
+## Features
+* **Chunked uploads**
+  uses **chunked writing** aswell to minimize the memory footprint
+* **Storing per Laravel Session to prevent overwrite**
+  all TMP files are stored with session token
+
 ## Basic documentation
 
 ### FileReceiver
@@ -136,7 +142,7 @@ Route::post('upload', 'UploadController@upload');
 - [ ] add more providers (like pbupload)
 - [ ] add facade for a quick usage with callback and custom response based on the handler
 - [ ] cron to delete uncompleted files
-- [ ] file per session (to support multiple)
+- [x] file per session (to support multiple)
 - [ ] add a config with custom storage location 
 - [ ] add an example project
 
