@@ -1,0 +1,105 @@
+<?php
+namespace Pion\Laravel\ChunkUpload\Save;
+
+use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+/**
+ * Class AbstractSave
+ *
+ * Handles the save handling of the file. You can call all function you know from the UploadedFile
+ *
+ * @method string|null getClientOriginalName()
+ * @method string getClientOriginalExtension()
+ * @method string|null getClientMimeType()
+ * @method string|null guessClientExtension()
+ * @method int|null getClientSize()
+ * @method int getError()
+ * @method File move($directory, $name = null)
+ *
+ * @package Pion\Laravel\ChunkUpload\Save
+ */
+abstract class AbstractSave
+{
+    /**
+     * @var UploadedFile
+     */
+    protected $file;
+
+    /**
+     * @var AbstractHandler
+     */
+    private $handler;
+
+    /**
+     * AbstractUpload constructor.
+     *
+     * @param UploadedFile    $file the uploaded file (chunk file)
+     * @param AbstractHandler $handler the handler that detected the correct save method
+     */
+    public function __construct(UploadedFile $file, AbstractHandler $handler)
+    {
+        $this->file = $file;
+        $this->handler = $handler;
+    }
+
+    /**
+     * Checks if the file upload is finished
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return $this->isValid();
+    }
+
+    /**
+     * Checks if the upload is valid
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->file->isValid();
+    }
+
+    /**
+     * Returns the error message
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->file->getErrorMessage();
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Passes all the function into the file
+     *
+     * @param $name      string
+     * @param $arguments array
+     *
+     * @return mixed
+     * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.methods
+     */
+    function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->getFile(), $name], $arguments);
+    }
+
+    /**
+     * @return AbstractHandler
+     */
+    public function handler()
+    {
+        return $this->handler;
+    }
+
+
+}
