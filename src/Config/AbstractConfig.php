@@ -33,4 +33,10 @@ abstract class AbstractConfig
      * @return string
      */
     abstract public function clearTimestampString();
+
+    /**
+     * Returns the shedule config array
+     * @return array<enable,cron>
+     */
+    abstract public function scheduleConfig();
 }

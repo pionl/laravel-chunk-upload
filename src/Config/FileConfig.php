@@ -17,7 +17,7 @@ class FileConfig extends AbstractConfig
 
     /**
      * Returns the disk name to use for the chunk storage
-     * 
+     *
      * @return string
      */
     public function chunksDiskName()
@@ -49,6 +49,14 @@ class FileConfig extends AbstractConfig
     {
         return $this->get("clear.timestamp");
     }
+
+    /**
+     * Returns the shedule config array
+     * @return array<enable,cron>
+     */
+     public function scheduleConfig() {
+         return $this->get("clear.schedule");
+     }
 
     /**
      * Returns a chunks config value

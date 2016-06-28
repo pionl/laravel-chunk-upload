@@ -1,7 +1,9 @@
 <?php
 namespace Pion\Laravel\ChunkUpload\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
@@ -11,6 +13,31 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 class ChunkUploadServiceProvider extends ServiceProvider
 {
+
+    /**
+     * When the service is beeing booted
+     */
+    public function boot()
+    {
+        // get the schedule config
+        $schedule = AbstractConfig::config()->scheduleConfig();
+
+        // run only if schedule is enabled
+        if (Arr::get($schedule, "enabled", false) === true) {
+
+            // wait until the app is fully booted
+            $this->app->booted(function () use ($schedule) {
+                // get the sheduler
+                /** @var Schedule $schedule */
+                $schedule = $this->app->make(Schedule::class);
+
+                // register the clear chunks with custom schedule
+                $schedule->command('uploads:clear')->cron(Arr::get($schedule, "cron", "* * * * *"));
+            });
+        }
+    }
+
+
     /**
      * Register the package requirements.
      *
