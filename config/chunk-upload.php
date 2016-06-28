@@ -15,7 +15,7 @@ return [
         /**
          * How old chunks we should delete
          */
-        "timestamp" => "-1 HOUR",
+        "timestamp" => "-3 HOURS",
         "schedule" => [
             "enabled" => true,
             "cron" => "0 */1 * * * *" // run every hour

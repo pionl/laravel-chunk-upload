@@ -4,7 +4,6 @@ namespace Pion\Laravel\ChunkUpload\Providers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
