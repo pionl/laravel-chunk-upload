@@ -139,7 +139,7 @@ class ContentRangeUploadHandler extends AbstractHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->bytesTotal.".part");
+        return $this->createChunkFileName($this->bytesTotal);
     }
     
 }

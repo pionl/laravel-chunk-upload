@@ -1,0 +1,68 @@
+<?php
+namespace Pion\Laravel\ChunkUpload\Config;
+
+/**
+ * Class FileConfig
+ *
+ * Enables loading a config settings from the Laravel Config facade.
+ *
+ * @package Pion\Laravel\ChunkUpload\Config
+ */
+class FileConfig extends AbstractConfig
+{
+    /**
+     * The file name of the config
+     */
+    const FILE_NAME = "chunk-upload";
+
+    /**
+     * Returns the disk name to use for the chunk storage
+     * 
+     * @return string
+     */
+    public function chunksDiskName()
+    {
+        return $this->get("storage.disk");
+    }
+
+
+    /**
+     * The storage path for the chnunks
+     * 
+     * @return string the full path to the storage
+     *
+     * @see FileConfig::get()
+     */
+    public function chunksStorageDirectory()
+    {
+        return $this->get("storage.chunks");
+    }
+
+    /**
+     * Returns the time stamp string for clear command
+     *
+     * @return string
+     *
+     * @see FileConfig::get()
+     */
+    public function clearTimestampString()
+    {
+        return $this->get("clear.timestamp");
+    }
+
+    /**
+     * Returns a chunks config value
+     *
+     * @param string     $key the config name is prepended to the key value
+     *
+     * @param mixed|null $default
+     *
+     * @return mixed
+     * @see \Config::get()
+     */
+    public function get($key, $default = null)
+    {
+        return \Config::get(self::FILE_NAME.".".$key, $default);
+    }
+
+}

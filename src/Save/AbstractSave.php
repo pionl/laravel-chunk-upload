@@ -1,6 +1,7 @@
 <?php
 namespace Pion\Laravel\ChunkUpload\Save;
 
+use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Symfony\Component\HttpFoundation\File\File;
 use Illuminate\Http\UploadedFile;
@@ -33,15 +34,24 @@ abstract class AbstractSave
     private $handler;
 
     /**
+     * Returns the config for the upload
+     *
+     * @var AbstractConfig
+     */
+    private $config;
+
+    /**
      * AbstractUpload constructor.
      *
-     * @param UploadedFile    $file the uploaded file (chunk file)
-     * @param AbstractHandler $handler the handler that detected the correct save method
+     * @param UploadedFile        $file    the uploaded file (chunk file)
+     * @param AbstractHandler     $handler the handler that detected the correct save method
+     * @param AbstractConfig $config  the config manager
      */
-    public function __construct(UploadedFile $file, AbstractHandler $handler)
+    public function __construct(UploadedFile $file, AbstractHandler $handler, $config)
     {
         $this->file = $file;
         $this->handler = $handler;
+        $this->config = $config;
     }
 
     /**
@@ -101,5 +111,13 @@ abstract class AbstractSave
         return $this->handler;
     }
 
+    /**
+     * Returns the current config
+     * @return AbstractConfig
+     */
+    public function config()
+    {
+        return $this->config;
+    }
 
 }

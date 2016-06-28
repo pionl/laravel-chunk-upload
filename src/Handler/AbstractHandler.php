@@ -3,6 +3,7 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Session;
 
 /**
@@ -36,7 +37,8 @@ abstract class AbstractHandler
 
     /**
      * Builds the chunk file name per session and the original name. You can
-     * provide custom aditional name at the end of the generated file name.
+     * provide custom aditional name at the end of the generated file name. All chunk
+     * files has .part extension
      *
      * @param string|null $aditionalName
      *
@@ -59,7 +61,7 @@ abstract class AbstractHandler
         }
 
         // build name
-        return implode("-", $array);
+        return implode("-", $array).".".ChunkStorage::CHUNK_EXTENSION;
     }
 
     /**

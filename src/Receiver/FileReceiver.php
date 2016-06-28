@@ -2,11 +2,13 @@
 namespace Pion\Laravel\ChunkUpload\Receiver;
 
 use Illuminate\Http\Request;
+use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Save\SingleSave;
 use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 class FileReceiver
 {
@@ -28,16 +30,33 @@ class FileReceiver
     protected $handler = null;
 
     /**
+     * The chunk storage
+     *
+     * @var ChunkStorage
+     */
+    protected $chunkStorage;
+
+    /**
+     * The current config
+     * @var AbstractConfig
+     */
+    protected $config;
+
+    /**
      * The file receiver for the given file index
      *
-     * @param string  $fileIndex
-     * @param Request $request
-     * @param string  $handlerClass the handler class name for detecting the file upload
+     * @param string              $fileIndex the desired file index in requests files
+     * @param Request             $request the current request
+     * @param string              $handlerClass the handler class name for detecting the file upload
+     * @param ChunkStorage|null   $chunkStorage the chunk storage, on null will use the instance from app container
+     * @param AbstractConfig|null $config the config, on null will use the instance from app container
      */
-    public function __construct($fileIndex, Request $request, $handlerClass)
+    public function __construct($fileIndex, Request $request, $handlerClass, $chunkStorage = null, $config = null)
     {
         $this->request = $request;
         $this->file = $request->file($fileIndex);
+        $this->chunkStorage = is_null($chunkStorage) ? ChunkStorage::storage() : $chunkStorage;
+        $this->config = is_null($config) ? AbstractConfig::config() : $config;
 
         if ($this->isUploaded()) {
             $this->handler = new $handlerClass($this->request, $this->file);
@@ -70,9 +89,9 @@ class FileReceiver
         }
 
         if ($this->handler->isChunkedUpload()) {
-            return new ChunkSave($this->file, $this->handler);
+            return new ChunkSave($this->file, $this->handler, $this->chunkStorage, $this->config);
         } else {
-            return new SingleSave($this->file, $this->handler);
+            return new SingleSave($this->file, $this->handler, $this->config);
         }
     }
 }
