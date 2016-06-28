@@ -4,7 +4,33 @@ ___Project in progress___
 
 ## Instalation
 
-    composer require pion/laravel-chunk-upload
+**Install via composer**
+
+```
+composer require pion/laravel-chunk-upload
+```
+    
+**Add the service provider**
+
+```php
+\Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class
+```    
+
+___Optional___
+
+**Publish the config**
+
+Run the publish command to copy the translations (Laravel 5.2 and above)
+
+```
+php artisan publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
+```
+
+Run the publish command to copy the translations (Laravel 5.1)
+
+```
+php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
+```
     
 ## Usage
 
@@ -20,6 +46,8 @@ In your own controller create the `FileReceiver`, more in example.
   uses **chunked writing** aswell to minimize the memory footprint
 * **Storing per Laravel Session to prevent overwrite**
   all TMP files are stored with session token
+* [**Clear command and schedule**](#uploads:clear)
+  the package registers the shedule command (uploads:clear) that will clear all unfinished chunk uploads
 
 ## Basic documentation
 
@@ -123,6 +151,19 @@ Add a route to your controller
 Route::post('upload', 'UploadController@upload');
 ```
 
+### Commands
+
+#### uploads:clear
+Clears old chunks from the chunks folder, uses the config to detect which files can be deleted via the last edit time `clear.timestamp`.
+
+The scheduler can be disabled by a config `clear.schedule.enabled` or the cron time can be changed in `clear.schedule.cron` (don't forget to setup your scheduler in the cron)
+
+##### Command usage
+
+````
+php artisan uploads:clear
+````
+
 ## Providers/Handlers
 
 ### ContentRangeUploadHandler
@@ -136,15 +177,21 @@ Route::post('upload', 'UploadController@upload');
 * `getBytesEnd()` - returns the ending bytes for current request
 * `getBytesTotal()` - returns the total bytes for the file
 
+## Since v0.2.0
+
+The package supports the Laravel Filesystem. Becouse of this, the storage must be withing the app folder `storage/app/` or custom drive (only local) - can be set in the config `storage.disk`.
+
+The cloud drive is not supported becouse of the chunked write (probably could be changed to use a stream) and the resulting object - `UploadedFile` that supports only full path.
 
 ## Todo
 
 - [ ] add more providers (like pbupload)
 - [ ] add facade for a quick usage with callback and custom response based on the handler
-- [ ] cron to delete uncompleted files
-- [x] file per session (to support multiple)
-- [ ] add a config with custom storage location 
+- [x] cron to delete uncompleted files `since v0.2.0`
+- [x] file per session (to support multiple) `since v0.1.1`
+- [x] add a config with custom storage location `since v0.2.0`
 - [ ] add an example project
+- [ ] add support to different drive than a local drive
 
 ## Contribution
 Are welcome. To add a new provider, just add a new Handler (which extends AbstractHandler), implement the chunk
