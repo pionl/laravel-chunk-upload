@@ -83,7 +83,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
 
         // publish the config
         $this->publishes([
-            $configPath => config_path($configFileName.'.php'),
+            $configPath => config_path($configFileName),
         ]);
 
         // merge the default config to prevent any crash or unfiled configs

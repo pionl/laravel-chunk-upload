@@ -122,6 +122,7 @@ class ChunkSave extends AbstractSave
     protected function handleChunkMerge()
     {
         // prepare the folder and file path
+        $this->createChunksFolderIfNeeded();
         $file = $this->getChunkFilePath();
 
         // delete the old chunk
@@ -207,5 +208,18 @@ class ChunkSave extends AbstractSave
     public function chunkDisk()
     {
         return $this->chunkStorage()->disk();
+    }
+
+    /**
+     * Crates the chunks folder if doesnt exists. Uses recursive create
+     */
+    protected function createChunksFolderIfNeeded()
+    {
+        $path = $this->getChunksPath();
+
+        // creates the chunks dir
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
     }
 }
