@@ -215,7 +215,7 @@ class ChunkSave extends AbstractSave
      */
     protected function createChunksFolderIfNeeded()
     {
-        $path = $this->getChunksPath();
+        $path = $this->getChunkDirectory();
 
         // creates the chunks dir
         if (!file_exists($path)) {
