@@ -186,12 +186,13 @@ class ChunkSave extends AbstractSave
 
         // open the target file
         if (!$out = @fopen($this->getChunkFullFilePath(), 'ab')) {
+            throw new ChunkSaveException('Failed to open output stream. Check if chunks folder is created (permissions?)', 102);
         }
 
         // open the new uploaded chunk
         if (!$in = @fopen($this->file->getPathname(), 'rb')) {
             @fclose($out);
-            throw new ChunkSaveException('Failed to open input stream', 101);
+            throw new ChunkSaveException('Failed to open input stream.', 101);
         }
 
         // read and write in buffs
