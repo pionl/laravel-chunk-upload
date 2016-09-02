@@ -230,6 +230,7 @@ class ChunkSave extends AbstractSave
      */
     protected function createChunksFolderIfNeeded()
     {
+
         // get the full path to the cunk directory
         $path = $this->getChunkDirectory(true);
 
