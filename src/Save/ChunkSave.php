@@ -54,7 +54,7 @@ class ChunkSave extends AbstractSave
         $this->chunkFileName = $handler->getChunkFileName();
 
         // buid the full disk path
-        $this->chunkFullFilePath = $this->chunkStorage()->getDiskPathPrefix().$this->getChunkFilePath();
+        $this->chunkFullFilePath = $this->getChunkFilePath(true);
 
         $this->handleChunkMerge();
     }
@@ -73,11 +73,13 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the chunk file path in the current disk instance
      *
+     * @param bool $addDiskPath decides if we should build whole path in the current disk storage (absolute path)
+     *
      * @return string
      */
-    public function getChunkFilePath()
+    public function getChunkFilePath($addDiskPath = false)
     {
-        return $this->getChunkDirectory().$this->chunkFileName;
+        return $this->getChunkDirectory($addDiskPath).$this->chunkFileName;
     }
 
     /**
@@ -92,11 +94,24 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the folder for the cunks in the storage path on current disk instance
      *
+     * @param bool $addDiskPath decides if we should build whole path in the current disk storage (absolute path)
+     *
      * @return string
      */
-    public function getChunkDirectory()
+    public function getChunkDirectory($addDiskPath = false)
     {
-        return $this->chunkStorage()->directory();
+        // get the current chunk storage
+        $storage = $this->chunkStorage();
+
+        // get the directory
+        $path = $storage->directory();
+
+        // add the disk path prefix if wanted
+        if ($addDiskPath) {
+            return $storage->getDiskPathPrefix().$path;
+        }
+
+        return $path;
     }
 
     /**
@@ -171,7 +186,6 @@ class ChunkSave extends AbstractSave
 
         // open the target file
         if (!$out = @fopen($this->getChunkFullFilePath(), 'ab')) {
-            throw new ChunkSaveException('Failed to open output stream.', 102);
         }
 
         // open the new uploaded chunk
@@ -215,7 +229,8 @@ class ChunkSave extends AbstractSave
      */
     protected function createChunksFolderIfNeeded()
     {
-        $path = $this->getChunksPath();
+        // get the full path to the cunk directory
+        $path = $this->getChunkDirectory(true);
 
         // creates the chunks dir
         if (!file_exists($path)) {
