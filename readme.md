@@ -278,7 +278,7 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 
 ## Changelog
 
-### Since v0.2.1
+### Since v0.3
 
 * Support for cross domain requests (only chunk naming)
 * Added support for [plupload package](https://github.com/moxiecode/plupload)
