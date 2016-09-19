@@ -273,7 +273,7 @@ HandlerFactory::setFallbackHandler(CustomHandler::class)
 or pass as second parameter when using 
  
 ```php
-    HandlerFactory::classFromRequest($request, CustomHandler::class)
+HandlerFactory::classFromRequest($request, CustomHandler::class)
 ```
 
 ## Changelog
@@ -332,7 +332,7 @@ Edit the `HandlerFactory` and add your handler to the `$handlers` array
 ##### At runtime or without forking
 Call the `HandlerFactory::register()` to register your own Handler
 
-# Suggester frontend libs
+# Suggested frontend libs
 
 * https://github.com/lemonCMS/react-plupload
 * https://github.com/moxiecode/plupload
