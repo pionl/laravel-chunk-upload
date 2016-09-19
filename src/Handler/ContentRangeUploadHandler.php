@@ -3,11 +3,17 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 
 /**
- * Class JqueryUploadReceiver
+ * Class ContentRangeUploadHandler
  *
  * Upload receiver that detects the content range by the the header value.
+ *
+ * Works with:
+ * - blueimp-file-upload - partial support (simple chunked and single upload)
+ *   https://github.com/blueimp/jQuery-File-Upload
+ *
  *
  * @package Pion\Laravel\ChunkUpload\Handler
  */
@@ -45,17 +51,31 @@ class ContentRangeUploadHandler extends AbstractHandler
     /**
      * AbstractReceiver constructor.
      *
-     * @param Request      $request
-     * @param UploadedFile $file
+     * @param Request        $request
+     * @param UploadedFile   $file
+     * @param AbstractConfig $config
      */
-    public function __construct(Request $request, UploadedFile $file)
+    public function __construct(Request $request, $file, $config)
     {
-        parent::__construct($request, $file);
+        parent::__construct($request, $file, $config);
 
         $contentRange = $this->request->header(self::CONTENT_RANGE_INDEX);
 
         $this->tryToParseContentRange($contentRange);
     }
+
+    /**
+     * Checks if the current abstract handler can be used via HandlerFactory
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public static function canBeUsedForRequest(Request $request)
+    {
+        return (new static($request, null, null))->isChunkedUpload();
+    }
+
 
     /**
      * Tries to parse the content range from the string
@@ -141,5 +161,12 @@ class ContentRangeUploadHandler extends AbstractHandler
     {
         return $this->createChunkFileName($this->bytesTotal);
     }
-    
+
+    /**
+     * @return int
+     */
+    public function getPercentageDone()
+    {
+        return ceil($this->getBytesEnd() / $this->getBytesTotal() * 100);
+    }
 }

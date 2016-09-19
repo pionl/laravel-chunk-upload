@@ -59,7 +59,7 @@ class FileReceiver
         $this->config = is_null($config) ? AbstractConfig::config() : $config;
 
         if ($this->isUploaded()) {
-            $this->handler = new $handlerClass($this->request, $this->file);
+            $this->handler = new $handlerClass($this->request, $this->file, $this->config);
         }
     }
 

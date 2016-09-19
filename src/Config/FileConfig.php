@@ -59,6 +59,26 @@ class FileConfig extends AbstractConfig
      }
 
     /**
+     * Should the chunk name add a session?
+     *
+     * @return boolean
+     */
+    public function chunkUseSessionForName()
+    {
+        return $this->get("chunk.name.use.session", true);
+    }
+
+    /**
+     * Should the chunk name add a ip address?
+     *
+     * @return boolean
+     */
+    public function chunkUseBrowserInfoForName()
+    {
+        return $this->get("chunk.name.use.browser", false);
+    }
+
+    /**
      * Returns a chunks config value
      *
      * @param string     $key the config name is prepended to the key value
@@ -72,5 +92,4 @@ class FileConfig extends AbstractConfig
     {
         return \Config::get(self::FILE_NAME.".".$key, $default);
     }
-
 }

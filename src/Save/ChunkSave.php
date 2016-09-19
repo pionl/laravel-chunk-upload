@@ -54,7 +54,7 @@ class ChunkSave extends AbstractSave
         $this->chunkFileName = $handler->getChunkFileName();
 
         // buid the full disk path
-        $this->chunkFullFilePath = $this->getChunkFilePath(true);
+        $this->chunkFullFilePath = $this->chunkStorage()->getDiskPathPrefix().$this->getChunkFilePath();
 
         $this->handleChunkMerge();
     }
@@ -73,13 +73,11 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the chunk file path in the current disk instance
      *
-     * @param bool $addDiskPath decides if we should build whole path in the current disk storage (absolute path)
-     *
      * @return string
      */
-    public function getChunkFilePath($addDiskPath = false)
+    public function getChunkFilePath()
     {
-        return $this->getChunkDirectory($addDiskPath).$this->chunkFileName;
+        return $this->getChunkDirectory().$this->chunkFileName;
     }
 
     /**
@@ -94,24 +92,11 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the folder for the cunks in the storage path on current disk instance
      *
-     * @param bool $addDiskPath decides if we should build whole path in the current disk storage (absolute path)
-     *
      * @return string
      */
-    public function getChunkDirectory($addDiskPath = false)
+    public function getChunkDirectory()
     {
-        // get the current chunk storage
-        $storage = $this->chunkStorage();
-
-        // get the directory
-        $path = $storage->directory();
-
-        // add the disk path prefix if wanted
-        if ($addDiskPath) {
-            return $storage->getDiskPathPrefix().$path;
-        }
-
-        return $path;
+        return $this->chunkStorage()->directory();
     }
 
     /**
@@ -186,13 +171,13 @@ class ChunkSave extends AbstractSave
 
         // open the target file
         if (!$out = @fopen($this->getChunkFullFilePath(), 'ab')) {
-            throw new ChunkSaveException('Failed to open output stream. Check if chunks folder is created (permissions?)', 102);
+            throw new ChunkSaveException('Failed to open output stream.', 102);
         }
 
         // open the new uploaded chunk
         if (!$in = @fopen($this->file->getPathname(), 'rb')) {
             @fclose($out);
-            throw new ChunkSaveException('Failed to open input stream.', 101);
+            throw new ChunkSaveException('Failed to open input stream', 101);
         }
 
         // read and write in buffs
@@ -230,9 +215,7 @@ class ChunkSave extends AbstractSave
      */
     protected function createChunksFolderIfNeeded()
     {
-
-        // get the full path to the cunk directory
-        $path = $this->getChunkDirectory(true);
+        $path = $this->getChunkDirectory();
 
         // creates the chunks dir
         if (!file_exists($path)) {

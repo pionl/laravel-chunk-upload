@@ -39,4 +39,19 @@ abstract class AbstractConfig
      * @return array<enable,cron>
      */
     abstract public function scheduleConfig();
+
+    /**
+     * Should the chunk name add a session?
+     *
+     * @return boolean
+     */
+    abstract public function chunkUseSessionForName();
+
+
+    /**
+     * Should the chunk name add a ip address?
+     *
+     * @return boolean
+     */
+    abstract public function chunkUseBrowserInfoForName();
 }
