@@ -54,7 +54,7 @@ class ChunkSave extends AbstractSave
         $this->chunkFileName = $handler->getChunkFileName();
 
         // buid the full disk path
-        $this->chunkFullFilePath = $this->chunkStorage()->getDiskPathPrefix().$this->getChunkFilePath();
+        $this->chunkFullFilePath = $this->getChunkFilePath(true);
 
         $this->handleChunkMerge();
     }
@@ -62,7 +62,7 @@ class ChunkSave extends AbstractSave
 
     /**
      * Checks if the file upload is finished (last chunk)
-     * 
+     *
      * @return bool
      */
     public function isFinished()
@@ -73,11 +73,13 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the chunk file path in the current disk instance
      *
+     * @param bool $absolutePath
+     *
      * @return string
      */
-    public function getChunkFilePath()
+    public function getChunkFilePath($absolutePath = false)
     {
-        return $this->getChunkDirectory().$this->chunkFileName;
+        return $this->getChunkDirectory($absolutePath).$this->chunkFileName;
     }
 
     /**
@@ -92,11 +94,21 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the folder for the cunks in the storage path on current disk instance
      *
+     * @param boolean $absolutePath
+     *
      * @return string
      */
-    public function getChunkDirectory()
+    public function getChunkDirectory($absolutePath = false)
     {
-        return $this->chunkStorage()->directory();
+        $paths = [];
+
+        if ($absolutePath) {
+            $paths[] = $this->chunkStorage()->getDiskPathPrefix();
+        }
+
+        $paths[] = $this->chunkStorage()->directory();
+
+        return implode("", $paths);
     }
 
     /**
@@ -155,7 +167,7 @@ class ChunkSave extends AbstractSave
             $this->file->getClientMimeType(),
             filesize($finalPath), $this->file->getError(),
             true // we must pass the true as test to force the upload file
-                // to use a standart copy method, not move uploaded file
+            // to use a standart copy method, not move uploaded file
         );
     }
 
@@ -215,7 +227,7 @@ class ChunkSave extends AbstractSave
      */
     protected function createChunksFolderIfNeeded()
     {
-        $path = $this->getChunkDirectory();
+        $path = $this->getChunkDirectory(true);
 
         // creates the chunks dir
         if (!file_exists($path)) {
