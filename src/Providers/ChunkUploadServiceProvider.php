@@ -18,20 +18,21 @@ class ChunkUploadServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // get the schedule config
-        $schedule = AbstractConfig::config()->scheduleConfig();
+        // Get the schedule config
+        $scheduleConfig = AbstractConfig::config()->scheduleConfig();
 
-        // run only if schedule is enabled
-        if (Arr::get($schedule, "enabled", false) === true) {
+        // Run only if schedule is enabled
+        if (Arr::get($scheduleConfig, "enabled", false) === true) {
 
-            // wait until the app is fully booted
-            $this->app->booted(function () use ($schedule) {
-                // get the sheduler
+            // Wait until the app is fully booted
+            $this->app->booted(function () use ($scheduleConfig) {
+
+                // Get the scheduler instance
                 /** @var Schedule $schedule */
                 $schedule = $this->app->make(Schedule::class);
 
-                // register the clear chunks with custom schedule
-                $schedule->command('uploads:clear')->cron(Arr::get($schedule, "cron", "* * * * *"));
+                // Register the clear chunks with custom schedule
+                $schedule->command('uploads:clear')->cron(Arr::get($scheduleConfig, "cron", "* * * * *"));
             });
         }
     }
@@ -43,26 +44,26 @@ class ChunkUploadServiceProvider extends ServiceProvider
      * @see ChunkUploadServiceProvider::registerConfig()
      */
     public function register()
-    {  
-        // register the commands
+    {
+        // Register the commands
         $this->commands([
             ClearChunksCommand::class
         ]);
 
-        // register the config
+        // Register the config
         $this->registerConfig();
 
-        // register the config via abstract instance
+        // Register the config via abstract instance
         $this->app->singleton(AbstractConfig::class, function () {
             return new FileConfig();
         });
 
-        // register the config via abstract instance
+        // Register the config via abstract instance
         $this->app->singleton(ChunkStorage::class, function (Application $app) {
             /** @var AbstractConfig $config */
             $config = $app->make(AbstractConfig::class);
-            
-            // build the chunk storage
+
+            // Build the chunk storage
             return new ChunkStorage(\Storage::disk($config->chunksDiskName()), $config);
         });
     }
@@ -76,17 +77,17 @@ class ChunkUploadServiceProvider extends ServiceProvider
      */
     protected function registerConfig()
     {
-        // config options
+        // Config options
         $configIndex = FileConfig::FILE_NAME;
         $configFileName = FileConfig::FILE_NAME.".php";
         $configPath = __DIR__.'/../../config/'.$configFileName;
 
-        // publish the config
+        // Publish the config
         $this->publishes([
             $configPath => config_path($configFileName),
         ]);
 
-        // merge the default config to prevent any crash or unfiled configs
+        // Merge the default config to prevent any crash or unfilled configs
         $this->mergeConfigFrom(
             $configPath, $configIndex
         );

@@ -2,7 +2,7 @@
   "name": "pion/laravel-chunk-upload",
   "description": "Service for chunked upload with several js providers",
   "require": {
-    "laravel/framework": "5.*"
+    "laravel/framework": "5.1.* || 5.2.* || 5.3.*"
   },
   "require-dev": {
   },

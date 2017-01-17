@@ -1,4 +1,23 @@
 # Laravel chunked upload
+Easy to use service for chunked upload with several js providers on top of Laravel's file upload.
+
+[![Total Downloads](https://poser.pugx.org/pion/laravel-chunk-upload/downloads?format=flat)](https://packagist.org/packages/pion/laravel-chunk-upload)
+[![Latest Stable Version](https://poser.pugx.org/pion/laravel-chunk-upload/v/stable?format=flat)](https://packagist.org/packages/pion/laravel-chunk-upload)
+[![Latest Unstable Version](https://poser.pugx.org/pion/laravel-chunk-upload/v/unstable?format=flat)](https://packagist.org/packages/pion/laravel-chunk-upload)
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Supports](#supports)
+* [Features](#features)
+* [Basic documentation](#basic-documentation)
+* [Example](#example)
+    * [Javascript](#javascript)
+    * [Laravel controller](#laravel.controller)
+    * [Controller](#controller)
+    * [Route](#route)
+* [Providers/Handlers](#providers-handlers)
+* [Changelog](#changelog)
+* [Contribution](#contribution)
 
 ## Instalation
 
@@ -24,12 +43,6 @@ Run the publish command to copy the translations (Laravel 5.2 and above)
 php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
 ```
 
-Run the publish command to copy the translations (Laravel 5.1)
-
-```
-php artisan publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
-```
-    
 ## Usage
 
 In your own controller create the `FileReceiver`, more in example.
