@@ -17,9 +17,10 @@ Easy to use service for chunked upload with several js providers on top of Larav
     * [Route](#route)
 * [Providers/Handlers](#providers-handlers)
 * [Changelog](#changelog)
-* [Contribution](#contribution)
+* [Contribution or overriding](#contribution-or-overriding)
+* [Suggested frontend libs](#suggested-frontend-libs)
 
-## Instalation
+## Installation
 
 **Install via composer**
 
@@ -247,7 +248,7 @@ When using uploader for the cross domain request you must setup the `chunk.name.
 Then setup your laravel [Setup guide](https://github.com/barryvdh/laravel-cors)
 
 ## Providers/Handlers
-Use `AbstractHandler` for type hint or use a specific handler to se aditional methods.
+Use `AbstractHandler` for type hint or use a specific handler to se additional methods.
 
 ### ContentRangeUploadHandler
 
@@ -313,40 +314,19 @@ The cloud drive is not supported becouse of the chunked write (probably could be
 - [ ] add an example project
 - [ ] add support to different drive than a local drive
 
-## Contribution
-Are welcome. To add a new provider, just add a new Handler (which extends AbstractHandler), implement the chunk
-upload and progress
-
-### Handler class
-The basic handler `AbstractHandler` allows to implement own detection of the chunk mode and file naming. Stored in the Handler namespace but you can
-store your handler at any namespace (you need to pass the class to the `FileReceiver` as a parameter)
-
-#### You must implement:
-
-- `getChunkFileName()` - Returns the chunk file name for a storing the tmp file
-- `isFirstChunk()` - Checks if the request has first chunk
-- `isLastChunk()` - Checks if the current request has the last chunk
-- `isChunkedUpload()` - Checks if the current request is chunked upload
-- `getPercentageDone()` - Calculates the current uploaded percentage
-
-#### Automatic detection
-To enable your own detection, just overide the `canBeUsedForRequest` method
-
-```php
-public static function canBeUsedForRequest(Request $request)
-{
-    return true;
-}
-```
-
-##### Fork
-Edit the `HandlerFactory` and add your handler to the `$handlers` array
-
-##### At runtime or without forking
-Call the `HandlerFactory::register()` to register your own Handler
+## Contribution or overriding
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contributions are welcome.
 
 # Suggested frontend libs
 
 * https://github.com/lemonCMS/react-plupload
 * https://github.com/moxiecode/plupload
 * https://github.com/blueimp/jQuery-File-Upload
+
+## Copyright and License
+
+[laravel-chunk-upload](https://github.com/pionl/laravel-chunk-upload)
+was written by [Martin Kluska](http://kluska.cz) and is released under the 
+[MIT License](LICENSE.md).
+
+Copyright (c) 2016 Martin Kluska
