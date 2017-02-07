@@ -11,6 +11,7 @@ Easy to use service for chunked upload with several js providers on top of Larav
 * [Features](#features)
 * [Basic documentation](#basic-documentation)
 * [Example](#example)
+    * [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
     * [Javascript](#javascript)
     * [Laravel controller](#laravel.controller)
     * [Controller](#controller)
@@ -84,7 +85,11 @@ which doesnt nothing at this moment.
 
 ## Example
 
+The full example (Laravel 5.4 - works same on previous versions) can be found in separate repo: [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
+
 ### Javascript
+
+Written for [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload)
 
 ```javascript
 $element.fileupload({
@@ -177,7 +182,7 @@ When you support multiple upload providers
  * @param Request $request
  *
  * @return \Illuminate\Http\JsonResponse
- * 
+ *
  * @throws UploadMissingFileException
  */
 public function upload(Request $request) {
@@ -193,7 +198,7 @@ public function upload(Request $request) {
         // check if the upload has finished (in chunk mode it will send smaller files)
         if ($save->isFinished()) {
             // save the file and return any response you need
-            return $this->saveFile($save->getFile(), $request->get("old_file_id"), $uploadType);
+            return $this->saveFile($save->getFile());
         } else {
             // we are in chunk mode, lets send the current progress
 
@@ -206,7 +211,7 @@ public function upload(Request $request) {
         }
     } else {
         throw new UploadMissingFileException();
-    }  
+    }
 }
 ```
 
