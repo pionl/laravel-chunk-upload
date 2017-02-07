@@ -123,6 +123,50 @@ Create laravel controller `UploadController` and create the file receiver with t
 #### Controller
 You must import the full namespace in your controler (`use`).
 
+##### Dynamic handler usage
+
+When you support multiple upload providers. [Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/UploadController.php)
+
+```php 
+/**
+ * Handles the file upload
+ *
+ * @param Request $request
+ *
+ * @return \Illuminate\Http\JsonResponse
+ *
+ * @throws UploadMissingFileException
+ */
+public function upload(Request $request) {
+    // create the file receiver
+    $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
+
+    // check if the upload is success
+    if ($receiver->isUploaded()) {
+
+        // receive the file
+        $save = $receiver->receive();
+
+        // check if the upload has finished (in chunk mode it will send smaller files)
+        if ($save->isFinished()) {
+            // save the file and return any response you need
+            return $this->saveFile($save->getFile());
+        } else {
+            // we are in chunk mode, lets send the current progress
+
+            /** @var AbstractHandler $handler */
+            $handler = $save->handler();
+
+            return response()->json([
+                "done" => $handler->getPercentageDone(),
+            ]);
+        }
+    } else {
+        throw new UploadMissingFileException();
+    }
+}
+```
+
 ##### Static handler usage
 
 We set the handler we want to use always.
@@ -170,50 +214,6 @@ public function upload(Request $request) {
 }
 ```
 
-
-##### Dynamic handler usage
-
-When you support multiple upload providers
-
-```php 
-/**
- * Handles the file upload
- *
- * @param Request $request
- *
- * @return \Illuminate\Http\JsonResponse
- *
- * @throws UploadMissingFileException
- */
-public function upload(Request $request) {
-    // create the file receiver
-    $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
-
-    // check if the upload is success
-    if ($receiver->isUploaded()) {
-
-        // receive the file
-        $save = $receiver->receive();
-
-        // check if the upload has finished (in chunk mode it will send smaller files)
-        if ($save->isFinished()) {
-            // save the file and return any response you need
-            return $this->saveFile($save->getFile());
-        } else {
-            // we are in chunk mode, lets send the current progress
-
-            /** @var AbstractHandler $handler */
-            $handler = $save->handler();
-
-            return response()->json([
-                "done" => $handler->getPercentageDone(),
-            ]);
-        }
-    } else {
-        throw new UploadMissingFileException();
-    }
-}
-```
 
 #### Route
 Add a route to your controller
