@@ -71,6 +71,12 @@ to use from the current supported providers. You can also register your own hand
 ### FileReceiver
 You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
 
+FileReceiver now has support for multiple files in single request. If your project has multiple files in one request, call FileReceiver with new optional parameter int $fileArrayIndex. 
+
+```php
+$receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request), null, null, $fileArrayIndex);
+```
+
 Then you can use methods:
 
 #### `isUploaded()`
