@@ -230,15 +230,15 @@ public function upload(Request $request) {
  */
 public function upload(Request $request, $fileIndex) {
 
-		// Get array of files from request
-		$file = $request->file('file');
+    // Get array of files from request
+    $file = $request->file('file');
 
     if (!is_null($fileIndex) && is_array($file)) {
-      // When not found in array, will return null
-      $file = array_get($file, $fileIndex);
+    	// When not found in array, will return null
+    	$file = array_get($file, $fileIndex);
     }
 
-		// create the file receiver with handler of your choice
+    // create the file receiver with handler of your choice
     $receiver = new FileReceiver($file, $request, ContentRangeUploadHandler::class);
 
     // check if the upload is success
