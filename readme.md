@@ -214,6 +214,62 @@ public function upload(Request $request) {
 }
 ```
 
+##### Usage with multiple files in one Request
+
+```php
+/**
+ * Handles the file upload
+ *
+ * @param Request $request
+ *
+ * @param Int $fileIndex
+ *
+ * @return \Illuminate\Http\JsonResponse
+ * 
+ * @throws UploadMissingFileException
+ */
+public function upload(Request $request) {
+
+    // Response for the files - completed and uncompleted
+    $files = [];
+
+    // Get array of files from request
+    $files = $request->file('files');
+    
+    if (!is_array($files)) {
+        throw new UploadMissingFileException();
+    }
+    
+    // Loop sent files
+    foreach ($files as $file) {
+        if ($receiver->isUploaded()) {
+            // receive the file
+            $save = $receiver->receive();
+    
+            // check if the upload has finished (in chunk mode it will send smaller files)
+            if ($save->isFinished()) {
+                // save the file and return any response you need
+                $files[] = $this->saveFile($save->getFile());
+            } else {
+                // we are in chunk mode, lets send the current progress
+    
+                /** @var ContentRangeUploadHandler $handler */
+                $handler = $save->handler();
+                
+                // Add the completed file
+                $files[] = [
+                    "start" => $handler->getBytesStart(),
+                    "end" => $handler->getBytesEnd(),
+                    "total" => $handler->getBytesTotal(),
+                    "finished" => false
+                ];
+            }
+        }
+    }
+    
+    return response()->json($files);
+}
+```
 
 #### Route
 Add a route to your controller

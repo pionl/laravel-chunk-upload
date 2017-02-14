@@ -45,16 +45,16 @@ class FileReceiver
     /**
      * The file receiver for the given file index
      *
-     * @param string              $fileIndex the desired file index in requests files
-     * @param Request             $request the current request
-     * @param string              $handlerClass the handler class name for detecting the file upload
-     * @param ChunkStorage|null   $chunkStorage the chunk storage, on null will use the instance from app container
-     * @param AbstractConfig|null $config the config, on null will use the instance from app container
+     * @param string|UploadedFile $fileIndexOrFile the desired file index to use in request or the final UploadedFile
+     * @param Request             $request         the current request
+     * @param string              $handlerClass    the handler class name for detecting the file upload
+     * @param ChunkStorage|null   $chunkStorage    the chunk storage, on null will use the instance from app container
+     * @param AbstractConfig|null $config          the config, on null will use the instance from app container
      */
-    public function __construct($fileIndex, Request $request, $handlerClass, $chunkStorage = null, $config = null)
+    public function __construct($fileIndexOrFile, Request $request, $handlerClass, $chunkStorage = null, $config = null)
     {
         $this->request = $request;
-        $this->file = $request->file($fileIndex);
+        $this->file = is_object($fileIndexOrFile) ? $fileIndexOrFile : $request->file($fileIndexOrFile);
         $this->chunkStorage = is_null($chunkStorage) ? ChunkStorage::storage() : $chunkStorage;
         $this->config = is_null($config) ? AbstractConfig::config() : $config;
 
