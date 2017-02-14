@@ -71,12 +71,6 @@ to use from the current supported providers. You can also register your own hand
 ### FileReceiver
 You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
 
-FileReceiver now has support for multiple files in single request. If your project has multiple files in one request, call FileReceiver with new optional parameter int $fileArrayIndex. 
-
-```php
-$receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request), null, null, $fileArrayIndex);
-```
-
 Then you can use methods:
 
 #### `isUploaded()`
@@ -220,6 +214,60 @@ public function upload(Request $request) {
 }
 ```
 
+##### Usage with multiple files in one Request
+
+```php
+/**
+ * Handles the file upload
+ *
+ * @param Request $request
+ *
+ * @param Int $fileIndex
+ *
+ * @return \Illuminate\Http\JsonResponse
+ * 
+ * @throws UploadMissingFileException
+ */
+public function upload(Request $request, $fileIndex) {
+
+		// Get array of files from request
+		$file = $request->file('file');
+
+    if (!is_null($fileIndex) && is_array($file)) {
+      // When not found in array, will return null
+      $file = array_get($file, $fileIndex);
+    }
+
+		// create the file receiver with handler of your choice
+    $receiver = new FileReceiver($file, $request, ContentRangeUploadHandler::class);
+
+    // check if the upload is success
+    if ($receiver->isUploaded()) {
+
+        // receive the file
+        $save = $receiver->receive();
+
+        // check if the upload has finished (in chunk mode it will send smaller files)
+        if ($save->isFinished()) {
+            // save the file and return any response you need
+            return $this->saveFile($save->getFile());
+        } else {
+            // we are in chunk mode, lets send the current progress
+
+            /** @var ContentRangeUploadHandler $handler */
+            $handler = $save->handler();
+            
+            return response()->json([
+                "start" => $handler->getBytesStart(),
+                "end" => $handler->getBytesEnd(),
+                "total" => $handler->getBytesTotal()
+            ]);
+        }
+    } else {
+        throw new UploadMissingFileException();
+    }
+}
+```
 
 #### Route
 Add a route to your controller
