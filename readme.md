@@ -239,9 +239,17 @@ public function upload(Request $request) {
     if (!is_array($files)) {
         throw new UploadMissingFileException();
     }
+
     
     // Loop sent files
     foreach ($files as $file) {
+        // Instead of passing the index name, pass the UploadFile object from the $files array we are looping
+        
+        // Create the file receiver via dynamic handler
+        $receiver = new FileReceiver($file, $request, HandlerFactory::classFromRequest($request));
+        // or via static handler usage
+        $receiver = new FileReceiver($file, $request, ContentRangeUploadHandler::class);
+        
         if ($receiver->isUploaded()) {
             // receive the file
             $save = $receiver->receive();
