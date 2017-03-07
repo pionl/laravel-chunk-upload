@@ -4,7 +4,7 @@ namespace Pion\Laravel\ChunkUpload\Config;
 abstract class AbstractConfig
 {
     /**
-     * Returns the config from the aplication container
+     * Returns the config from the application container
      *
      * @return AbstractConfig
      *
@@ -20,10 +20,10 @@ abstract class AbstractConfig
      * @return string
      */
     abstract public function chunksDiskName();
-    
+
     /**
-     * The storage path for the chnunks
-     * 
+     * The storage path for the chunks
+     *
      * @return string the full path to the storage
      */
     abstract public function chunksStorageDirectory();
@@ -35,7 +35,7 @@ abstract class AbstractConfig
     abstract public function clearTimestampString();
 
     /**
-     * Returns the shedule config array
+     * Returns the schedule config array
      * @return array<enable,cron>
      */
     abstract public function scheduleConfig();

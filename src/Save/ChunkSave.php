@@ -1,6 +1,7 @@
 <?php
 namespace Pion\Laravel\ChunkUpload\Save;
 
+use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Illuminate\Http\UploadedFile;
@@ -53,7 +54,7 @@ class ChunkSave extends AbstractSave
         $this->isLastChunk = $handler->isLastChunk();
         $this->chunkFileName = $handler->getChunkFileName();
 
-        // buid the full disk path
+        // build the full disk path
         $this->chunkFullFilePath = $this->getChunkFilePath(true);
 
         $this->handleChunkMerge();
@@ -145,7 +146,7 @@ class ChunkSave extends AbstractSave
         // passes the uploaded data
         $this->appendDataToChunkFile();
 
-        // build the last file becouse of the last chunk
+        // build the last file because of the last chunk
         if ($this->isLastChunk) {
             $this->buildFullFileFromChunks();
         }
@@ -167,7 +168,7 @@ class ChunkSave extends AbstractSave
             $this->file->getClientMimeType(),
             filesize($finalPath), $this->file->getError(),
             true // we must pass the true as test to force the upload file
-            // to use a standart copy method, not move uploaded file
+            // to use a standard copy method, not move uploaded file
         );
     }
 
@@ -223,7 +224,7 @@ class ChunkSave extends AbstractSave
     }
 
     /**
-     * Crates the chunks folder if doesnt exists. Uses recursive create
+     * Crates the chunks folder if doesn't exists. Uses recursive create
      */
     protected function createChunksFolderIfNeeded()
     {

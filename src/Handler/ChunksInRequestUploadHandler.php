@@ -8,7 +8,7 @@ use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 /**
  * Class ChunksInRequestUploadHandler
  *
- * Upload receiver that detects the content range fromt he request value - chunks
+ * Upload receiver that detects the content range from he request value - chunks
  * Works with:
  * - PUpload: https://github.com/moxiecode/plupload/
  *

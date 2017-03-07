@@ -361,6 +361,13 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 
 ## Changelog
 
+### Since 1.0.1
+* Added support for passing file object instead of fileIndex (example: multiple files in a request). Change discussion in #7 (@RAZORzdenko), merged in #8
+
+### Since 1.0.0
+
+* Updated composer to support Laravel 5.4
+
 ### Since v0.3
 
 * Support for cross domain requests (only chunk naming)
@@ -369,9 +376,9 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 
 ### Since v0.2.0
 
-The package supports the Laravel Filesystem. Becouse of this, the storage must be withing the app folder `storage/app/` or custom drive (only local) - can be set in the config `storage.disk`.
+The package supports the Laravel Filesystem. Because of this, the storage must be withing the app folder `storage/app/` or custom drive (only local) - can be set in the config `storage.disk`.
 
-The cloud drive is not supported becouse of the chunked write (probably could be changed to use a stream) and the resulting object - `UploadedFile` that supports only full path.
+The cloud drive is not supported because of the chunked write (probably could be changed to use a stream) and the resulting object - `UploadedFile` that supports only full path.
 
 ## Todo
 
@@ -380,7 +387,7 @@ The cloud drive is not supported becouse of the chunked write (probably could be
 - [x] cron to delete uncompleted files `since v0.2.0`
 - [x] file per session (to support multiple) `since v0.1.1`
 - [x] add a config with custom storage location `since v0.2.0`
-- [ ] add an example project
+- [x] add an [example project](https://github.com/pionl/laravel-chunk-upload-example) `since v1.0.1`
 - [ ] add support to different drive than a local drive
 
 ## Contribution or overriding

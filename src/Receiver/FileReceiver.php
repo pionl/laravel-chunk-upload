@@ -78,7 +78,7 @@ class FileReceiver
      * is present in the request, it will create the save object.
      *
      * If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
-     * which doesnt nothing at this moment.
+     * which doesn't nothing at this moment.
      *
      * @return bool|AbstractSave
      */

@@ -9,12 +9,13 @@ use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Config\FileConfig;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
+use Storage;
 
 class ChunkUploadServiceProvider extends ServiceProvider
 {
 
     /**
-     * When the service is beeing booted
+     * When the service is being booted
      */
     public function boot()
     {
@@ -64,7 +65,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
             $config = $app->make(AbstractConfig::class);
 
             // Build the chunk storage
-            return new ChunkStorage(\Storage::disk($config->chunksDiskName()), $config);
+            return new ChunkStorage(Storage::disk($config->chunksDiskName()), $config);
         });
     }
 

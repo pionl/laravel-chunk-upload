@@ -27,8 +27,8 @@ class FileConfig extends AbstractConfig
 
 
     /**
-     * The storage path for the chnunks
-     * 
+     * The storage path for the chunks
+     *
      * @return string the full path to the storage
      *
      * @see FileConfig::get()

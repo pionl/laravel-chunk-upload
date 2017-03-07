@@ -57,17 +57,17 @@ abstract class AbstractHandler
 
     /**
      * Builds the chunk file name per session and the original name. You can
-     * provide custom aditional name at the end of the generated file name. All chunk
+     * provide custom additional name at the end of the generated file name. All chunk
      * files has .part extension
      *
-     * @param string|null $aditionalName
+     * @param string|null $additionalName
      *
      * @return string
      *
      * @see UploadedFile::getClientOriginalName()
      * @see Session::getId()
      */
-    protected function createChunkFileName($aditionalName = null)
+    protected function createChunkFileName($additionalName = null)
     {
         // prepare basic name structure
         $array = [
@@ -81,14 +81,14 @@ abstract class AbstractHandler
             $array[] = Session::getId();
         }
 
-        // can work without any aditional setup
+        // can work without any additional setup
         if ($this->config->chunkUseBrowserInfoForName()) {
             $array[] = md5($this->request->ip().$this->request->header("User-Agent", "no-browser"));
         }
 
         // add
-        if (!is_null($aditionalName)) {
-            $array[] = $aditionalName;
+        if (!is_null($additionalName)) {
+            $array[] = $additionalName;
         }
 
 

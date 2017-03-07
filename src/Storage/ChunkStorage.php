@@ -7,6 +7,7 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\FilesystemInterface;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
+use RuntimeException;
 
 class ChunkStorage
 {
@@ -16,7 +17,8 @@ class ChunkStorage
      * Returns the application instance of the chunk storage
      * @return ChunkStorage
      */
-    public static function storage() {
+    public static function storage()
+    {
         return app(self::class);
     }
 
@@ -47,8 +49,8 @@ class ChunkStorage
     /**
      * ChunkStorage constructor.
      *
-     * @param FilesystemAdapter   $disk the desired disk for chunk storage
-     * @param AbstractConfig $config
+     * @param FilesystemAdapter $disk the desired disk for chunk storage
+     * @param AbstractConfig    $config
      */
     public function __construct(FilesystemAdapter $disk, $config)
     {
@@ -63,7 +65,7 @@ class ChunkStorage
 
         // try to get the adapter
         if (!method_exists($driver, "getAdapter")) {
-            throw new \RuntimeException("FileSystem driver must have an adapter implemented");
+            throw new RuntimeException("FileSystem driver must have an adapter implemented");
         }
 
         // get the disk adapter
@@ -86,7 +88,7 @@ class ChunkStorage
             return $this->diskAdapter->getPathPrefix();
         }
 
-        throw new \RuntimeException("The full path is not supported on current disk - local adapter supported only");
+        throw new RuntimeException("The full path is not supported on current disk - local adapter supported only");
     }
 
     /**
@@ -100,7 +102,7 @@ class ChunkStorage
 
     /**
      * Returns an array of files in the chunks directory
-     * 
+     *
      * @return array
      *
      * @see FilesystemAdapter::files()
@@ -129,18 +131,18 @@ class ChunkStorage
         // build the timestamp
         $timeToCheck = strtotime($this->config->clearTimestampString());
 
-        // we need to filter files we dont support, lets use the collection
+        // we need to filter files we don't support, lets use the collection
         $filesCollection = new Collection($files);
 
         // filter the collection with files that are not correct chunk file
         $filesCollection->reject(function ($file) {
             // ensure the file ends with allowed extension
             return !preg_match("/.".self::CHUNK_EXTENSION."$/", $file);
-            
+
         })// loop all current files and filter them by the time
         ->each(function ($file) use ($timeToCheck, $collection) {
 
-            // get the last modifed time to check if the chunk is not new
+            // get the last modified time to check if the chunk is not new
             $modified = $this->disk()->lastModified($file);
 
             // delete only old chunk

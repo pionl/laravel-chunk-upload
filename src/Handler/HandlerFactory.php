@@ -26,7 +26,7 @@ class HandlerFactory
      * @param Request     $request
      * @param string|null $fallbackClass
      *
-     * @return AbstractHandler
+     * @return string
      */
     public static function classFromRequest(Request $request, $fallbackClass = null)
     {
