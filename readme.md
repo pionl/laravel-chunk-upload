@@ -72,7 +72,7 @@ to use from the current supported providers. You can also register your own hand
 1. Create a Upload controller. If using Laravel 5.4 and above, add your upload controller into `web` route. If
 necessary, add to `api` routes and change the config to use IP for chunk name.
 2. Implement your JS (you can use the same code as below or in example repository)
-
+3. __Check if your library is sending `cookie`, the chunk naming uses session (you can [change it](#unique-naming) - will use only IP address)__
 
 ### FileReceiver
 You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
@@ -87,7 +87,7 @@ Tries to handle the upload request. If the file is not uploaded, returns false. 
 is present in the request, it will create the save object.
 
 If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
-which doesnt nothing at this moment.
+which doesn't nothing at this moment.
 
 ## Example
 
