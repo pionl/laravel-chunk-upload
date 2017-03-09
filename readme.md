@@ -66,7 +66,13 @@ In your own controller create the `FileReceiver`, more in example.
 to use from the current supported providers. You can also register your own handler to the automatic detection (more in Handlers)
 * Supports cross domain request (must change the config - see Cross domain request section in readme)
 
+
 ## Basic documentation
+
+1. Create a Upload controller. If using Laravel 5.4 and above, add your upload controller into `web` route. If
+necessary, add to `api` routes and change the config to use IP for chunk name.
+2. Implement your JS (you can use the same code as below or in example repository)
+
 
 ### FileReceiver
 You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
@@ -118,10 +124,10 @@ $element.fileupload({
 ```
     
 ### Laravel controller
-Create laravel controller `UploadController` and create the file receiver with the desired handler.
-
-#### Controller
-You must import the full namespace in your controler (`use`).
+* Create laravel controller `UploadController` and create the file receiver with the desired handler.
+* You must import the full namespace in your controller (`use`).
+* When upload is finished, don't forget to move the file to desired folder (as standard UploadFile implementation). 
+You can check the example project.
 
 ##### Dynamic handler usage
 
@@ -324,14 +330,14 @@ Use `AbstractHandler` for type hint or use a specific handler to se additional m
 * supported by blueimp-file-upload
 * uses the Content-range header with the bytes range
 
-##### Aditional methods
+##### Additional methods
 
 * `getBytesStart()` - returns the starting bytes for current request
 * `getBytesEnd()` - returns the ending bytes for current request
 * `getBytesTotal()` - returns the total bytes for the file
 
 ### ChunksInRequestUploadHandler
-* suppored by plupload
+* Supported by plupload
 * uses the chunks numbers from the request
 
 ### Using own implementation
