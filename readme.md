@@ -126,10 +126,11 @@ $element.fileupload({
 ### Laravel controller
 * Create laravel controller `UploadController` and create the file receiver with the desired handler.
 * You must import the full namespace in your controller (`use`).
-* When upload is finished, don't forget to move the file to desired folder (as standard UploadFile implementation). 
+* When upload is finished, don't forget to **move the file to desired folder (as standard UploadFile implementation)**. 
 You can check the example project.
+* An example of save function below the handler usage
 
-##### Dynamic handler usage
+#### Dynamic handler usage
 
 When you support multiple upload providers. [Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/UploadController.php)
 
@@ -173,7 +174,7 @@ public function upload(Request $request) {
 }
 ```
 
-##### Static handler usage
+#### Static handler usage
 
 We set the handler we want to use always.
 
@@ -220,7 +221,7 @@ public function upload(Request $request) {
 }
 ```
 
-##### Usage with multiple files in one Request
+#### Usage with multiple files in one Request
 
 ```php
 /**
@@ -285,9 +286,40 @@ public function upload(Request $request) {
 }
 ```
 
-#### Route
-Add a route to your controller
+#### Save file after upload
 
+This example moves the file (merged chunks) into own upload directory. This will ensure that the cunk will be deleted after
+move.
+
+```php
+ /**
+ * Saves the file
+ *
+ * @param UploadedFile $file
+ *
+ * @return \Illuminate\Http\JsonResponse
+ */
+protected function saveFile(UploadedFile $file)
+{
+    $fileName = $this->createFilename($file);
+    // Group files by mime type
+    $mime = str_replace('/', '-', $file->getMimeType());
+    // Group files by the date (week
+    $dateFolder = date("Y-m-W");
+    // Build the file path
+    $filePath = "upload/{$mime}/{$dateFolder}/";
+    $finalPath = storage_path("app/".$filePath);
+    // move the file name
+    $file->move($finalPath, $fileName);
+    return response()->json([
+        'path' => $filePath,
+        'name' => $fileName,
+        'mime_type' => $mime
+    ]);
+}
+```
+#### Route
+Add a route to your controller in the `web` route (if you want to use the session).
 ```php
 Route::post('upload', 'UploadController@upload');
 ```
