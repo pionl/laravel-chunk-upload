@@ -46,9 +46,8 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     {
         parent::__construct($request, $file, $config);
 
-        // the chunk is indexed from zero (for 5 chunks: 0,1,2,3,4)
-        $this->currentChunk = $request->get("chunk") + 1;
-        $this->chunksTotal = $request->get("chunks");
+        $this->currentChunk = $this->getCurrentChunkFromRequest($request);
+        $this->chunksTotal = $this->getTotalChunksFromRequest($request);
     }
 
     /**
@@ -60,7 +59,32 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has("chunk") && $request->has("chunks");
+        return $request->has('chunk') && $request->has('chunks');
+    }
+
+    /**
+     * Returns current chunk from the request
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getCurrentChunkFromRequest(Request $request)
+    {
+        // the chunk is indexed from zero (for 5 chunks: 0,1,2,3,4)
+        return $request->get('chunk') + 1;
+    }
+
+    /**
+     * Returns current chunk from the request
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getTotalChunksFromRequest(Request $request)
+    {
+        return $request->get("chunks");
     }
 
     /**
