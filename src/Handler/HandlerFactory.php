@@ -11,7 +11,8 @@ class HandlerFactory
      */
     static protected $handlers = array(
         ContentRangeUploadHandler::class,
-        ChunksInRequestUploadHandler::class
+        ChunksInRequestUploadHandler::class,
+        ResumableJSUploadHandler::class
     );
 
     /**
