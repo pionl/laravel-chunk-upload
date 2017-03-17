@@ -13,8 +13,7 @@ Easy to use service for chunked upload with several js providers on top of Larav
 * [Example](#example)
     * [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
     * [Javascript](#javascript)
-    * [Laravel controller](#laravel.controller)
-    * [Controller](#controller)
+    * [Laravel controller](#laravel-controller)
     * [Route](#route)
 * [Providers/Handlers](#providers-handlers)
 * [Changelog](#changelog)
@@ -135,7 +134,7 @@ You can check the example project.
 
 The correct handler for your JS provider will be selected automatically based on the sent request. This is the easies init.
 
-#### With dependency injection
+##### With dependency injection
 
 Build the `FileReceiver` with a first uploaded file in the request.
 
