@@ -54,6 +54,7 @@ In your own controller create the `FileReceiver`, more in example.
 * Laravel 5+
 * [blueimp-file-upload](https://github.com/blueimp/jQuery-File-Upload) - partial support (simple chunked and single upload)
 * [Plupload](https://github.com/moxiecode/plupload)
+* [resumable.js](https://github.com/23/resumable.js)
 
 ## Features
 * **Chunked uploads**
@@ -66,13 +67,13 @@ In your own controller create the `FileReceiver`, more in example.
 to use from the current supported providers. You can also register your own handler to the automatic detection (more in Handlers)
 * Supports cross domain request (must change the config - see Cross domain request section in readme)
 
-
 ## Basic documentation
 
 1. Create a Upload controller. If using Laravel 5.4 and above, add your upload controller into `web` route. If
 necessary, add to `api` routes and change the config to use IP for chunk name.
 2. Implement your JS (you can use the same code as below or in example repository)
 3. __Check if your library is sending `cookie`, the chunk naming uses session (you can [change it](#unique-naming) - will use only IP address)__
+4. Implement the FileReceiver (example below)
 
 ### FileReceiver
 You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
@@ -132,7 +133,10 @@ You can check the example project.
 
 #### Dynamic handler usage
 
-When you support multiple upload providers. [Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/UploadController.php)
+When you support multiple upload providers or for just drop-in implementation. The correct handler for your JS provider
+will be selected automatically based on the sent request.
+
+[Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/UploadController.php)
 
 ```php 
 /**
@@ -288,7 +292,7 @@ public function upload(Request $request) {
 
 #### Save file after upload
 
-This example moves the file (merged chunks) into own upload directory. This will ensure that the cunk will be deleted after
+This example moves the file (merged chunks) into own upload directory. This will ensure that the chunk will be deleted after
 move.
 
 ```php
@@ -372,6 +376,10 @@ Use `AbstractHandler` for type hint or use a specific handler to se additional m
 * Supported by plupload
 * uses the chunks numbers from the request
 
+### ResumableJSUploadHandler
+* Supported by resumable.js
+* uses the chunks numbers from the request
+
 ### Using own implementation
 
 See the `Contribution` section in Readme
@@ -399,6 +407,10 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 
 ## Changelog
 
+### Since 1.0.2
+* Added resumable.js
+* Added `getChunkFile` method in `ChunkSave` for returning only the chunk file 
+
 ### Since 1.0.1
 * Added support for passing file object instead of fileIndex (example: multiple files in a request). Change discussion in #7 (@RAZORzdenko), merged in #8
 
@@ -422,10 +434,6 @@ The cloud drive is not supported because of the chunked write (probably could be
 
 - [ ] add more providers
 - [ ] add facade for a quick usage with callback and custom response based on the handler
-- [x] cron to delete uncompleted files `since v0.2.0`
-- [x] file per session (to support multiple) `since v0.1.1`
-- [x] add a config with custom storage location `since v0.2.0`
-- [x] add an [example project](https://github.com/pionl/laravel-chunk-upload-example) `since v1.0.1`
 - [ ] add support to different drive than a local drive
 
 ## Contribution or overriding
