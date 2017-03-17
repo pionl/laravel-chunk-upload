@@ -3,11 +3,14 @@ namespace Pion\Laravel\ChunkUpload\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Config\FileConfig;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Storage;
 
@@ -66,6 +69,21 @@ class ChunkUploadServiceProvider extends ServiceProvider
 
             // Build the chunk storage
             return new ChunkStorage(Storage::disk($config->chunksDiskName()), $config);
+        });
+
+
+        /**
+         * Bind a FileReceiver for dependency and use only the first object
+         */
+        $this->app->bind(FileReceiver::class, function (Application $app) {
+            /** @var Request $request */
+            $request = $app->make('request');
+
+            // Get the first file object - must be converted instances of UploadedFile
+            $file = array_first($request->allFiles());
+
+            // Build the file receiver
+            return new FileReceiver($file, $request, HandlerFactory::classFromRequest($request));
         });
     }
 

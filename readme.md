@@ -90,7 +90,7 @@ is present in the request, it will create the save object.
 If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
 which doesn't nothing at this moment.
 
-## Example
+## Example 
 
 The full example (Laravel 5.4 - works same on previous versions) can be found in separate repo: [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
 
@@ -133,24 +133,25 @@ You can check the example project.
 
 #### Dynamic handler usage
 
-When you support multiple upload providers or for just drop-in implementation. The correct handler for your JS provider
-will be selected automatically based on the sent request.
+The correct handler for your JS provider will be selected automatically based on the sent request. This is the easies init.
 
-[Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/UploadController.php)
+#### With dependency injection
+
+Build the `FileReceiver` with a first uploaded file in the request.
+
+[Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/DependencyUploadController.php)
 
 ```php 
 /**
  * Handles the file upload
  *
- * @param Request $request
+ * @param FileReceiver $receiver
  *
  * @return \Illuminate\Http\JsonResponse
  *
  * @throws UploadMissingFileException
  */
-public function upload(Request $request) {
-    // create the file receiver
-    $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
+public function upload(FileReceiver $receiver) {
 
     // check if the upload is success
     if ($receiver->isUploaded()) {
@@ -178,9 +179,13 @@ public function upload(Request $request) {
 }
 ```
 
+##### With own file index
+
+[Full Controller in example](https://github.com/pionl/laravel-chunk-upload-example/blob/master/app/Http/Controllers/UploadController.php)
+
 #### Static handler usage
 
-We set the handler we want to use always.
+This will force a given handler to be used for processing the upload.
 
 ```php
 /**
