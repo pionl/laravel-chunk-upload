@@ -126,6 +126,16 @@ class ChunkSave extends AbstractSave
 
         return parent::getFile();
     }
+    
+    /**
+     * Returns always the uploaded chunk file
+     *
+     * @return null|UploadedFile
+     */
+    public function getChunkFile()
+    {
+        return parent::getFile();
+    }
 
     /**
      * Appends the new uploaded data to the final file
