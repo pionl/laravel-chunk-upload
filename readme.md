@@ -412,6 +412,10 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 
 ## Changelog
 
+### Since 1.0.3
+* Enabled to construct the `FileReceiver` with dependency injection - the fasted way.
+* Removed the `getChunkFile` and added `getUploadedFile` for all Save classes. Returns always the uploaded file (the uploaded chunk). 
+
 ### Since 1.0.2
 * Added resumable.js
 * Added `getChunkFile` method in `ChunkSave` for returning only the chunk file 
