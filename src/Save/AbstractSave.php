@@ -90,6 +90,16 @@ abstract class AbstractSave
     }
 
     /**
+     * Returns always the uploaded chunk file
+     *
+     * @return null|UploadedFile
+     */
+    public function getUploadedFile()
+    {
+        return $this->file;
+    }
+
+    /**
      * Passes all the function into the file
      *
      * @param $name      string
