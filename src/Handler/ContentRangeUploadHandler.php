@@ -4,6 +4,7 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
+use Pion\Laravel\ChunkUpload\Exceptions\ContentRangeValueToLargeException;
 
 /**
  * Class ContentRangeUploadHandler
@@ -90,10 +91,29 @@ class ContentRangeUploadHandler extends AbstractHandler
             $this->chunkedUpload = true;
 
             // write the bytes values
-            $this->bytesStart = intval($matches[1]);
-            $this->bytesEnd = intval($matches[2]);
-            $this->bytesTotal = intval($matches[3]);
+            $this->bytesStart = $this->convertToNumericValue($matches[1]);
+            $this->bytesEnd = $this->convertToNumericValue($matches[2]);
+            $this->bytesTotal = $this->convertToNumericValue($matches[3]);
         }
+    }
+
+    /**
+     * Converts the string value to float - throws exception if float value is exceeded.
+     *
+     * @param string $value
+     *
+     * @return float
+     * @throws ContentRangeValueToLargeException
+     */
+    protected function convertToNumericValue($value)
+    {
+        $floatVal = floatval($value);
+
+        if ($floatVal === INF) {
+            throw new ContentRangeValueToLargeException();
+        }
+
+        return $floatVal;
     }
 
     /**
@@ -167,6 +187,11 @@ class ContentRangeUploadHandler extends AbstractHandler
      */
     public function getPercentageDone()
     {
+        // Check that we have received total bytes
+        if ($this->getBytesTotal() == 0) {
+            return 0;
+        }
+
         return ceil($this->getBytesEnd() / $this->getBytesTotal() * 100);
     }
 }
