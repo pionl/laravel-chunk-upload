@@ -76,7 +76,8 @@ necessary, add to `api` routes and change the config to use IP for chunk name.
 4. Implement the FileReceiver (example below)
 
 ### FileReceiver
-You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
+- You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
+- If upload has failed (like file size limit, exception is raised)
 
 Then you can use methods:
 
@@ -199,10 +200,10 @@ This will force a given handler to be used for processing the upload.
  */
 public function upload(Request $request) {
 
-    // create the file receiver
+    // Create the file receiver, exception is thrown if file upload is invalid (size limit, etc)
     $receiver = new FileReceiver("file", $request, ContentRangeUploadHandler::class);
 
-    // check if the upload is success
+    // Check if the upload is success
     if ($receiver->isUploaded()) {
 
         // receive the file
@@ -245,7 +246,6 @@ public function upload(Request $request) {
  * @throws UploadMissingFileException
  */
 public function upload(Request $request) {
-
     // Response for the files - completed and uncompleted
     $files = [];
 
@@ -260,6 +260,7 @@ public function upload(Request $request) {
     // Loop sent files
     foreach ($files as $file) {
         // Instead of passing the index name, pass the UploadFile object from the $files array we are looping
+        // Exception is thrown if file upload is invalid (size limit, etc)
         
         // Create the file receiver via dynamic handler
         $receiver = new FileReceiver($file, $request, HandlerFactory::classFromRequest($request));
@@ -395,6 +396,7 @@ You can use the automatic detection of the correct handler (provider) by using t
 a third parameter when constructing the `FileReceiver`.
  
 ```php
+// Exception is thrown if file upload is invalid (size limit, etc)
 $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 ```
 #### Fallback class
@@ -411,6 +413,8 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 ```
 
 ## Changelog
+### Since 1.1.0
+* If there is an error while upload, exception will be thrown on init.
 
 ### Since 1.0.3
 * Enabled to construct the `FileReceiver` with dependency injection - the fasted way.

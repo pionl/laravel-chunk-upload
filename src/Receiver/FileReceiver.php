@@ -3,6 +3,7 @@ namespace Pion\Laravel\ChunkUpload\Receiver;
 
 use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Save\ChunkSave;
@@ -50,6 +51,8 @@ class FileReceiver
      * @param string              $handlerClass    the handler class name for detecting the file upload
      * @param ChunkStorage|null   $chunkStorage    the chunk storage, on null will use the instance from app container
      * @param AbstractConfig|null $config          the config, on null will use the instance from app container
+     *
+     * @throws UploadFailedException
      */
     public function __construct($fileIndexOrFile, Request $request, $handlerClass, $chunkStorage = null, $config = null)
     {
@@ -59,6 +62,10 @@ class FileReceiver
         $this->config = is_null($config) ? AbstractConfig::config() : $config;
 
         if ($this->isUploaded()) {
+            if (!$this->file->isValid()) {
+                throw new UploadFailedException($this->file->getErrorMessage());
+            }
+
             $this->handler = new $handlerClass($this->request, $this->file, $this->config);
         }
     }
@@ -70,7 +77,7 @@ class FileReceiver
      */
     public function isUploaded()
     {
-        return is_object($this->file);
+        return is_object($this->file) && $this->file->getError() !== UPLOAD_ERR_NO_FILE;
     }
 
     /**
@@ -84,7 +91,7 @@ class FileReceiver
      */
     public function receive()
     {
-        if (!$this->isUploaded()) {
+        if (is_object($this->handler) === false) {
             return false;
         }
 
