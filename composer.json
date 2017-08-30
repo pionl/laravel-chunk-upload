@@ -2,10 +2,10 @@
   "name": "pion/laravel-chunk-upload",
   "description": "Service for chunked upload with several js providers",
   "require": {
-    "laravel/framework": "5.1.* || 5.2.* || 5.3.* || 5.4.*"
+    "laravel/framework": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.7",
+    "phpunit/phpunit": "^6.0",
     "mockery/mockery": "^0.9.9"
   },
   "autoload": {
