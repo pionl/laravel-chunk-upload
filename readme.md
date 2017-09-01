@@ -84,7 +84,7 @@ Then you can use methods:
 #### `isUploaded()`
 determines if the file object is in the request
 
-####`receive()`
+#### `receive()`
 Tries to handle the upload request. If the file is not uploaded, returns false. If the file
 is present in the request, it will create the save object.
 
@@ -413,6 +413,10 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 ```
 
 ## Changelog
+
+### Since 1.1.1
+* Added support for Laravel 5.5 (thanks to @Colbydude - #18)
+
 ### Since 1.1.0
 * If there is an error while upload, exception will be thrown on init.
 
@@ -448,6 +452,7 @@ The cloud drive is not supported because of the chunked write (probably could be
 - [ ] add more providers
 - [ ] add facade for a quick usage with callback and custom response based on the handler
 - [ ] add support to different drive than a local drive
+- [ ] Add unit test coverage (interested to help? Fork the project)
 
 ## Contribution or overriding
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contributions are welcome.

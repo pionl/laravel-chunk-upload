@@ -5,7 +5,7 @@
     "laravel/framework": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.0",
+    "phpunit/phpunit": "5.7 || 6.0",
     "mockery/mockery": "^0.9.9"
   },
   "autoload": {
@@ -17,7 +17,7 @@
   "authors": [
     {
       "name": "Martin Kluska",
-      "email": "martin.kluska@imakers.cz"
+      "email": "martin@kluska.cz"
     }
   ],
   "minimum-stability": "stable"
