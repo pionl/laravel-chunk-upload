@@ -1,6 +1,13 @@
 {
   "name": "pion/laravel-chunk-upload",
   "description": "Service for chunked upload with several js providers",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martin Kluska",
+      "email": "martin@kluska.cz"
+    }
+  ],
   "require": {
     "laravel/framework": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.*"
   },
@@ -13,12 +20,12 @@
       "Pion\\Laravel\\ChunkUpload\\": "src/"
     }
   },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Martin Kluska",
-      "email": "martin@kluska.cz"
-    }
-  ],
+  "extra":{
+     "laravel":{
+        "providers":[
+           "Pion\\Laravel\\ChunkUpload\\Providers\\ChunkUploadServiceProvider"
+        ]
+     }
+  },
   "minimum-stability": "stable"
 }
