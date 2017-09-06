@@ -52,6 +52,7 @@ In your own controller create the `FileReceiver`, more in example.
 ## Supports
 
 * Laravel 5+
+* Laravels 5.5 Auto discovery
 * [blueimp-file-upload](https://github.com/blueimp/jQuery-File-Upload) - partial support (simple chunked and single upload)
 * [Plupload](https://github.com/moxiecode/plupload)
 * [resumable.js](https://github.com/23/resumable.js)
@@ -414,8 +415,11 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 
 ## Changelog
 
+### Since 1.1.2
+* Added support for  Auto-Discovery (thanks to @laravelish - [#20](https://github.com/pionl/laravel-chunk-upload/pull/20))
+
 ### Since 1.1.1
-* Added support for Laravel 5.5 (thanks to @Colbydude - #18)
+* Added support for Laravel 5.5 (thanks to @Colbydude - [#18](https://github.com/pionl/laravel-chunk-upload/pull/18))
 
 ### Since 1.1.0
 * If there is an error while upload, exception will be thrown on init.
