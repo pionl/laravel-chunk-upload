@@ -17,12 +17,6 @@ use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 class ChunksInRequestUploadHandler extends AbstractHandler
 {
     /**
-     * Determines if the upload is via chunked upload
-     * @var bool
-     */
-    protected $chunkedUpload = false;
-
-    /**
      * The current chunk progress
      * @var int
      */
@@ -72,7 +66,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     protected function getCurrentChunkFromRequest(Request $request)
     {
         // the chunk is indexed from zero (for 5 chunks: 0,1,2,3,4)
-        return $request->get('chunk') + 1;
+        return intval($request->get('chunk')) + 1;
     }
 
     /**
@@ -84,7 +78,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return $request->get("chunks");
+        return intval($request->get("chunks"));
     }
 
     /**
