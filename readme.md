@@ -56,6 +56,7 @@ In your own controller create the `FileReceiver`, more in example.
 * [blueimp-file-upload](https://github.com/blueimp/jQuery-File-Upload) - partial support (simple chunked and single upload)
 * [Plupload](https://github.com/moxiecode/plupload)
 * [resumable.js](https://github.com/23/resumable.js)
+* [DropZone](https://gitlab.com/meno/dropzone/)
 
 ## Features
 * **Chunked uploads**
@@ -72,7 +73,7 @@ to use from the current supported providers. You can also register your own hand
 
 1. Create a Upload controller. If using Laravel 5.4 and above, add your upload controller into `web` route. If
 necessary, add to `api` routes and change the config to use IP for chunk name.
-2. Implement your JS (you can use the same code as below or in example repository)
+2. Implement your Javascript code (you can use the same code as below or in example repository)
 3. __Check if your library is sending `cookie`, the chunk naming uses session (you can [change it](#unique-naming) - will use only IP address)__
 4. Implement the FileReceiver (example below)
 
@@ -90,41 +91,12 @@ Tries to handle the upload request. If the file is not uploaded, returns false. 
 is present in the request, it will create the save object.
 
 If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
-which doesn't nothing at this moment.
+which does nothing at this moment.
 
 ## Example 
 
-The full example (Laravel 5.4 - works same on previous versions) can be found in separate repo: [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
-
-### Javascript
-
-Written for [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload)
-
-```javascript
-$element.fileupload({
-        url: "upload_url",
-        maxChunkSize: 1000000,
-        method: "POST",
-        sequentialUploads: true,
-        formData: function(form) {
-            //laravel token for communication
-            return [{name: "_token", value: $form.find("[name=_token]").val()}];
-        },
-        progressall: function(e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            console.log(progress+"%");
-        }
-    })
-        .bind('fileuploadchunksend', function (e, data) {
-            //console.log("fileuploadchunksend");
-        })
-        .bind('fileuploadchunkdone', function (e, data) {
-            //console.log("fileuploadchunkdone");
-        })
-        .bind('fileuploadchunkfail', function (e, data) {
-            console.log("fileuploadchunkfail")
-        });
-```
+The full example (Laravel 5.4 - works same on previous versions) can be found in separate repository [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
+with DropZone and jQuery-File-Upload implementation.
     
 ### Laravel controller
 * Create laravel controller `UploadController` and create the file receiver with the desired handler.
@@ -221,9 +193,7 @@ public function upload(Request $request) {
             $handler = $save->handler();
             
             return response()->json([
-                "start" => $handler->getBytesStart(),
-                "end" => $handler->getBytesEnd(),
-                "total" => $handler->getBytesTotal()
+                "progress" => $handler->getPercentageDone(),
             ]);
         }
     } else {
@@ -284,9 +254,7 @@ public function upload(Request $request) {
                 
                 // Add the completed file
                 $files[] = [
-                    "start" => $handler->getBytesStart(),
-                    "end" => $handler->getBytesEnd(),
-                    "total" => $handler->getBytesTotal(),
+                    "progress" => $handler->getPercentageDone(),
                     "finished" => false
                 ];
             }
@@ -387,6 +355,10 @@ Use `AbstractHandler` for type hint or use a specific handler to se additional m
 * Supported by resumable.js
 * uses the chunks numbers from the request
 
+### DropZoneUploadHandler
+* Supported by DropZone
+* uses the chunks numbers from the request
+
 ### Using own implementation
 
 See the `Contribution` section in Readme
@@ -414,6 +386,10 @@ HandlerFactory::classFromRequest($request, CustomHandler::class)
 ```
 
 ## Changelog
+
+### Since 1.1.3
+* Added DropZone support (#22)
+* Removed Laravel dependency in favor of Illuminate packages (#21)
 
 ### Since 1.1.2
 * Added support for  Auto-Discovery (thanks to @laravelish - [#20](https://github.com/pionl/laravel-chunk-upload/pull/20))
@@ -460,12 +436,6 @@ The cloud drive is not supported because of the chunked write (probably could be
 
 ## Contribution or overriding
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contributions are welcome.
-
-# Suggested frontend libs
-
-* https://github.com/lemonCMS/react-plupload
-* https://github.com/moxiecode/plupload
-* https://github.com/blueimp/jQuery-File-Upload
 
 ## Copyright and License
 
