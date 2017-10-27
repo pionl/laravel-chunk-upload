@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Handler;
+namespace ChunkTests\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -11,6 +11,7 @@ use Pion\Laravel\ChunkUpload\Handler\ContentRangeUploadHandler;
 
 class ContentRangeUploadHandlerTest extends TestCase
 {
+
     public function testInitWithoutBytesRange()
     {
         $request = Request::create('test', 'POST', [], [], [], []);
@@ -39,7 +40,7 @@ class ContentRangeUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [], [], [], [
             'HTTP_CONTENT_RANGE' => 'bytes 0-100/1200'
         ]);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test');
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 

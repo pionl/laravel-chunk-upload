@@ -11,7 +11,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     const CHUNK_INDEX = 'dzchunkindex';
     const CHUNK_FILE_SIZE_INDEX = 'dztotalfilesize';
     const CHUNK_SIZE_INDEX = 'dzchunksize';
-    const CHUNK_COUNT_INDEX = 'dztotalchunkcount';
+    const CHUNK_TOTAL_INDEX = 'dztotalchunkcount';
     const CHUNK_OFFSET_INDEX = 'dzchunkbyteoffset';
 
     /**
@@ -47,7 +47,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getCurrentChunkFromRequest(Request $request)
     {
-        return intval($request->get(self::CHUNK_INDEX)) + 1;
+        return intval($request->get(self::CHUNK_INDEX, 0)) + 1;
     }
 
     /**
@@ -59,7 +59,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return intval($request->get(self::CHUNK_COUNT_INDEX));
+        return intval($request->get(self::CHUNK_TOTAL_INDEX, 1));
     }
 
 
@@ -72,7 +72,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has(self::CHUNK_UUID_INDEX) && $request->has(self::CHUNK_COUNT_INDEX) &&
+        return $request->has(self::CHUNK_UUID_INDEX) && $request->has(self::CHUNK_TOTAL_INDEX) &&
             $request->has(self::CHUNK_INDEX);
     }
 }

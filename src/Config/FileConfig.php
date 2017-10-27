@@ -90,6 +90,6 @@ class FileConfig extends AbstractConfig
      */
     public function get($key, $default = null)
     {
-        return \Config::get(self::FILE_NAME.".".$key, $default);
+        return config(self::FILE_NAME.".".$key, $default);
     }
 }
