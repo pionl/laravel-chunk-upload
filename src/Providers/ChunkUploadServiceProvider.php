@@ -63,7 +63,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
         });
 
         // Register the config via abstract instance
-        $this->app->singleton(ChunkStorage::class, function (Application $app) {
+        $this->app->singleton(ChunkStorage::class, function ($app) {
             /** @var AbstractConfig $config */
             $config = $app->make(AbstractConfig::class);
 
@@ -75,7 +75,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
         /**
          * Bind a FileReceiver for dependency and use only the first object
          */
-        $this->app->bind(FileReceiver::class, function (Application $app) {
+        $this->app->bind(FileReceiver::class, function ($app) {
             /** @var Request $request */
             $request = $app->make('request');
 
