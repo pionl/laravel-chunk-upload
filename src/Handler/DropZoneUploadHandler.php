@@ -38,6 +38,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     {
         return $this->createChunkFileName($this->fileUuid);
     }
+
     /**
      * Returns current chunk from the request
      *

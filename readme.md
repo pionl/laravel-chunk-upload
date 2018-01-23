@@ -45,10 +45,6 @@ Run the publish command to copy the translations (Laravel 5.2 and above)
 php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
 ```
 
-## Usage
-
-In your own controller create the `FileReceiver`, more in example.
-
 ## Supports
 
 * Laravel 5+
@@ -68,6 +64,7 @@ In your own controller create the `FileReceiver`, more in example.
 * **Automatic handler selection** since `v0.2.4` you can use automatic detection selection the handler
 to use from the current supported providers. You can also register your own handler to the automatic detection (more in Handlers)
 * Supports cross domain request (must change the config - see Cross domain request section in readme)
+* `simultaneousUploads` **are not supported.** You can vote here to add support.
 
 ## Basic documentation
 
@@ -75,7 +72,9 @@ to use from the current supported providers. You can also register your own hand
 necessary, add to `api` routes and change the config to use IP for chunk name.
 2. Implement your Javascript code (you can use the same code as below or in example repository)
 3. __Check if your library is sending `cookie`, the chunk naming uses session (you can [change it](#unique-naming) - will use only IP address)__
-4. Implement the FileReceiver (example below)
+4. Implement the FileReceiver (example below).
+**Chunk upload works only withing local storage.** If you need to upload the file to the cloud you can do it only after the chunks are merged `$receiver->isFinished() === true`. Instead of using
+`move` function get the contents of your file and upload it to cloud. More can be found (here)[https://github.com/pionl/laravel-chunk-upload-example/issues/5#issuecomment-359793775] 
 
 ### FileReceiver
 - You must create the file receiver with the file index (in the `Request->file`), the current request and the desired handler class (currently the `ContentRangeUploadHandler::class`)
