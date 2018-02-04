@@ -17,7 +17,7 @@ Easy to use service for chunked upload with several js providers on top of Larav
     * [Laravel controller](#laravel-controller)
     * [Route](#route)
 * [Providers/Handlers](#providers-handlers)
-* [Changelog](#changelog)
+* [Changelog](https://github.com/pionl/laravel-chunk-upload/releases)
 * [Contribution or overriding](#contribution-or-overriding)
 * [Suggested frontend libs](#suggested-frontend-libs)
 
@@ -58,7 +58,7 @@ php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkU
 * **Chunked uploads**
   uses **chunked writing** aswell to minimize the memory footprint
 * **Storing per Laravel Session to prevent overwrite**
-  all TMP files are stored with session token
+  all TMP files are stored with session token. The JS library must send the **cookies** to successfully work (or you can use browser - with fallback support).
 * [**Clear command and schedule**](#uploads:clear)
   the package registers the shedule command (uploads:clear) that will clear all unfinished chunk uploads
 * **Automatic handler selection** since `v0.2.4` you can use automatic detection selection the handler
@@ -71,7 +71,7 @@ to use from the current supported providers. You can also register your own hand
 1. Create a Upload controller. If using Laravel 5.4 and above, add your upload controller into `web` route. If
 necessary, add to `api` routes and change the config to use IP for chunk name.
 2. Implement your Javascript code (you can use the same code as below or in example repository)
-3. __Check if your library is sending `cookie`, the chunk naming uses session (you can [change it](#unique-naming) - will use only IP address)__
+3. __Check if your library is sending `cookie` in post, the chunk naming uses session (you can [change it](#unique-naming) - will use only IP address)__
 4. Implement the FileReceiver (example below).
 **Chunk upload works only withing local storage.** If you need to upload the file to the cloud you can do it only after the chunks are merged `$receiver->isFinished() === true`. Instead of using
 `move` function get the contents of your file and upload it to cloud. More can be found (here)[https://github.com/pionl/laravel-chunk-upload-example/issues/5#issuecomment-359793775] 
@@ -96,17 +96,25 @@ which does nothing at this moment.
 
 The full example (Laravel 5.4 - works same on previous versions) can be found in separate repository [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)
 with DropZone and jQuery-File-Upload implementation.
+
+### JS Libraries
+
+- Dropzone [Code](https://github.com/pionl/laravel-chunk-upload-example/blob/master/resources/assets/js/dropzone.js) [View](https://github.com/pionl/laravel-chunk-upload-example/blob/master/resources/views/example/dropzone.blade.php)
+- Resumable [Code](https://github.com/pionl/laravel-chunk-upload-example/blob/master/resources/assets/js/resumable.js) [View](https://github.com/pionl/laravel-chunk-upload-example/blob/master/resources/views/example/resumable.blade.php)
+- jQuery-File-Upload [Code](https://github.com/pionl/laravel-chunk-upload-example/blob/master/resources/assets/js/jquery-file-upload.js) [View](https://github.com/pionl/laravel-chunk-upload-example/blob/master/resources/views/example/jquery-file-upload.blade.php)
     
+You must send `_token` if you are using web route. For `api` session is not used (must be inited by middleware).
+
 ### Laravel controller
 * Create laravel controller `UploadController` and create the file receiver with the desired handler.
 * You must import the full namespace in your controller (`use`).
 * When upload is finished, don't forget to **move the file to desired folder (as standard UploadFile implementation)**. 
-You can check the example project.
+You can check the example project. If you are uploading the contents of the file to cloud, don`t forget to delete it.
 * An example of save function below the handler usage
 
 #### Dynamic handler usage
 
-The correct handler for your JS provider will be selected automatically based on the sent request. This is the easies init.
+The correct handler for your JS provider will be selected automatically based on the sent request. This is the easies usage.
 
 ##### With dependency injection
 
@@ -323,7 +331,8 @@ The logic supports also using the `Session::getId()`, but you need to force your
 You can update the `chunk.name.use` settings for custom usage.
 
 #### Cross domain request
-When using uploader for the cross domain request you must setup the `chunk.name.use` to browser logic instead of session.
+When using uploader for the cross domain request you must setup the `chunk.name.use` to browser logic instead of session. From version `1.1.4` the session
+is uses only if initialized by the laravel (if using api endpoint it will not be initialized and browser data will be used as fallback).
 
     "use" => [
         "session" => false, // should the chunk name use the session id? The uploader muset send cookie!,
@@ -383,48 +392,6 @@ or pass as second parameter when using
 ```php
 HandlerFactory::classFromRequest($request, CustomHandler::class)
 ```
-
-## Changelog
-
-### Since 1.1.3
-* Added DropZone support (#22)
-* Removed Laravel dependency in favor of Illuminate packages (#21)
-
-### Since 1.1.2
-* Added support for  Auto-Discovery (thanks to @laravelish - [#20](https://github.com/pionl/laravel-chunk-upload/pull/20))
-
-### Since 1.1.1
-* Added support for Laravel 5.5 (thanks to @Colbydude - [#18](https://github.com/pionl/laravel-chunk-upload/pull/18))
-
-### Since 1.1.0
-* If there is an error while upload, exception will be thrown on init.
-
-### Since 1.0.3
-* Enabled to construct the `FileReceiver` with dependency injection - the fasted way.
-* Removed the `getChunkFile` and added `getUploadedFile` for all Save classes. Returns always the uploaded file (the uploaded chunk). 
-
-### Since 1.0.2
-* Added resumable.js
-* Added `getChunkFile` method in `ChunkSave` for returning only the chunk file 
-
-### Since 1.0.1
-* Added support for passing file object instead of fileIndex (example: multiple files in a request). Change discussion in #7 (@RAZORzdenko), merged in #8
-
-### Since 1.0.0
-
-* Updated composer to support Laravel 5.4
-
-### Since v0.3
-
-* Support for cross domain requests (only chunk naming)
-* Added support for [plupload package](https://github.com/moxiecode/plupload)
-* Added automatic handler selection based on the request
-
-### Since v0.2.0
-
-The package supports the Laravel Filesystem. Because of this, the storage must be withing the app folder `storage/app/` or custom drive (only local) - can be set in the config `storage.disk`.
-
-The cloud drive is not supported because of the chunked write (probably could be changed to use a stream) and the resulting object - `UploadedFile` that supports only full path.
 
 ## Todo
 

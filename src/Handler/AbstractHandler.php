@@ -56,6 +56,24 @@ abstract class AbstractHandler
     }
 
     /**
+     * Checks the current setup if session driver was booted - if not, it will generate random hash
+     * @return bool
+     */
+    static public function canUseSession()
+    {
+        // Get the session driver and check if it was started - fully inited by laravel
+        $session = session();
+        $driver = $session->getDefaultDriver();
+        $drivers = $session->getDrivers();
+
+        // Check if the driver is valid and started - allow using session
+        if (isset($drivers[$driver]) && $drivers[$driver]->isStarted() === true) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Builds the chunk file name per session and the original name. You can
      * provide custom additional name at the end of the generated file name. All chunk
      * files has .part extension
@@ -75,14 +93,20 @@ abstract class AbstractHandler
         ];
 
         // ensure that the chunk name is for unique for the client session
+        $useSession = $this->config->chunkUseSessionForName();
+        $useBrowser = $this->config->chunkUseBrowserInfoForName();
+        if ($useSession && $this->canUseSession() === false) {
+            $useBrowser = true;
+            $useSession = false;
+        }
 
         // the session needs more config on the provider
-        if ($this->config->chunkUseSessionForName()) {
+        if ($useSession) {
             $array[] = Session::getId();
         }
 
         // can work without any additional setup
-        if ($this->config->chunkUseBrowserInfoForName()) {
+        if ($useBrowser) {
             $array[] = md5($this->request->ip().$this->request->header("User-Agent", "no-browser"));
         }
 
