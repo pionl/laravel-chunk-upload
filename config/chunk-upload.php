@@ -18,7 +18,7 @@ return [
         "timestamp" => "-3 HOURS",
         "schedule" => [
             "enabled" => true,
-            "cron" => "0 */1 * * * *" // run every hour
+            "cron" => "25 * * * *" // run every hour on the 25th minute
         ]
     ],
     "chunk" => [
