@@ -4,6 +4,9 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
+use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
+use Pion\Laravel\ChunkUpload\Save\ParallelSave;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 class DropZoneUploadHandler extends ChunksInRequestUploadHandler
 {
@@ -34,9 +37,33 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
         $this->fileUuid = $request->get(self::CHUNK_UUID_INDEX);
     }
 
+    /**
+     * Returns the chunk save instance for saving
+     *
+     * @param ChunkStorage $chunkStorage the chunk storage
+     *
+     * @return ParallelSave
+     * @throws ChunkSaveException
+     * @throws ChunkSaveException
+     */
+    public function startSaving($chunkStorage)
+    {
+        return new ParallelSave(
+            $this->getTotalChunksFromRequest($this->request),
+            $this->file,
+            $this,
+            $chunkStorage,
+            $this->config
+        );
+    }
+
+    /**
+     * Builds the chunk file name from file uuid and current chunk
+     * @return string
+     */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->fileUuid);
+        return $this->createChunkFileName($this->fileUuid, $this->getCurrentChunk());
     }
 
     /**

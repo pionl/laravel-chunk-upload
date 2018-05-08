@@ -80,8 +80,8 @@ abstract class AbstractHandler
      * provide custom additional name at the end of the generated file name. All chunk
      * files has .part extension
      *
-     * @param string|null $additionalName
-     * @param string|null $currentChunkIndex
+     * @param string|null $additionalName Make the name more unique (example: use id from request)
+     * @param string|null $currentChunkIndex Add the chunk index for parallel upload
      *
      * @return string
      *
