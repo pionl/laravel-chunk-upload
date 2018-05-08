@@ -49,6 +49,11 @@ class ChunkFile
         return $this->path;
     }
 
+    public function getAbsolutePath()
+    {
+        return $this->storage->disk()->path($this->path);
+    }
+
     /**
      * @return int
      */
@@ -70,7 +75,7 @@ class ChunkFile
     }
 
     /**
-     * Delets the chunk file
+     * Deletes the chunk file
      * @return bool
      */
     public function delete()
@@ -84,10 +89,8 @@ class ChunkFile
      * @return string
      * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
      */
-    function __toString()
+    public function __toString()
     {
         return sprintf("ChunkFile %s uploaded at %s", $this->getPath(), date("Y-m-d H:i:s", $this->getModifiedTime()));
     }
-
-
 }

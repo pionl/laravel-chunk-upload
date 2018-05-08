@@ -3,8 +3,11 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
+use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ContentRangeValueToLargeException;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
  * Class ContentRangeUploadHandler
@@ -55,6 +58,8 @@ class ContentRangeUploadHandler extends AbstractHandler
      * @param Request        $request
      * @param UploadedFile   $file
      * @param AbstractConfig $config
+     *
+     * @throws ContentRangeValueToLargeException
      */
     public function __construct(Request $request, $file, $config)
     {
@@ -71,23 +76,37 @@ class ContentRangeUploadHandler extends AbstractHandler
      * @param Request $request
      *
      * @return bool
+     * @throws ContentRangeValueToLargeException
      */
     public static function canBeUsedForRequest(Request $request)
     {
         return (new static($request, null, null))->isChunkedUpload();
     }
 
+    /**
+     * Returns the chunk save instance for saving
+     *
+     * @param ChunkStorage    $chunkStorage the chunk storage
+     *
+     * @return ChunkSave
+     * @throws ChunkSaveException
+     */
+    public function startSaving($chunkStorage)
+    {
+        return new ChunkSave($this->file, $this, $chunkStorage, $this->config);
+    }
 
     /**
      * Tries to parse the content range from the string
      *
      * @param string $contentRange
+     *
+     * @throws ContentRangeValueToLargeException
      */
     protected function tryToParseContentRange($contentRange)
     {
         // try to get the content range
         if (preg_match("/bytes ([\d]+)-([\d]+)\/([\d]+)/", $contentRange, $matches)) {
-
             $this->chunkedUpload = true;
 
             // write the bytes values

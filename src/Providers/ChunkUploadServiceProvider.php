@@ -27,7 +27,6 @@ class ChunkUploadServiceProvider extends ServiceProvider
 
         // Run only if schedule is enabled
         if (Arr::get($scheduleConfig, "enabled", false) === true) {
-
             // Wait until the app is fully booted
             $this->app->booted(function () use ($scheduleConfig) {
 
@@ -108,8 +107,8 @@ class ChunkUploadServiceProvider extends ServiceProvider
 
         // Merge the default config to prevent any crash or unfilled configs
         $this->mergeConfigFrom(
-            $configPath, $configIndex
+            $configPath,
+            $configIndex
         );
     }
-
 }

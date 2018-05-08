@@ -8,6 +8,10 @@
       "email": "martin@kluska.cz"
     }
   ],
+  "scripts": {
+    "analyze": "./vendor/bin/phpcs",
+    "analyze-fix": "./vendor/bin/phpcbf"
+  },
   "require": {
     "illuminate/http": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
     "illuminate/console": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
@@ -17,7 +21,8 @@
   "require-dev": {
     "laravel/laravel": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
     "phpunit/phpunit": "5.7 || 6.0 || 7.0",
-    "mockery/mockery": "^0.9.9"
+    "mockery/mockery": "^0.9.9",
+    "squizlabs/php_codesniffer": "^3.2"
   },
   "autoload": {
     "psr-4": {

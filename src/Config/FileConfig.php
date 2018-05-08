@@ -54,9 +54,10 @@ class FileConfig extends AbstractConfig
      * Returns the shedule config array
      * @return array<enable,cron>
      */
-     public function scheduleConfig() {
-         return $this->get("clear.schedule");
-     }
+    public function scheduleConfig()
+    {
+        return $this->get("clear.schedule");
+    }
 
     /**
      * Should the chunk name add a session?

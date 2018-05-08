@@ -95,10 +95,6 @@ class FileReceiver
             return false;
         }
 
-        if ($this->handler->isChunkedUpload()) {
-            return new ChunkSave($this->file, $this->handler, $this->chunkStorage, $this->config);
-        } else {
-            return new SingleSave($this->file, $this->handler, $this->config);
-        }
+        return $this->handler->startSaving($this->chunkStorage, $this->config);
     }
 }

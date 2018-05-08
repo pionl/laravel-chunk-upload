@@ -9,7 +9,8 @@ use Illuminate\Http\UploadedFile;
 /**
  * Class AbstractSave
  *
- * Handles the save handling of the file. You can call all function you know from the UploadedFile
+ * Handles the save handling of the file.
+ * You can call all function you know from the UploadedFile
  *
  * @method string|null getClientOriginalName()
  * @method string getClientOriginalExtension()
@@ -108,7 +109,7 @@ abstract class AbstractSave
      * @return mixed
      * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.methods
      */
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         return call_user_func_array([$this->getFile(), $name], $arguments);
     }
@@ -129,5 +130,4 @@ abstract class AbstractSave
     {
         return $this->config;
     }
-
 }

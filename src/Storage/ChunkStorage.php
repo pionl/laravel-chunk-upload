@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Storage;
 
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -103,14 +104,27 @@ class ChunkStorage
     /**
      * Returns an array of files in the chunks directory
      *
-     * @return array
+     * @return Collection
      *
      * @see FilesystemAdapter::files()
      * @see AbstractConfig::chunksStorageDirectory()
      */
-    public function files()
+    public function files($rejectClosure = null)
     {
-        return $this->disk->files($this->directory(), false);
+        // we need to filter files we don't support, lets use the collection
+        $filesCollection = new Collection($this->disk->files($this->directory(), false));
+
+        return $filesCollection->reject(function ($file) use ($rejectClosure) {
+            // ensure the file ends with allowed extension
+            $shouldReject = !preg_match("/.".self::CHUNK_EXTENSION."$/", $file);
+            if ($shouldReject) {
+                return true;
+            }
+            if (is_callable($rejectClosure)) {
+                return $rejectClosure($file);
+            }
+            return false;
+        });
     }
 
     /**
@@ -120,28 +134,19 @@ class ChunkStorage
      */
     public function oldChunkFiles()
     {
-        $collection = new Collection();
         $files = $this->files();
-
         // if there are no files, lets return the empty collection
-        if (empty($files)) {
-            return $collection;
+        if ($files->isEmpty()) {
+            return $files;
         }
 
         // build the timestamp
         $timeToCheck = strtotime($this->config->clearTimestampString());
-
-        // we need to filter files we don't support, lets use the collection
-        $filesCollection = new Collection($files);
+        $collection = new Collection();
 
         // filter the collection with files that are not correct chunk file
-        $filesCollection->reject(function ($file) {
-            // ensure the file ends with allowed extension
-            return !preg_match("/.".self::CHUNK_EXTENSION."$/", $file);
-
-        })// loop all current files and filter them by the time
-        ->each(function ($file) use ($timeToCheck, $collection) {
-
+        // loop all current files and filter them by the time
+        $files->each(function ($file) use ($timeToCheck, $collection) {
             // get the last modified time to check if the chunk is not new
             $modified = $this->disk()->lastModified($file);
 
@@ -150,7 +155,6 @@ class ChunkStorage
                 $collection->push(new ChunkFile($file, $modified, $this));
             }
         });
-
         return $collection;
     }
 

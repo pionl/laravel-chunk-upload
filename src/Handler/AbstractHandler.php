@@ -1,9 +1,11 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
+use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Session;
 
@@ -59,7 +61,7 @@ abstract class AbstractHandler
      * Checks the current setup if session driver was booted - if not, it will generate random hash
      * @return bool
      */
-    static public function canUseSession()
+    public static function canUseSession()
     {
         // Get the session driver and check if it was started - fully inited by laravel
         $session = session();
@@ -79,13 +81,14 @@ abstract class AbstractHandler
      * files has .part extension
      *
      * @param string|null $additionalName
+     * @param string|null $currentChunkIndex
      *
      * @return string
      *
      * @see UploadedFile::getClientOriginalName()
      * @see Session::getId()
      */
-    protected function createChunkFileName($additionalName = null)
+    public function createChunkFileName($additionalName = null, $currentChunkIndex = null)
     {
         // prepare basic name structure
         $array = [
@@ -110,15 +113,36 @@ abstract class AbstractHandler
             $array[] = md5($this->request->ip().$this->request->header("User-Agent", "no-browser"));
         }
 
-        // add
+        // Add additional name for more unique chunk name
         if (!is_null($additionalName)) {
             $array[] = $additionalName;
         }
 
+        // Build the final name - parts separated by dot
+        $namesSeparatedByDot = [
+            implode('-', $array)
+        ];
+
+        // Add the chunk index for parallel upload
+        if ($currentChunkIndex !== null) {
+            $namesSeparatedByDot[] = $currentChunkIndex;
+        }
+
+        // Add extension
+        $namesSeparatedByDot[] = ChunkStorage::CHUNK_EXTENSION;
 
         // build name
-        return implode("-", $array).".".ChunkStorage::CHUNK_EXTENSION;
+        return implode('.', $namesSeparatedByDot);
     }
+
+    /**
+     * Creates save instance and starts saving the uploaded file
+     *
+     * @param ChunkStorage    $chunkStorage the chunk storage
+     *
+     * @return AbstractSave
+     */
+    abstract public function startSaving($chunkStorage);
 
     /**
      * Returns the chunk file name for a storing the tmp file

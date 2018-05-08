@@ -46,7 +46,6 @@ class ClearChunksCommand extends Command
 
         /** @var ChunkFile $file */
         foreach ($oldFiles as $file) {
-
             // debug the file info
             $this->comment("> ".$file, $verbouse);
 
@@ -56,7 +55,6 @@ class ClearChunksCommand extends Command
             } else {
                 $this->error("> chunk not deleted: ".$file);
             }
-
         }
 
         $this->info("Chunks: cleared ".$deleted." ".Str::plural("file", $deleted));

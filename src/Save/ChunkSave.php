@@ -1,8 +1,10 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Save;
 
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
+use Pion\Laravel\ChunkUpload\FileMerger;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
@@ -36,7 +38,7 @@ class ChunkSave extends AbstractSave
     /**
      * @var ChunkStorage
      */
-    private $chunkStorage;
+    protected $chunkStorage;
 
     /**
      * AbstractUpload constructor.
@@ -45,6 +47,8 @@ class ChunkSave extends AbstractSave
      * @param AbstractHandler $handler      the handler that detected the correct save method
      * @param ChunkStorage    $chunkStorage the chunk storage
      * @param AbstractConfig  $config       the config manager
+     *
+     * @throws ChunkSaveException
      */
     public function __construct(UploadedFile $file, AbstractHandler $handler, $chunkStorage, $config)
     {
@@ -57,7 +61,7 @@ class ChunkSave extends AbstractSave
         // build the full disk path
         $this->chunkFullFilePath = $this->getChunkFilePath(true);
 
-        $this->handleChunkMerge();
+        $this->handleChunk();
     }
 
 
@@ -127,24 +131,28 @@ class ChunkSave extends AbstractSave
         return parent::getFile();
     }
 
+
+    /**
+     * @deprecated
+     * @since v1.1.8
+     */
+    protected function handleChunkMerge()
+    {
+        $this->handleChunk();
+    }
+
     /**
      * Appends the new uploaded data to the final file
      *
      * @throws ChunkSaveException
      */
-    protected function handleChunkMerge()
+    protected function handleChunk()
     {
         // prepare the folder and file path
         $this->createChunksFolderIfNeeded();
         $file = $this->getChunkFilePath();
 
-        // delete the old chunk
-        if ($this->handler()->isFirstChunk() && $this->chunkDisk()->exists($file)) {
-            $this->chunkDisk()->delete($file);
-        }
-
-        // passes the uploaded data
-        $this->appendDataToChunkFile();
+        $this->handleChunkFile($file);
 
         // build the last file because of the last chunk
         if ($this->isLastChunk) {
@@ -152,6 +160,28 @@ class ChunkSave extends AbstractSave
         }
     }
 
+    /**
+     * Appends the current uploaded file to chunk file
+     *
+     * @param string $file Relative path to chunk
+     *
+     * @return $this
+     * @throws ChunkSaveException
+     */
+    protected function handleChunkFile($file)
+    {
+        // delete the old chunk
+        if ($this->handler()->isFirstChunk() && $this->chunkDisk()->exists($file)) {
+            $this->chunkDisk()->delete($file);
+        }
+
+        // Append the data to the file
+        (new FileMerger($this->getChunkFullFilePath()))
+            ->appendFile($this->file->getPathname())
+            ->close();
+
+        return $this;
+    }
 
     /**
      * Builds the final file
@@ -162,45 +192,28 @@ class ChunkSave extends AbstractSave
         $finalPath = $this->getChunkFullFilePath();
 
         // build the new UploadedFile
-        $this->fullChunkFile = new UploadedFile(
-            $finalPath,
-            $this->file->getClientOriginalName(),
-            $this->file->getClientMimeType(),
-            filesize($finalPath), $this->file->getError(),
-            true // we must pass the true as test to force the upload file
-            // to use a standard copy method, not move uploaded file
-        );
+        $this->fullChunkFile = $this->createFullChunkFile($finalPath);
     }
 
     /**
-     * Appends the current uploaded file data to a chunk file
+     * Creates the UploadedFile object for given chunk file
      *
-     * @throws ChunkSaveException
+     * @param string $finalPath
+     *
+     * @return UploadedFile
      */
-    protected function appendDataToChunkFile()
+    protected function createFullChunkFile($finalPath)
     {
-        // @todo: rebuild to use updateStream and etc to try to enable cloud
-        // $driver = $this->chunkStorage()->driver();
-
-        // open the target file
-        if (!$out = @fopen($this->getChunkFullFilePath(), 'ab')) {
-            throw new ChunkSaveException('Failed to open output stream.', 102);
-        }
-
-        // open the new uploaded chunk
-        if (!$in = @fopen($this->file->getPathname(), 'rb')) {
-            @fclose($out);
-            throw new ChunkSaveException('Failed to open input stream', 101);
-        }
-
-        // read and write in buffs
-        while ($buff = fread($in, 4096)) {
-            fwrite($out, $buff);
-        }
-
-        // close the readers
-        @fclose($out);
-        @fclose($in);
+        return new UploadedFile(
+            $finalPath,
+            $this->file->getClientOriginalName(),
+            $this->file->getClientMimeType(),
+            filesize($finalPath),
+            $this->file->getError(),
+            // we must pass the true as test to force the upload file
+            // to use a standard copy method, not move uploaded file
+            true
+        );
     }
 
     /**

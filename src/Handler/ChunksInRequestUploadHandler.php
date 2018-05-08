@@ -4,6 +4,9 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
+use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
+use Pion\Laravel\ChunkUpload\Save\ChunkSave;
+use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
  * Class ChunksInRequestUploadHandler
@@ -54,6 +57,19 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     public static function canBeUsedForRequest(Request $request)
     {
         return $request->has('chunk') && $request->has('chunks');
+    }
+
+    /**
+     * Returns the chunk save instance for saving
+     *
+     * @param ChunkStorage   $chunkStorage the chunk storage
+     *
+     * @return ChunkSave
+     * @throws ChunkSaveException
+     */
+    public function startSaving($chunkStorage)
+    {
+        return new ChunkSave($this->file, $this, $chunkStorage, $this->config);
     }
 
     /**
