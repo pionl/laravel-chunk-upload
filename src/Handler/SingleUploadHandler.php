@@ -25,7 +25,7 @@ class SingleUploadHandler extends AbstractHandler
      */
     public function startSaving($chunkStorage)
     {
-        return new SingleSave($this->file, $this,  $this->config));
+        return new SingleSave($this->file, $this,  $this->config);
     }
 
     /**
