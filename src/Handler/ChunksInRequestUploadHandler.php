@@ -23,13 +23,13 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      * Key for number of sending chunk
      * @static string
      */
-    protected const KEY_CHUNK_NUMBER = 'chunk';
+    const KEY_CHUNK_NUMBER = 'chunk';
 
     /**
      * Key for number of all chunks
      * @static string
      */
-    protected const KEY_ALL_CHUNKS = 'chunks';
+    const KEY_ALL_CHUNKS = 'chunks';
 
     /**
      * The current chunk progress
