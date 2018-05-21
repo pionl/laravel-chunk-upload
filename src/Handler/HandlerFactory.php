@@ -13,7 +13,8 @@ class HandlerFactory
         ContentRangeUploadHandler::class,
         ChunksInRequestUploadHandler::class,
         ResumableJSUploadHandler::class,
-        DropZoneUploadHandler::class
+        DropZoneUploadHandler::class,
+        ChunksInRequestSimpleUploadHandler::class
     );
 
     /**
