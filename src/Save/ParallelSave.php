@@ -94,11 +94,14 @@ class ParallelSave extends ChunkSave
      */
     protected function buildFullFileFromChunks()
     {
-        $chunkFiles = $this->savedChunksFiles()->sort();
+        $chunkFiles = $this->savedChunksFiles()->all();
 
-        if ($chunkFiles->isEmpty()) {
+        if (count($chunkFiles) === 0) {
             throw new MissingChunkFilesException();
         }
+
+        // Sort the chunk order
+        natcasesort($chunkFiles);
 
         // Get chunk files that matches the current chunk file name, also sort the chunk
         // files.
