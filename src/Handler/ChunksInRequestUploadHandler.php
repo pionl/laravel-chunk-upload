@@ -20,6 +20,18 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 class ChunksInRequestUploadHandler extends AbstractHandler
 {
     /**
+     * Key for number of sending chunk
+     * @static string
+     */
+    const KEY_CHUNK_NUMBER = 'chunk';
+
+    /**
+     * Key for number of all chunks
+     * @static string
+     */
+    const KEY_ALL_CHUNKS = 'chunks';
+
+    /**
      * The current chunk progress
      * @var int
      */
@@ -56,7 +68,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has('chunk') && $request->has('chunks');
+        return $request->has(static::KEY_CHUNK_NUMBER) && $request->has(static::KEY_ALL_CHUNKS);
     }
 
     /**
@@ -82,7 +94,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     protected function getCurrentChunkFromRequest(Request $request)
     {
         // the chunk is indexed from zero (for 5 chunks: 0,1,2,3,4)
-        return intval($request->get('chunk')) + 1;
+        return intval($request->get(static::KEY_CHUNK_NUMBER)) + 1;
     }
 
     /**
@@ -94,7 +106,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return intval($request->get("chunks"));
+        return intval($request->get(static::KEY_ALL_CHUNKS));
     }
 
     /**
