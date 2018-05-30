@@ -2,6 +2,7 @@
 
 namespace Pion\Laravel\ChunkUpload\Handler;
 
+use Pion\Laravel\ChunkUpload\Exceptions\ChunkInvalidValueException;
 use Illuminate\Http\Request;
 
 /**
@@ -45,18 +46,69 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
     const KEY_CHUNK_CURRENT_SIZE = '_currentChunkSize';
 
     /**
-     * Checks if the current abstract handler can be used via HandlerFactory
+     * Determines if the upload is via chunked upload
+     *
+     * @var bool
+     */
+    protected $chunkedUpload = false;
+
+    /**
+     * Checks if the current handler can be used via HandlerFactory
      *
      * @param Request $request
      *
      * @return bool
+     * @throws ChunkInvalidValueException
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has(static::KEY_CHUNK_NUMBER)
-               && $request->has(static::KEY_TOTAL_SIZE)
-               && $request->has(static::KEY_CHUNK_SIZE)
-               && $request->has(static::KEY_CHUNK_CURRENT_SIZE);
+        $hasChunkParams = $request->has(static::KEY_CHUNK_NUMBER)
+                          && $request->has(static::KEY_TOTAL_SIZE)
+                          && $request->has(static::KEY_CHUNK_SIZE)
+                          && $request->has(static::KEY_CHUNK_CURRENT_SIZE);
+
+        return $hasChunkParams && self::checkChunkParams($request);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPercentageDone()
+    {
+        // Check that we have received total chunks
+        if (!$this->chunksTotal) {
+            return 0;
+        }
+
+        return intval(parent::getPercentageDone());
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     * @throws ChunkInvalidValueException
+     */
+    protected static function checkChunkParams($request)
+    {
+        $isInteger = is_int($request->get(static::KEY_CHUNK_NUMBER))
+                     && is_int($request->get(static::KEY_TOTAL_SIZE))
+                     && is_int($request->get(static::KEY_CHUNK_SIZE))
+                     && is_int($request->get(static::KEY_CHUNK_CURRENT_SIZE));
+
+        if ($request->get(static::KEY_CHUNK_SIZE) < $request->get(static::KEY_CHUNK_CURRENT_SIZE)) {
+            throw new ChunkInvalidValueException();
+        }
+
+        if ($request->get(static::KEY_CHUNK_NUMBER) < 0) {
+            throw new ChunkInvalidValueException();
+        }
+
+        if ($request->get(static::KEY_TOTAL_SIZE) < 0) {
+            throw new ChunkInvalidValueException();
+        }
+
+        return $isInteger;
     }
 
     /**
@@ -68,6 +120,10 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
+        if (!$request->get(static::KEY_CHUNK_SIZE)) {
+            return 0;
+        }
+
         return intval(
             ceil($request->get(static::KEY_TOTAL_SIZE) / $request->get(static::KEY_CHUNK_SIZE))
         );
