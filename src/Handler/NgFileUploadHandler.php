@@ -51,7 +51,8 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      *
      * @return bool
      */
-    public static function canBeUsedForRequest(Request $request) {
+    public static function canBeUsedForRequest(Request $request)
+    {
         return $request->has(static::KEY_CHUNK_NUMBER)
                && $request->has(static::KEY_TOTAL_SIZE)
                && $request->has(static::KEY_CHUNK_SIZE)
@@ -65,7 +66,8 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      *
      * @return int
      */
-    protected function getTotalChunksFromRequest(Request $request) {
+    protected function getTotalChunksFromRequest(Request $request)
+    {
         return intval(
             ceil($request->get(static::KEY_TOTAL_SIZE) / $request->get(static::KEY_CHUNK_SIZE))
         );
