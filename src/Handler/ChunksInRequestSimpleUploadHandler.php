@@ -1,7 +1,6 @@
 <?php
 namespace Pion\Laravel\ChunkUpload\Handler;
 
-
 /**
  * Class ChunksInRequestSimpleUploadHandler
  *

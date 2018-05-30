@@ -14,7 +14,8 @@ class HandlerFactory
         ChunksInRequestUploadHandler::class,
         ResumableJSUploadHandler::class,
         DropZoneUploadHandler::class,
-        ChunksInRequestSimpleUploadHandler::class
+        ChunksInRequestSimpleUploadHandler::class,
+        NgFileUploadHandler::class,
     );
 
     /**
