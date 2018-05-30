@@ -47,6 +47,7 @@ Setup is composed in 3 steps:
 | [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload) | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/blueimp-file-upload)  | :heavy_check_mark: | :heavy_multiplication_x: |
 | [Plupload](https://github.com/moxiecode/plupload) | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/plupload) | :heavy_check_mark: | :heavy_multiplication_x: |
 | [simple uploader](https://github.com/simple-uploader) | :heavy_multiplication_x: | :heavy_check_mark: | :heavy_multiplication_x: |
+| [ng-file-upload](https://github.com/danialfarid/ng-file-upload) | :heavy_multiplication_x: | :heavy_check_mark: | :heavy_multiplication_x: |
 
 For more detailed information (tips) use the [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki) or for working example continue to separate repository with [example](https://github.com/pionl/laravel-chunk-upload-example).
 
