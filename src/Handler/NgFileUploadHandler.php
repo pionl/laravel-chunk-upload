@@ -91,10 +91,10 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      */
     protected static function checkChunkParams($request)
     {
-        $isInteger = is_int($request->get(static::KEY_CHUNK_NUMBER))
-                     && is_int($request->get(static::KEY_TOTAL_SIZE))
-                     && is_int($request->get(static::KEY_CHUNK_SIZE))
-                     && is_int($request->get(static::KEY_CHUNK_CURRENT_SIZE));
+        $isInteger = ctype_digit($request->input(static::KEY_CHUNK_NUMBER))
+                     && ctype_digit($request->input(static::KEY_TOTAL_SIZE))
+                     && ctype_digit($request->input(static::KEY_CHUNK_SIZE))
+                     && ctype_digit($request->input(static::KEY_CHUNK_CURRENT_SIZE));
 
         if ($request->get(static::KEY_CHUNK_SIZE) < $request->get(static::KEY_CHUNK_CURRENT_SIZE)) {
             throw new ChunkInvalidValueException();

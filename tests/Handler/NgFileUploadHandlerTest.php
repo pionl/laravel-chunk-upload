@@ -186,10 +186,10 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => 0,
-                '_totalSize'        => 10,
-                '_chunkSize'        => 10,
-                '_currentChunkSize' => 10,
+                '_chunkNumber'      => '0',
+                '_totalSize'        => '10',
+                '_chunkSize'        => '10',
+                '_currentChunkSize' => '10',
             ]
         );
         $this->assertTrue(NgFileUploadHandler::canBeUsedForRequest($request));
