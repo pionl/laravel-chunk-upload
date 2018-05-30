@@ -5,7 +5,7 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 
 /**
- * Class ChunksInRequestNgFileUploadHandler
+ * Class NgFileUploadHandler
  *
  * Upload receiver that detects the content range from he request value - chunks
  * Works with:
@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
  *
  * @package Pion\Laravel\ChunkUpload\Handler
  */
-class ChunksInRequestNgFileUploadHandler extends ChunksInRequestUploadHandler {
+class NgFileUploadHandler extends ChunksInRequestUploadHandler
+{
 
     /**
      * Key for number of sending chunk
@@ -51,7 +52,8 @@ class ChunksInRequestNgFileUploadHandler extends ChunksInRequestUploadHandler {
      * @return bool
      */
     public static function canBeUsedForRequest(Request $request) {
-        return $request->has(static::KEY_CHUNK_NUMBER) && $request->has(static::KEY_TOTAL_SIZE)
+        return $request->has(static::KEY_CHUNK_NUMBER)
+               && $request->has(static::KEY_TOTAL_SIZE)
                && $request->has(static::KEY_CHUNK_SIZE)
                && $request->has(static::KEY_CHUNK_CURRENT_SIZE);
     }
