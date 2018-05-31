@@ -46,13 +46,6 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
     const KEY_CHUNK_CURRENT_SIZE = '_currentChunkSize';
 
     /**
-     * Determines if the upload is via chunked upload
-     *
-     * @var bool
-     */
-    protected $chunkedUpload = false;
-
-    /**
      * Checks if the current handler can be used via HandlerFactory
      *
      * @param Request $request
