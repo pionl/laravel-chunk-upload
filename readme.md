@@ -34,6 +34,8 @@ php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkU
 
 ## Usage
 
+** simultaneous uploads** are not working correctly - at this moment in experimental state.
+
 Setup is composed in 3 steps:
 
 1. Integrate your controller that will handle the file upload. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/controller)
