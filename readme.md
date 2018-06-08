@@ -34,7 +34,7 @@ php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkU
 
 ## Usage
 
-** simultaneous uploads** are not working correctly - at this moment in experimental state.
+**simultaneous uploads are not working correctly - at this moment in experimental state.**
 
 Setup is composed in 3 steps:
 
