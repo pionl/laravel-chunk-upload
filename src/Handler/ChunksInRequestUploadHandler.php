@@ -119,7 +119,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     }
 
     /**
-     * Returns the chunks count
+     * Checks if the chunk is last
      *
      * @return int
      */

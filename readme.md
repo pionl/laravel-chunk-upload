@@ -34,8 +34,6 @@ php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkU
 
 ## Usage
 
-**simultaneous uploads are not working correctly - at this moment in experimental state.**
-
 Setup is composed in 3 steps:
 
 1. Integrate your controller that will handle the file upload. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/controller)
@@ -50,6 +48,10 @@ Setup is composed in 3 steps:
 | [Plupload](https://github.com/moxiecode/plupload) | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/plupload) | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | [@pionl](https://github.com/pionl) |
 | [simple uploader](https://github.com/simple-uploader) | :heavy_multiplication_x: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | [@dyktek](https://github.com/dyktek) |
 | [ng-file-upload](https://github.com/danialfarid/ng-file-upload) | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/ng-file-upload) | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | [@L3o-pold](https://github.com/L3o-pold) |
+
+**Simultaneous uploads:** The library must send last chunk as last, otherwise the merging will not work correctly.
+
+**Custom disk:** At this moment I recommend to use the basic storage setup (not linking public folder). It is not tested (Have free time to ensure it is working? PR the changes!).
 
 For more detailed information (tips) use the [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki) or for working example continue to separate repository with [example](https://github.com/pionl/laravel-chunk-upload-example).
 

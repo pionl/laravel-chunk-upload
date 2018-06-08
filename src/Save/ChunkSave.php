@@ -152,12 +152,21 @@ class ChunkSave extends AbstractSave
         $this->createChunksFolderIfNeeded();
         $file = $this->getChunkFilePath();
 
-        $this->handleChunkFile($file);
+        $this->handleChunkFile($file)
+            ->tryToBuildFullFileFromChunks();
+    }
 
+    /**
+     * Checks if the current chunk is last
+     * @return $this
+     */
+    protected function tryToBuildFullFileFromChunks()
+    {
         // build the last file because of the last chunk
         if ($this->isLastChunk) {
             $this->buildFullFileFromChunks();
         }
+        return $this;
     }
 
     /**

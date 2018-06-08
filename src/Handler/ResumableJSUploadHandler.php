@@ -4,12 +4,12 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
-use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
-use Pion\Laravel\ChunkUpload\Save\ParallelSave;
-use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
+use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 
 class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
 {
+    use HandleParallelUploadTrait;
+
     const CHUNK_UUID_INDEX = 'resumableIdentifier';
     const CHUNK_NUMBER_INDEX = 'resumableChunkNumber';
     const TOTAL_CHUNKS_INDEX = 'resumableTotalChunks';
@@ -32,25 +32,6 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
         parent::__construct($request, $file, $config);
 
         $this->fileUuid = $request->get(self::CHUNK_UUID_INDEX);
-    }
-
-    /**
-     * Returns the chunk save instance for saving
-     *
-     * @param ChunkStorage    $chunkStorage the chunk storage
-     *
-     * @return ParallelSave
-     * @throws ChunkSaveException
-     */
-    public function startSaving($chunkStorage)
-    {
-        return new ParallelSave(
-            $this->getTotalChunksFromRequest($this->request),
-            $this->file,
-            $this,
-            $chunkStorage,
-            $this->config
-        );
     }
 
     /**

@@ -9,8 +9,16 @@ use Pion\Laravel\ChunkUpload\Exceptions\MissingChunkFilesException;
 use Pion\Laravel\ChunkUpload\FileMerger;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\ChunkFile;
+use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
+/**
+ * Class ParallelSave
+ *
+ * @method HandleParallelUploadTrait|AbstractHandler handler()
+ *
+ * @package Pion\Laravel\ChunkUpload\Save
+ */
 class ParallelSave extends ChunkSave
 {
     protected $totalChunks;
@@ -23,23 +31,24 @@ class ParallelSave extends ChunkSave
     /**
      * ParallelSave constructor.
      *
-     * @param int|string      $totalChunks
-     * @param UploadedFile    $file         the uploaded file (chunk file)
-     * @param AbstractHandler $handler      the handler that detected the correct save method
-     * @param ChunkStorage    $chunkStorage the chunk storage
-     * @param AbstractConfig  $config       the config manager
+     * @param UploadedFile                              $file         the uploaded file (chunk file)
+     * @param AbstractHandler|HandleParallelUploadTrait $handler      the handler that detected the correct save method
+     * @param ChunkStorage                              $chunkStorage the chunk storage
+     * @param AbstractConfig                            $config       the config manager
      *
      * @throws ChunkSaveException
      */
     public function __construct(
-        $totalChunks,
         UploadedFile $file,
         AbstractHandler $handler,
         ChunkStorage $chunkStorage,
         AbstractConfig $config
-    ) {
-        $this->totalChunks = intval($totalChunks);
+    )
+    {
+        // Get current file validation - the file instance is changed
         $this->isFileValid = $file->isValid();
+
+        // Handle the file upload
         parent::__construct($file, $handler, $chunkStorage, $config);
     }
 
@@ -48,31 +57,6 @@ class ParallelSave extends ChunkSave
         return $this->isFileValid;
     }
 
-
-    /**
-     * Searches for all chunk files
-     * @return \Illuminate\Support\Collection
-     */
-    protected function savedChunksFiles()
-    {
-        return $this->chunkStorage()->files(function ($file) {
-            return !preg_match("/\.[\d]+\.".ChunkStorage::CHUNK_EXTENSION."$/", $file);
-        });
-    }
-
-    /**
-     * Handles the chunk merging
-     * @throws ChunkSaveException
-     */
-    protected function handleChunk()
-    {
-        $files = $this->savedChunksFiles();
-        // We need to detect if this is last chunk - get all uploaded chunks (and increase the count by 1 for this
-        // un-moved chunk) - it's safer due possibility of un-ordered chunks
-        $this->isLastChunk = ($files->count() + 1) === $this->totalChunks;
-
-        parent::handleChunk();
-    }
 
     /**
      * Moves the uploaded chunk file to separate chunk file for merging
@@ -88,13 +72,33 @@ class ParallelSave extends ChunkSave
         return $this;
     }
 
+    protected function tryToBuildFullFileFromChunks()
+    {
+        return parent::tryToBuildFullFileFromChunks();
+    }
+
+    /**
+     * Searches for all chunk files
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getSavedChunksFiles()
+    {
+        $chunkFileName = preg_replace(
+            "/\.[\d]+\.".ChunkStorage::CHUNK_EXTENSION."$/", '', $this->handler()->getChunkFileName()
+        );
+        return $this->chunkStorage->files(function ($file) use ($chunkFileName) {
+            return str_contains($file, $chunkFileName) === false;
+        });
+    }
+
     /**
      * @throws MissingChunkFilesException
      * @throws ChunkSaveException
      */
     protected function buildFullFileFromChunks()
     {
-        $chunkFiles = $this->savedChunksFiles()->all();
+        $chunkFiles = $this->getSavedChunksFiles()->all();
 
         if (count($chunkFiles) === 0) {
             throw new MissingChunkFilesException();

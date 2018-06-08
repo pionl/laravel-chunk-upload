@@ -104,6 +104,8 @@ class ChunkStorage
     /**
      * Returns an array of files in the chunks directory
      *
+     * @param \Closure|null $rejectClosure
+     *
      * @return Collection
      *
      * @see FilesystemAdapter::files()
