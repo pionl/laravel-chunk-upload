@@ -11,6 +11,7 @@ class CheckHandlerFactory
      * @var array
      */
     static protected $handlers = array(
+        ResumableJSCheckHandler::class,
     );
 
     /**
