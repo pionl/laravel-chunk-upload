@@ -5,7 +5,6 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
-use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Session;
 
@@ -22,9 +21,9 @@ abstract class AbstractHandler
     protected $request;
 
     /**
-     * @var UploadedFile
+     * @var string
      */
-    protected $file;
+    protected $filename;
 
     /**
      * @var AbstractConfig
@@ -35,13 +34,13 @@ abstract class AbstractHandler
      * AbstractReceiver constructor.
      *
      * @param Request        $request
-     * @param UploadedFile   $file
+     * @param string         $filename
      * @param AbstractConfig $config
      */
-    public function __construct(Request $request, $file, $config)
+    public function __construct(Request $request, $filename, $config)
     {
         $this->request = $request;
-        $this->file = $file;
+        $this->filename = $filename;
         $this->config = $config;
     }
 
@@ -92,7 +91,7 @@ abstract class AbstractHandler
     {
         // prepare basic name structure
         $array = [
-            $this->file->getClientOriginalName()
+            $this->filename,
         ];
 
         // ensure that the chunk name is for unique for the client session
@@ -136,46 +135,9 @@ abstract class AbstractHandler
     }
 
     /**
-     * Creates save instance and starts saving the uploaded file
-     *
-     * @param ChunkStorage    $chunkStorage the chunk storage
-     *
-     * @return AbstractSave
-     */
-    abstract public function startSaving($chunkStorage);
-
-    /**
      * Returns the chunk file name for a storing the tmp file
      *
      * @return string
      */
     abstract public function getChunkFileName();
-
-    /**
-     * Checks if the request has first chunk
-     *
-     * @return bool
-     */
-    abstract public function isFirstChunk();
-
-    /**
-     * Checks if the current request has the last chunk
-     *
-     * @return bool
-     */
-    abstract public function isLastChunk();
-
-    /**
-     * Checks if the current request is chunked upload
-     *
-     * @return bool
-     */
-    abstract public function isChunkedUpload();
-
-    /**
-     * Returns the percentage of the upload file
-     *
-     * @return int
-     */
-    abstract public function getPercentageDone();
 }

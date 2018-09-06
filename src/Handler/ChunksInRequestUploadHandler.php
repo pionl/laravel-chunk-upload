@@ -17,7 +17,7 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
  *
  * @package Pion\Laravel\ChunkUpload\Handler
  */
-class ChunksInRequestUploadHandler extends AbstractHandler
+class ChunksInRequestUploadHandler extends AbstractUploadHandler
 {
     /**
      * Key for number of sending chunk

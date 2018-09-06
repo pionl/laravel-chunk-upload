@@ -2,14 +2,13 @@
 namespace Pion\Laravel\ChunkUpload\Receiver;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
-use Pion\Laravel\ChunkUpload\Handler\AbstractUploadHandler;
-use Pion\Laravel\ChunkUpload\Save\AbstractSave;
-use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Handler\AbstractCheckHandler;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
-class FileReceiver
+class CheckReceiver
 {
     /**
      * @var Request
@@ -17,14 +16,9 @@ class FileReceiver
     protected $request;
 
     /**
-     * @var UploadedFile|null
-     */
-    protected $file;
-
-    /**
      * The handler that detects what upload process is being used
      *
-     * @var AbstractUploadHandler
+     * @var AbstractCheckHandler
      */
     protected $handler = null;
 
@@ -52,30 +46,13 @@ class FileReceiver
      *
      * @throws UploadFailedException
      */
-    public function __construct($fileIndexOrFile, Request $request, $handlerClass, $chunkStorage = null, $config = null)
+    public function __construct(Request $request, $handlerClass, $chunkStorage = null, $config = null)
     {
         $this->request = $request;
-        $this->file = is_object($fileIndexOrFile) ? $fileIndexOrFile : $request->file($fileIndexOrFile);
         $this->chunkStorage = is_null($chunkStorage) ? ChunkStorage::storage() : $chunkStorage;
         $this->config = is_null($config) ? AbstractConfig::config() : $config;
 
-        if ($this->isUploaded()) {
-            if (!$this->file->isValid()) {
-                throw new UploadFailedException($this->file->getErrorMessage());
-            }
-
-            $this->handler = new $handlerClass($this->request, $this->file, $this->config);
-        }
-    }
-
-    /**
-     * Checks if the file was uploaded
-     *
-     * @return bool
-     */
-    public function isUploaded()
-    {
-        return is_object($this->file) && $this->file->getError() !== UPLOAD_ERR_NO_FILE;
+        $this->handler = new $handlerClass($this->request, $this->config);
     }
 
     /**
@@ -85,14 +62,14 @@ class FileReceiver
      * If the file in the request is chunk, it will create the `ChunkSave` object, otherwise creates the `SingleSave`
      * which doesn't nothing at this moment.
      *
-     * @return bool|AbstractSave
+     * @return bool|array
      */
-    public function receive()
+    public function check()
     {
         if (is_object($this->handler) === false) {
             return false;
         }
 
-        return $this->handler->startSaving($this->chunkStorage);
+        return $this->handler->check($this->chunkStorage);
     }
 }

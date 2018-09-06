@@ -5,7 +5,7 @@ namespace Pion\Laravel\ChunkUpload\Save;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\FileMerger;
-use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
+use Pion\Laravel\ChunkUpload\Handler\AbstractUploadHandler;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
@@ -44,13 +44,13 @@ class ChunkSave extends AbstractSave
      * AbstractUpload constructor.
      *
      * @param UploadedFile    $file         the uploaded file (chunk file)
-     * @param AbstractHandler $handler      the handler that detected the correct save method
+     * @param AbstractUploadHandler $handler      the handler that detected the correct save method
      * @param ChunkStorage    $chunkStorage the chunk storage
      * @param AbstractConfig  $config       the config manager
      *
      * @throws ChunkSaveException
      */
-    public function __construct(UploadedFile $file, AbstractHandler $handler, $chunkStorage, $config)
+    public function __construct(UploadedFile $file, AbstractUploadHandler $handler, $chunkStorage, $config)
     {
         parent::__construct($file, $handler, $config);
         $this->chunkStorage = $chunkStorage;

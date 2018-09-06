@@ -79,5 +79,4 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
         return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX) &&
             $request->has(self::CHUNK_UUID_INDEX);
     }
-
 }

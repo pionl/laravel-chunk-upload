@@ -12,7 +12,7 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
  *
  * @package Pion\Laravel\ChunkUpload\Handler
  */
-class SingleUploadHandler extends AbstractHandler
+class SingleUploadHandler extends AbstractUploadHandler
 {
 
     /**

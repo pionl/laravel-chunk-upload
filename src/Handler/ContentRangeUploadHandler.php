@@ -21,7 +21,7 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
  *
  * @package Pion\Laravel\ChunkUpload\Handler
  */
-class ContentRangeUploadHandler extends AbstractHandler
+class ContentRangeUploadHandler extends AbstractUploadHandler
 {
     /**
      * The index for the header

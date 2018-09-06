@@ -2,27 +2,16 @@
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class HandlerFactory
+class CheckHandlerFactory
 {
     /**
      * List of current handlers
      * @var array
      */
     static protected $handlers = array(
-        ContentRangeUploadHandler::class,
-        ChunksInRequestUploadHandler::class,
-        ResumableJSUploadHandler::class,
-        DropZoneUploadHandler::class,
-        ChunksInRequestSimpleUploadHandler::class,
-        NgFileUploadHandler::class,
     );
-
-    /**
-     * The fallback handler to use
-     * @var string
-     */
-    static protected $fallbackHandler = SingleUploadHandler::class;
 
     /**
      * Returns handler class based on the request or the fallback handler
@@ -34,7 +23,7 @@ class HandlerFactory
      */
     public static function classFromRequest(Request $request, $fallbackClass = null)
     {
-        /** @var AbstractHandler $handlerClass */
+        /** @var AbstractUploadHandler $handlerClass */
         foreach (static::$handlers as $handlerClass) {
             if ($handlerClass::canBeUsedForRequest($request)) {
                 return $handlerClass;
@@ -43,8 +32,7 @@ class HandlerFactory
         }
 
         if (is_null($fallbackClass)) {
-        // the default handler
-            return static::$fallbackHandler;
+            throw new BadRequestHttpException();
         }
 
         return $fallbackClass;
@@ -58,15 +46,5 @@ class HandlerFactory
     public static function register($handlerClass)
     {
         static::$handlers[] = $handlerClass;
-    }
-
-    /**
-     * Sets the default fallback handler when the detection fails
-     *
-     * @param string $fallbackHandler
-     */
-    public function setFallbackHandler($fallbackHandler)
-    {
-        static::$fallbackHandler = $fallbackHandler;
     }
 }

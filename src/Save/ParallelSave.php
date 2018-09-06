@@ -7,7 +7,7 @@ use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\Exceptions\MissingChunkFilesException;
 use Pion\Laravel\ChunkUpload\FileMerger;
-use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
+use Pion\Laravel\ChunkUpload\Handler\AbstractUploadHandler;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
@@ -15,7 +15,7 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 /**
  * Class ParallelSave
  *
- * @method HandleParallelUploadTrait|AbstractHandler handler()
+ * @method HandleParallelUploadTrait|AbstractUploadHandler handler()
  *
  * @package Pion\Laravel\ChunkUpload\Save
  */
@@ -32,7 +32,7 @@ class ParallelSave extends ChunkSave
      * ParallelSave constructor.
      *
      * @param UploadedFile                              $file         the uploaded file (chunk file)
-     * @param AbstractHandler|HandleParallelUploadTrait $handler      the handler that detected the correct save method
+     * @param AbstractUploadHandler|HandleParallelUploadTrait $handler      the handler that detected the correct save method
      * @param ChunkStorage                              $chunkStorage the chunk storage
      * @param AbstractConfig                            $config       the config manager
      *
@@ -40,11 +40,10 @@ class ParallelSave extends ChunkSave
      */
     public function __construct(
         UploadedFile $file,
-        AbstractHandler $handler,
+        AbstractUploadHandler $handler,
         ChunkStorage $chunkStorage,
         AbstractConfig $config
-    )
-    {
+    ) {
         // Get current file validation - the file instance is changed
         $this->isFileValid = $file->isValid();
 
