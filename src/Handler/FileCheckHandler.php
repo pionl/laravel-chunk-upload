@@ -8,6 +8,16 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
+/**
+ * Class FileCheckHandler
+ *
+ * Check handler that returns the name and the uploaded size of file
+ *
+ * Works with:
+ * - blueimp-file-upload: https://github.com/blueimp/jQuery-File-Upload
+ *
+ * @package Pion\Laravel\ChunkUpload\Handler
+ */
 class FileCheckHandler extends AbstractCheckHandler
 {
     const FILENAME_INDEX = 'name';

@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
+/**
+ * Class ResumableJSCheckHandler
+ *
+ * Check handler that tells if the requested chunk is already uploaded or not
+ *
+ * @package Pion\Laravel\ChunkUpload\Handler
+ */
 class ResumableJSCheckHandler extends AbstractCheckHandler
 {
     const CHUNK_UUID_INDEX = 'resumableIdentifier';

@@ -88,13 +88,13 @@ class ChunkUploadServiceProvider extends ServiceProvider
 
 
         /**
-         * Bind a FileReceiver for dependency and use only the first object
+         * Bind a CheckReceiver for dependency and use only the first object
          */
         $this->app->bind(CheckReceiver::class, function ($app) {
             /** @var Request $request */
             $request = $app->make('request');
 
-            // Build the file receiver
+            // Build the check receiver
             return new CheckReceiver($request, CheckHandlerFactory::classFromRequest($request));
         });
     }
