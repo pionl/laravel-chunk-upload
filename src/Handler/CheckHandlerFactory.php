@@ -12,6 +12,7 @@ class CheckHandlerFactory
      */
     static protected $handlers = array(
         ResumableJSCheckHandler::class,
+        FileCheckHandler::class,
     );
 
     /**
