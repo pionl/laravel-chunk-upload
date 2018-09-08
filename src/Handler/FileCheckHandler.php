@@ -15,6 +15,7 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
  *
  * Works with:
  * - blueimp-file-upload: https://github.com/blueimp/jQuery-File-Upload
+ * - ng-file-upload: https://github.com/danialfarid/ng-file-upload
  *
  * @package Pion\Laravel\ChunkUpload\Handler
  */
