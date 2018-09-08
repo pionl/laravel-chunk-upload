@@ -23,6 +23,21 @@ abstract class AbstractCheckHandler extends AbstractHandler
     }
 
     /**
+     * Returns the full file path to the requested file
+     *
+     * @param ChunkStorage $chunkStorage
+     * @return string
+     */
+    public function getFullFilePath($chunkStorage)
+    {
+        $path[] = $chunkStorage->getDiskPathPrefix();
+        $path[] = $chunkStorage->directory();
+        $path[] = $this->getChunkFileName();
+
+        return implode('', $path);
+    }
+
+    /**
      * Returns the filename from the request
      *
      * @param \Illuminate\Http\Request $request
