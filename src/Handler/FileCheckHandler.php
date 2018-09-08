@@ -75,13 +75,9 @@ class FileCheckHandler extends AbstractCheckHandler
      */
     public function check($chunkStorage)
     {
-        $path[] = $chunkStorage->getDiskPathPrefix();
-        $path[] = $chunkStorage->directory();
-        $path[] = $this->getChunkFileName();
+        $fullFilePath = $this->getFullFilePath($chunkStorage);
 
-        $chunkFullFilePath = implode('', $path);
-
-        if(!\File::exists($chunkFullFilePath)) {
+        if(!\File::exists($fullFilePath)) {
             return [
                 'name' => $this->filename,
                 'size' => 0,
@@ -90,7 +86,7 @@ class FileCheckHandler extends AbstractCheckHandler
 
         return [
             'name' => $this->filename,
-            'size' => \File::size($chunkFullFilePath),
+            'size' => \File::size($fullFilePath),
         ];
     }
 }
