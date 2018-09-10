@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
@@ -6,26 +7,28 @@ use Illuminate\Http\Request;
 class HandlerFactory
 {
     /**
-     * List of current handlers
+     * List of current handlers.
+     *
      * @var array
      */
-    static protected $handlers = array(
+    protected static $handlers = [
         ContentRangeUploadHandler::class,
         ChunksInRequestUploadHandler::class,
         ResumableJSUploadHandler::class,
         DropZoneUploadHandler::class,
         ChunksInRequestSimpleUploadHandler::class,
         NgFileUploadHandler::class,
-    );
+    ];
 
     /**
-     * The fallback handler to use
+     * The fallback handler to use.
+     *
      * @var string
      */
-    static protected $fallbackHandler = SingleUploadHandler::class;
+    protected static $fallbackHandler = SingleUploadHandler::class;
 
     /**
-     * Returns handler class based on the request or the fallback handler
+     * Returns handler class based on the request or the fallback handler.
      *
      * @param Request     $request
      * @param string|null $fallbackClass
@@ -43,7 +46,7 @@ class HandlerFactory
         }
 
         if (is_null($fallbackClass)) {
-        // the default handler
+            // the default handler
             return static::$fallbackHandler;
         }
 
@@ -51,7 +54,7 @@ class HandlerFactory
     }
 
     /**
-     * Adds a custom handler class
+     * Adds a custom handler class.
      *
      * @param string $handlerClass
      */
@@ -61,7 +64,7 @@ class HandlerFactory
     }
 
     /**
-     * Sets the default fallback handler when the detection fails
+     * Sets the default fallback handler when the detection fails.
      *
      * @param string $fallbackHandler
      */

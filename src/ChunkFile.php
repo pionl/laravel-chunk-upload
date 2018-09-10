@@ -1,12 +1,11 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload;
 
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
- * Class Chunk
- *
- * @package Pion\Laravel\ChunkUpload
+ * Class Chunk.
  */
 class ChunkFile
 {
@@ -21,18 +20,18 @@ class ChunkFile
     protected $modifiedTime;
 
     /**
-     * The chunk storage
+     * The chunk storage.
      *
      * @var ChunkStorage
      */
     protected $storage;
 
     /**
-     * Creates the chunk file
+     * Creates the chunk file.
      *
-     * @param string $path
-     * @param int    $modifiedTime
-     * @param ChunkStorage      $storage
+     * @param string       $path
+     * @param int          $modifiedTime
+     * @param ChunkStorage $storage
      */
     public function __construct($path, $modifiedTime, $storage)
     {
@@ -63,7 +62,7 @@ class ChunkFile
     }
 
     /**
-     * Moves the chunk file to given relative path (within the disk)
+     * Moves the chunk file to given relative path (within the disk).
      *
      * @param string $pathTo
      *
@@ -75,7 +74,8 @@ class ChunkFile
     }
 
     /**
-     * Deletes the chunk file
+     * Deletes the chunk file.
+     *
      * @return bool
      */
     public function delete()
@@ -87,10 +87,11 @@ class ChunkFile
      * The __toString method allows a class to decide how it will react when it is converted to a string.
      *
      * @return string
-     * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
+     *
+     * @see http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
      */
     public function __toString()
     {
-        return sprintf("ChunkFile %s uploaded at %s", $this->getPath(), date("Y-m-d H:i:s", $this->getModifiedTime()));
+        return sprintf('ChunkFile %s uploaded at %s', $this->getPath(), date('Y-m-d H:i:s', $this->getModifiedTime()));
     }
 }

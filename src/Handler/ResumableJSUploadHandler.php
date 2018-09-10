@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
 
     /**
      * The Resumable file uuid for unique chunk upload session.
+     *
      * @var string|null
      */
     protected $fileUuid = null;
@@ -35,7 +37,8 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Append the resumable file - uuid and pass the current chunk index for parallel upload
+     * Append the resumable file - uuid and pass the current chunk index for parallel upload.
+     *
      * @return string
      */
     public function getChunkFileName()
@@ -44,7 +47,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *
@@ -56,7 +59,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *
@@ -68,7 +71,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Checks if the current abstract handler can be used via HandlerFactory
+     * Checks if the current abstract handler can be used via HandlerFactory.
      *
      * @param Request $request
      *
@@ -79,5 +82,4 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
         return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX) &&
             $request->has(self::CHUNK_UUID_INDEX);
     }
-
 }

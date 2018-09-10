@@ -10,7 +10,6 @@ use Pion\Laravel\ChunkUpload\Handler\NgFileUploadHandler;
 
 class NgFileUploadHandlerTest extends TestCase
 {
-
     /**
      * @throws \Exception
      */
@@ -34,9 +33,9 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => 10,
-                '_totalSize'        => 5000,
-                '_chunkSize'        => 500,
+                '_chunkNumber' => 10,
+                '_totalSize' => 5000,
+                '_chunkSize' => 500,
                 '_currentChunkSize' => 500,
             ]
         );
@@ -71,9 +70,9 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => 0,
-                '_totalSize'        => 5000,
-                '_chunkSize'        => 500,
+                '_chunkNumber' => 0,
+                '_totalSize' => 5000,
+                '_chunkSize' => 500,
                 '_currentChunkSize' => 500,
             ]
         );
@@ -98,9 +97,9 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => 1,
-                '_totalSize'        => 5000,
-                '_chunkSize'        => 500,
+                '_chunkNumber' => 1,
+                '_totalSize' => 5000,
+                '_chunkSize' => 500,
                 '_currentChunkSize' => 500,
             ]
         );
@@ -126,9 +125,9 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => 9,
-                '_totalSize'        => 5000,
-                '_chunkSize'        => 500,
+                '_chunkNumber' => 9,
+                '_totalSize' => 5000,
+                '_chunkSize' => 500,
                 '_currentChunkSize' => 500,
             ]
         );
@@ -145,7 +144,7 @@ class NgFileUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when chunk is missing
+     * Checks if canBeUsedForRequest returns false when chunk is missing.
      *
      * @throws \Exception
      */
@@ -156,7 +155,7 @@ class NgFileUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is invalid
+     * Checks if canBeUsedForRequest returns false when content-range is invalid.
      *
      * @throws \Exception
      */
@@ -166,9 +165,9 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => 'xx',
-                '_totalSize'        => 'xx',
-                '_chunkSize'        => 'xx',
+                '_chunkNumber' => 'xx',
+                '_totalSize' => 'xx',
+                '_chunkSize' => 'xx',
                 '_currentChunkSize' => 'xx',
             ]
         );
@@ -176,7 +175,7 @@ class NgFileUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is missing
+     * Checks if canBeUsedForRequest returns false when content-range is missing.
      *
      * @throws \Exception
      */
@@ -186,9 +185,9 @@ class NgFileUploadHandlerTest extends TestCase
             'test',
             'POST',
             [
-                '_chunkNumber'      => '0',
-                '_totalSize'        => '10',
-                '_chunkSize'        => '10',
+                '_chunkNumber' => '0',
+                '_totalSize' => '10',
+                '_chunkSize' => '10',
                 '_currentChunkSize' => '10',
             ]
         );

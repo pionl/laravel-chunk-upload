@@ -10,9 +10,7 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Session;
 
 /**
- * The handler that will detect if we can continue the chunked upload
- *
- * @package Pion\Laravel\ChunkUpload\Handler
+ * The handler that will detect if we can continue the chunked upload.
  */
 abstract class AbstractHandler
 {
@@ -46,7 +44,7 @@ abstract class AbstractHandler
     }
 
     /**
-     * Checks if the current abstract handler can be used via HandlerFactory
+     * Checks if the current abstract handler can be used via HandlerFactory.
      *
      * @param Request $request
      *
@@ -58,7 +56,8 @@ abstract class AbstractHandler
     }
 
     /**
-     * Checks the current setup if session driver was booted - if not, it will generate random hash
+     * Checks the current setup if session driver was booted - if not, it will generate random hash.
+     *
      * @return bool
      */
     public static function canUseSession()
@@ -69,18 +68,19 @@ abstract class AbstractHandler
         $drivers = $session->getDrivers();
 
         // Check if the driver is valid and started - allow using session
-        if (isset($drivers[$driver]) && $drivers[$driver]->isStarted() === true) {
+        if (isset($drivers[$driver]) && true === $drivers[$driver]->isStarted()) {
             return true;
         }
+
         return false;
     }
 
     /**
      * Builds the chunk file name per session and the original name. You can
      * provide custom additional name at the end of the generated file name. All chunk
-     * files has .part extension
+     * files has .part extension.
      *
-     * @param string|null $additionalName Make the name more unique (example: use id from request)
+     * @param string|null $additionalName    Make the name more unique (example: use id from request)
      * @param string|null $currentChunkIndex Add the chunk index for parallel upload
      *
      * @return string
@@ -92,13 +92,13 @@ abstract class AbstractHandler
     {
         // prepare basic name structure
         $array = [
-            $this->file->getClientOriginalName()
+            $this->file->getClientOriginalName(),
         ];
 
         // ensure that the chunk name is for unique for the client session
         $useSession = $this->config->chunkUseSessionForName();
         $useBrowser = $this->config->chunkUseBrowserInfoForName();
-        if ($useSession && static::canUseSession() === false) {
+        if ($useSession && false === static::canUseSession()) {
             $useBrowser = true;
             $useSession = false;
         }
@@ -110,7 +110,7 @@ abstract class AbstractHandler
 
         // can work without any additional setup
         if ($useBrowser) {
-            $array[] = md5($this->request->ip().$this->request->header("User-Agent", "no-browser"));
+            $array[] = md5($this->request->ip().$this->request->header('User-Agent', 'no-browser'));
         }
 
         // Add additional name for more unique chunk name
@@ -120,11 +120,11 @@ abstract class AbstractHandler
 
         // Build the final name - parts separated by dot
         $namesSeparatedByDot = [
-            implode('-', $array)
+            implode('-', $array),
         ];
 
         // Add the chunk index for parallel upload
-        if ($currentChunkIndex !== null) {
+        if (null !== $currentChunkIndex) {
             $namesSeparatedByDot[] = $currentChunkIndex;
         }
 
@@ -136,44 +136,44 @@ abstract class AbstractHandler
     }
 
     /**
-     * Creates save instance and starts saving the uploaded file
+     * Creates save instance and starts saving the uploaded file.
      *
-     * @param ChunkStorage    $chunkStorage the chunk storage
+     * @param ChunkStorage $chunkStorage the chunk storage
      *
      * @return AbstractSave
      */
     abstract public function startSaving($chunkStorage);
 
     /**
-     * Returns the chunk file name for a storing the tmp file
+     * Returns the chunk file name for a storing the tmp file.
      *
      * @return string
      */
     abstract public function getChunkFileName();
 
     /**
-     * Checks if the request has first chunk
+     * Checks if the request has first chunk.
      *
      * @return bool
      */
     abstract public function isFirstChunk();
 
     /**
-     * Checks if the current request has the last chunk
+     * Checks if the current request has the last chunk.
      *
      * @return bool
      */
     abstract public function isLastChunk();
 
     /**
-     * Checks if the current request is chunked upload
+     * Checks if the current request is chunked upload.
      *
      * @return bool
      */
     abstract public function isChunkedUpload();
 
     /**
-     * Returns the percentage of the upload file
+     * Returns the percentage of the upload file.
      *
      * @return int
      */

@@ -5,9 +5,7 @@ namespace Pion\Laravel\ChunkUpload\Exceptions;
 use Exception;
 
 /**
- * Class ChunkInvalidValueException
- *
- * @package Pion\Laravel\ChunkUpload\Exception
+ * Class ChunkInvalidValueException.
  */
 class ChunkInvalidValueException extends \Exception
 {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Exceptions;
 
 use Exception;

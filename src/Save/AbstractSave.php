@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Save;
 
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
@@ -7,20 +8,18 @@ use Symfony\Component\HttpFoundation\File\File;
 use Illuminate\Http\UploadedFile;
 
 /**
- * Class AbstractSave
+ * Class AbstractSave.
  *
  * Handles the save handling of the file.
  * You can call all function you know from the UploadedFile
  *
  * @method string|null getClientOriginalName()
- * @method string getClientOriginalExtension()
+ * @method string      getClientOriginalExtension()
  * @method string|null getClientMimeType()
  * @method string|null guessClientExtension()
- * @method int|null getClientSize()
- * @method int getError()
- * @method File move($directory, $name = null)
- *
- * @package Pion\Laravel\ChunkUpload\Save
+ * @method int|null    getClientSize()
+ * @method int         getError()
+ * @method File        move($directory, $name = null)
  */
 abstract class AbstractSave
 {
@@ -35,7 +34,7 @@ abstract class AbstractSave
     private $handler;
 
     /**
-     * Returns the config for the upload
+     * Returns the config for the upload.
      *
      * @var AbstractConfig
      */
@@ -44,9 +43,9 @@ abstract class AbstractSave
     /**
      * AbstractUpload constructor.
      *
-     * @param UploadedFile        $file    the uploaded file (chunk file)
-     * @param AbstractHandler     $handler the handler that detected the correct save method
-     * @param AbstractConfig $config  the config manager
+     * @param UploadedFile    $file    the uploaded file (chunk file)
+     * @param AbstractHandler $handler the handler that detected the correct save method
+     * @param AbstractConfig  $config  the config manager
      */
     public function __construct(UploadedFile $file, AbstractHandler $handler, $config)
     {
@@ -56,7 +55,8 @@ abstract class AbstractSave
     }
 
     /**
-     * Checks if the file upload is finished
+     * Checks if the file upload is finished.
+     *
      * @return bool
      */
     public function isFinished()
@@ -65,7 +65,8 @@ abstract class AbstractSave
     }
 
     /**
-     * Checks if the upload is valid
+     * Checks if the upload is valid.
+     *
      * @return bool
      */
     public function isValid()
@@ -74,7 +75,8 @@ abstract class AbstractSave
     }
 
     /**
-     * Returns the error message
+     * Returns the error message.
+     *
      * @return string
      */
     public function getErrorMessage()
@@ -91,7 +93,7 @@ abstract class AbstractSave
     }
 
     /**
-     * Returns always the uploaded chunk file
+     * Returns always the uploaded chunk file.
      *
      * @return null|UploadedFile
      */
@@ -101,13 +103,14 @@ abstract class AbstractSave
     }
 
     /**
-     * Passes all the function into the file
+     * Passes all the function into the file.
      *
      * @param $name      string
      * @param $arguments array
      *
      * @return mixed
-     * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.methods
+     *
+     * @see http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.methods
      */
     public function __call($name, $arguments)
     {
@@ -123,7 +126,8 @@ abstract class AbstractSave
     }
 
     /**
-     * Returns the current config
+     * Returns the current config.
+     *
      * @return AbstractConfig
      */
     public function config()

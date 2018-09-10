@@ -4,7 +4,6 @@ namespace ChunkTests\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\TestCase;
 use Pion\Laravel\ChunkUpload\Config\FileConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ContentRangeValueToLargeException;
@@ -12,7 +11,6 @@ use Pion\Laravel\ChunkUpload\Handler\ContentRangeUploadHandler;
 
 class ContentRangeUploadHandlerTest extends TestCase
 {
-
     public function testInitWithoutBytesRange()
     {
         $request = Request::create('test', 'POST', [], [], [], []);
@@ -39,7 +37,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     public function testValidContentRangeFirstChunk()
     {
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes 0-100/1200'
+            'HTTP_CONTENT_RANGE' => 'bytes 0-100/1200',
         ]);
         $file = UploadedFile::fake()->create('test');
 
@@ -56,7 +54,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     public function testValidContentRangeNextChunk()
     {
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes 100-100/1200'
+            'HTTP_CONTENT_RANGE' => 'bytes 100-100/1200',
         ]);
         $file = UploadedFile::fake();
 
@@ -74,7 +72,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     public function testIsLastChunk()
     {
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes 1100-1199/1200'
+            'HTTP_CONTENT_RANGE' => 'bytes 1100-1199/1200',
         ]);
         $file = UploadedFile::fake();
 
@@ -89,7 +87,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is missing
+     * Checks if canBeUsedForRequest returns false when content-range is missing.
      */
     public function testCanBeUsedForInvalidRequest()
     {
@@ -98,38 +96,38 @@ class ContentRangeUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is invalid
+     * Checks if canBeUsedForRequest returns false when content-range is invalid.
      */
     public function testCanBeUsedForInvalidContentRangeFormat()
     {
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes ss-ss'
+            'HTTP_CONTENT_RANGE' => 'bytes ss-ss',
         ]);
         $this->assertFalse(ContentRangeUploadHandler::canBeUsedForRequest($request));
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is missing
+     * Checks if canBeUsedForRequest returns false when content-range is missing.
      */
     public function testCanBeUsedForValidRange()
     {
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes 100-100/1000'
+            'HTTP_CONTENT_RANGE' => 'bytes 100-100/1000',
         ]);
         $this->assertTrue(ContentRangeUploadHandler::canBeUsedForRequest($request));
     }
 
     /**
-     * Test the maximum float value
+     * Test the maximum float value.
      */
     public function testMaxFloatValue()
     {
         $maxFloat = '18';
-        for ($i = 0; $i < 309; $i++) {
+        for ($i = 0; $i < 309; ++$i) {
             $maxFloat .= '0';
         }
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes 100-100/' . $maxFloat
+            'HTTP_CONTENT_RANGE' => 'bytes 100-100/'.$maxFloat,
         ]);
         $file = UploadedFile::fake();
 
@@ -142,7 +140,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     public function testMaxInt()
     {
         $request = Request::create('test', 'POST', [], [], [], [
-            'HTTP_CONTENT_RANGE' => 'bytes 100-100/2147483648'
+            'HTTP_CONTENT_RANGE' => 'bytes 100-100/2147483648',
         ]);
         $file = UploadedFile::fake();
 

@@ -1,8 +1,8 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
@@ -16,9 +16,8 @@ use Storage;
 
 class ChunkUploadServiceProvider extends ServiceProvider
 {
-
     /**
-     * When the service is being booted
+     * When the service is being booted.
      */
     public function boot()
     {
@@ -26,20 +25,18 @@ class ChunkUploadServiceProvider extends ServiceProvider
         $scheduleConfig = AbstractConfig::config()->scheduleConfig();
 
         // Run only if schedule is enabled
-        if (Arr::get($scheduleConfig, "enabled", false) === true) {
+        if (true === Arr::get($scheduleConfig, 'enabled', false)) {
             // Wait until the app is fully booted
             $this->app->booted(function () use ($scheduleConfig) {
-
                 // Get the scheduler instance
                 /** @var Schedule $schedule */
                 $schedule = $this->app->make(Schedule::class);
 
                 // Register the clear chunks with custom schedule
-                $schedule->command('uploads:clear')->cron(Arr::get($scheduleConfig, "cron", "* * * * *"));
+                $schedule->command('uploads:clear')->cron(Arr::get($scheduleConfig, 'cron', '* * * * *'));
             });
         }
     }
-
 
     /**
      * Register the package requirements.
@@ -50,7 +47,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
     {
         // Register the commands
         $this->commands([
-            ClearChunksCommand::class
+            ClearChunksCommand::class,
         ]);
 
         // Register the config
@@ -70,8 +67,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
             return new ChunkStorage(Storage::disk($config->chunksDiskName()), $config);
         });
 
-
-        /**
+        /*
          * Bind a FileReceiver for dependency and use only the first object
          */
         $this->app->bind(FileReceiver::class, function ($app) {
@@ -87,7 +83,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publishes and mergers the config. Uses the FileConfig
+     * Publishes and mergers the config. Uses the FileConfig.
      *
      * @see FileConfig
      * @see ServiceProvider::publishes
@@ -97,7 +93,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
     {
         // Config options
         $configIndex = FileConfig::FILE_NAME;
-        $configFileName = FileConfig::FILE_NAME.".php";
+        $configFileName = FileConfig::FILE_NAME.'.php';
         $configPath = __DIR__.'/../../config/'.$configFileName;
 
         // Publish the config

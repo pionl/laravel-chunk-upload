@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Receiver;
 
 use Illuminate\Http\Request;
@@ -24,27 +25,28 @@ class FileReceiver
     protected $file;
 
     /**
-     * The handler that detects what upload proccess is beeing used
+     * The handler that detects what upload proccess is beeing used.
      *
      * @var AbstractHandler
      */
     protected $handler = null;
 
     /**
-     * The chunk storage
+     * The chunk storage.
      *
      * @var ChunkStorage
      */
     protected $chunkStorage;
 
     /**
-     * The current config
+     * The current config.
+     *
      * @var AbstractConfig
      */
     protected $config;
 
     /**
-     * The file receiver for the given file index
+     * The file receiver for the given file index.
      *
      * @param string|UploadedFile $fileIndexOrFile the desired file index to use in request or the final UploadedFile
      * @param Request             $request         the current request
@@ -71,13 +73,13 @@ class FileReceiver
     }
 
     /**
-     * Checks if the file was uploaded
+     * Checks if the file was uploaded.
      *
      * @return bool
      */
     public function isUploaded()
     {
-        return is_object($this->file) && $this->file->getError() !== UPLOAD_ERR_NO_FILE;
+        return is_object($this->file) && UPLOAD_ERR_NO_FILE !== $this->file->getError();
     }
 
     /**
@@ -91,7 +93,7 @@ class FileReceiver
      */
     public function receive()
     {
-        if (is_object($this->handler) === false) {
+        if (false === is_object($this->handler)) {
             return false;
         }
 

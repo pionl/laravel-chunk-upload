@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
@@ -18,7 +19,8 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     const CHUNK_OFFSET_INDEX = 'dzchunkbyteoffset';
 
     /**
-     * The DropZone file uuid
+     * The DropZone file uuid.
+     *
      * @var string|null
      */
     protected $fileUuid = null;
@@ -36,9 +38,9 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
         $this->fileUuid = $request->get(self::CHUNK_UUID_INDEX);
     }
 
-
     /**
-     * Builds the chunk file name from file uuid and current chunk
+     * Builds the chunk file name from file uuid and current chunk.
+     *
      * @return string
      */
     public function getChunkFileName()
@@ -47,7 +49,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *
@@ -59,7 +61,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *
@@ -70,9 +72,8 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
         return intval($request->get(self::CHUNK_TOTAL_INDEX, 1));
     }
 
-
     /**
-     * Checks if the current abstract handler can be used via HandlerFactory
+     * Checks if the current abstract handler can be used via HandlerFactory.
      *
      * @param Request $request
      *
