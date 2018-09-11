@@ -17,6 +17,13 @@ abstract class AbstractConfig
     }
 
     /**
+     * Returns a list custom handlers (custom, override).
+     *
+     * @return array
+     */
+    abstract public function handlers();
+
+    /**
      * Returns the disk name to use for the chunk storage.
      *
      * @return string

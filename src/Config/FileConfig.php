@@ -15,6 +15,16 @@ class FileConfig extends AbstractConfig
     const FILE_NAME = 'chunk-upload';
 
     /**
+     * Returns a list custom handlers (custom, override).
+     *
+     * @return array
+     */
+    public function handlers()
+    {
+        return $this->get('hanlders', []);
+    }
+
+    /**
      * Returns the disk name to use for the chunk storage.
      *
      * @return string

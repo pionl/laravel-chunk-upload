@@ -64,6 +64,26 @@ class HandlerFactory
     }
 
     /**
+     * Overrides the handler list.
+     *
+     * @param array $handlers
+     */
+    public static function setHandlers($handlers)
+    {
+        static::$handlers = $handlers;
+    }
+
+    /**
+     * Returns the handler list.
+     *
+     * @return array
+     */
+    public static function getHandlers()
+    {
+        return static::$handlers;
+    }
+
+    /**
      * Sets the default fallback handler when the detection fails.
      *
      * @param string $fallbackHandler

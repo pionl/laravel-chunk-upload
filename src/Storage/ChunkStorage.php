@@ -2,7 +2,7 @@
 
 namespace Pion\Laravel\ChunkUpload\Storage;
 
-use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Support\Collection;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\FilesystemInterface;
@@ -51,10 +51,10 @@ class ChunkStorage
     /**
      * ChunkStorage constructor.
      *
-     * @param FilesystemAdapter $disk   the desired disk for chunk storage
-     * @param AbstractConfig    $config
+     * @param FilesystemContract $disk   the desired disk for chunk storage
+     * @param AbstractConfig     $config
      */
-    public function __construct(FilesystemAdapter $disk, $config)
+    public function __construct(FilesystemContract $disk, $config)
     {
         // save the config
         $this->config = $config;

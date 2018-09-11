@@ -5,6 +5,7 @@ namespace Pion\Laravel\ChunkUpload\Providers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
@@ -12,7 +13,6 @@ use Pion\Laravel\ChunkUpload\Config\FileConfig;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
-use Storage;
 
 class ChunkUploadServiceProvider extends ServiceProvider
 {
@@ -22,7 +22,8 @@ class ChunkUploadServiceProvider extends ServiceProvider
     public function boot()
     {
         // Get the schedule config
-        $scheduleConfig = AbstractConfig::config()->scheduleConfig();
+        $config = $this->app->make(AbstractConfig::class);
+        $scheduleConfig = $config->scheduleConfig();
 
         // Run only if schedule is enabled
         if (true === Arr::get($scheduleConfig, 'enabled', false)) {
@@ -33,9 +34,12 @@ class ChunkUploadServiceProvider extends ServiceProvider
                 $schedule = $this->app->make(Schedule::class);
 
                 // Register the clear chunks with custom schedule
-                $schedule->command('uploads:clear')->cron(Arr::get($scheduleConfig, 'cron', '* * * * *'));
+                $schedule->command('uploads:clear')
+                    ->cron(Arr::get($scheduleConfig, 'cron', '* * * * *'));
             });
         }
+
+        $this->registerHandlers($config->handlers());
     }
 
     /**
@@ -64,7 +68,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
             $config = $app->make(AbstractConfig::class);
 
             // Build the chunk storage
-            return new ChunkStorage(Storage::disk($config->chunksDiskName()), $config);
+            return new ChunkStorage($this->disk($config->chunksDiskName()), $config);
         });
 
         /*
@@ -83,11 +87,25 @@ class ChunkUploadServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publishes and mergers the config. Uses the FileConfig.
+     * Returns disk name.
+     *
+     * @param string $diskName
+     *
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    protected function disk($diskName)
+    {
+        return Storage::disk($diskName);
+    }
+
+    /**
+     * Publishes and mergers the config. Uses the FileConfig. Registers custom handlers.
      *
      * @see FileConfig
      * @see ServiceProvider::publishes
      * @see ServiceProvider::mergeConfigFrom
+     *
+     * @return $this
      */
     protected function registerConfig()
     {
@@ -106,5 +124,30 @@ class ChunkUploadServiceProvider extends ServiceProvider
             $configPath,
             $configIndex
         );
+
+        return $this;
+    }
+
+    /**
+     * Registers handlers from config.
+     *
+     * @param array $handlersConfig
+     *
+     * @return $this
+     */
+    protected function registerHandlers(array $handlersConfig)
+    {
+        $overrideHandlers = Arr::get($handlersConfig, 'override', []);
+        if (count($overrideHandlers) > 0) {
+            HandlerFactory::setHandlers($overrideHandlers);
+
+            return $this;
+        }
+
+        foreach (Arr::get($handlersConfig, 'custom', []) as $handler) {
+            HandlerFactory::register($handler);
+        }
+
+        return $this;
     }
 }
