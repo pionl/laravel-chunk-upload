@@ -16,7 +16,7 @@ class NgFileUploadHandlerTest extends TestCase
     public function testInitWithoutChunk()
     {
         $request = Request::create('test', 'POST', [], [], [], []);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test');
 
         /** @var UploadedFile $file */
         $ngFileUpload = new NgFileUploadHandler($request, $file, new FileConfig());
@@ -39,7 +39,7 @@ class NgFileUploadHandlerTest extends TestCase
                 '_currentChunkSize' => 500,
             ]
         );
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 500);
 
         /** @var UploadedFile $file */
         $ngFileUpload = new NgFileUploadHandler($request, $file, new FileConfig());
@@ -53,7 +53,7 @@ class NgFileUploadHandlerTest extends TestCase
     public function testPercentageDoneWithoutChunk()
     {
         $request = Request::create('test', 'POST', [], [], [], []);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test');
 
         /** @var UploadedFile $file */
         $ngFileUpload = new NgFileUploadHandler($request, $file, new FileConfig());
@@ -103,7 +103,7 @@ class NgFileUploadHandlerTest extends TestCase
                 '_currentChunkSize' => 500,
             ]
         );
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 500);
 
         /** @var UploadedFile $file */
         $ngFileUpload = new NgFileUploadHandler($request, $file, new FileConfig());
@@ -131,7 +131,7 @@ class NgFileUploadHandlerTest extends TestCase
                 '_currentChunkSize' => 500,
             ]
         );
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 500);
 
         /** @var UploadedFile $file */
         $ngFileUpload = new NgFileUploadHandler($request, $file, new FileConfig());

@@ -14,7 +14,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     public function testInitWithoutBytesRange()
     {
         $request = Request::create('test', 'POST', [], [], [], []);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test');
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 
@@ -27,7 +27,7 @@ class ContentRangeUploadHandlerTest extends TestCase
     public function testPercentageDoneWithoutBytesRange()
     {
         $request = Request::create('test', 'POST', [], [], [], []);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test');
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 
@@ -39,7 +39,7 @@ class ContentRangeUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [], [], [], [
             'HTTP_CONTENT_RANGE' => 'bytes 0-100/1200',
         ]);
-        $file = UploadedFile::fake()->create('test');
+        $file = UploadedFile::fake()->create('test')->create('test', 100);
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 
@@ -56,7 +56,7 @@ class ContentRangeUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [], [], [], [
             'HTTP_CONTENT_RANGE' => 'bytes 100-100/1200',
         ]);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 1);
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 
@@ -74,7 +74,7 @@ class ContentRangeUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [], [], [], [
             'HTTP_CONTENT_RANGE' => 'bytes 1100-1199/1200',
         ]);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 100);
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 
@@ -129,7 +129,7 @@ class ContentRangeUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [], [], [], [
             'HTTP_CONTENT_RANGE' => 'bytes 100-100/'.$maxFloat,
         ]);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 1);
 
         $this->expectException(ContentRangeValueToLargeException::class);
         $this->expectExceptionMessage('The content range value is to large');
@@ -142,7 +142,7 @@ class ContentRangeUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [], [], [], [
             'HTTP_CONTENT_RANGE' => 'bytes 100-100/2147483648',
         ]);
-        $file = UploadedFile::fake();
+        $file = UploadedFile::fake()->create('test', 1);
 
         $contentRange = new ContentRangeUploadHandler($request, $file, new FileConfig());
 
