@@ -24,6 +24,7 @@ use Pion\Laravel\ChunkUpload\Handler\ResumableJSUploadHandler;
 use Pion\Laravel\ChunkUpload\Handler\SingleUploadHandler;
 use Pion\Laravel\ChunkUpload\Handler\UploadHandlerFactory;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;
+use Pion\Laravel\ChunkUpload\Receiver\CheckReceiver;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 use Tests\FileSystemDriverMock;
@@ -324,6 +325,18 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
         $this->app->shouldReceive('bind')
             ->withArgs(function ($class, $closure) {
                 if (FileReceiver::class === $class) {
+                    $this->assertTrue(is_callable($closure));
+
+                    return true;
+                }
+
+                return false;
+            })
+            ->once();
+
+        $this->app->shouldReceive('bind')
+            ->withArgs(function ($class, $closure) {
+                if (CheckReceiver::class === $class) {
                     $this->assertTrue(is_callable($closure));
 
                     return true;
