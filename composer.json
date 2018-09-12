@@ -9,20 +9,23 @@
     }
   ],
   "scripts": {
-    "analyze": "./vendor/bin/phpcs",
-    "analyze-fix": "./vendor/bin/phpcbf"
+    "lint:fix": "./vendor/bin/php-cs-fixer fix --config=.php_cs --using-cache false",
+    "lint:check": "./vendor/bin/phplint",
+    "lint": "composer run-script lint:fix && composer run-script lint:check",
+    "test": "./vendor/bin/phpunit"
   },
   "require": {
-    "illuminate/http": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
-    "illuminate/console": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
-    "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
-    "illuminate/filesystem": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*"
+    "illuminate/http": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
+    "illuminate/console": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
+    "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
+    "illuminate/filesystem": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*"
   },
   "require-dev": {
-    "laravel/laravel": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.*",
+    "laravel/laravel": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
     "phpunit/phpunit": "5.7 || 6.0 || 7.0",
-    "mockery/mockery": "^0.9.9",
-    "squizlabs/php_codesniffer": "^3.2"
+    "mockery/mockery": "^1.1.0",
+    "friendsofphp/php-cs-fixer": "^2.12",
+    "overtrue/phplint": "^1.1"
   },
   "autoload": {
     "psr-4": {

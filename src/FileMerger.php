@@ -15,6 +15,7 @@ class FileMerger
      * FileMerger constructor.
      *
      * @param string $targetFile
+     *
      * @throws ChunkSaveException
      */
     public function __construct($targetFile)
@@ -26,10 +27,12 @@ class FileMerger
     }
 
     /**
-     * Appends given file
+     * Appends given file.
      *
      * @param string $sourceFilePath
+     *
      * @return $this
+     *
      * @throws ChunkSaveException
      */
     public function appendFile($sourceFilePath)
@@ -46,11 +49,12 @@ class FileMerger
         }
 
         @fclose($in);
+
         return $this;
     }
 
     /**
-     * Closes the connection to the file
+     * Closes the connection to the file.
      */
     public function close()
     {

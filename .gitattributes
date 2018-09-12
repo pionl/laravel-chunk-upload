@@ -1,0 +1,6 @@
+tests
+travis.yml
+.php_cs
+.phplint.yml
+phpunit.xml
+CODE_OF_CONDUCT.md

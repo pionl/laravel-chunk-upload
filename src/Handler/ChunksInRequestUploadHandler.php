@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
@@ -9,40 +10,41 @@ use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
- * Class ChunksInRequestUploadHandler
+ * Class ChunksInRequestUploadHandler.
  *
  * Upload receiver that detects the content range from he request value - chunks
  * Works with:
  * - PUpload: https://github.com/moxiecode/plupload/
- *
- * @package Pion\Laravel\ChunkUpload\Handler
  */
 class ChunksInRequestUploadHandler extends AbstractUploadHandler
 {
     /**
-     * Key for number of sending chunk
+     * Key for number of sending chunk.
+     *
      * @static string
      */
     const KEY_CHUNK_NUMBER = 'chunk';
 
     /**
-     * Key for number of all chunks
+     * Key for number of all chunks.
+     *
      * @static string
      */
     const KEY_ALL_CHUNKS = 'chunks';
 
     /**
-     * The current chunk progress
+     * The current chunk progress.
+     *
      * @var int
      */
     protected $currentChunk = 0;
 
     /**
-     * The total of chunks
+     * The total of chunks.
+     *
      * @var int
      */
     protected $chunksTotal = 0;
-
 
     /**
      * AbstractReceiver constructor.
@@ -60,7 +62,7 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Checks if the current abstract handler can be used via HandlerFactory
+     * Checks if the current abstract handler can be used via HandlerFactory.
      *
      * @param Request $request
      *
@@ -72,11 +74,12 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the chunk save instance for saving
+     * Returns the chunk save instance for saving.
      *
-     * @param ChunkStorage   $chunkStorage the chunk storage
+     * @param ChunkStorage $chunkStorage the chunk storage
      *
      * @return ChunkSave
+     *
      * @throws ChunkSaveException
      */
     public function startSaving($chunkStorage)
@@ -85,7 +88,7 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *
@@ -98,7 +101,7 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *
@@ -110,16 +113,17 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the first chunk
+     * Returns the first chunk.
+     *
      * @return bool
      */
     public function isFirstChunk()
     {
-        return $this->currentChunk == 1;
+        return 1 == $this->currentChunk;
     }
 
     /**
-     * Checks if the chunk is last
+     * Checks if the chunk is last.
      *
      * @return int
      */
@@ -130,7 +134,7 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the current chunk index
+     * Returns the current chunk index.
      *
      * @return bool
      */
@@ -140,7 +144,7 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the chunk file name. Uses the original client name and the total bytes
+     * Returns the chunk file name. Uses the original client name and the total bytes.
      *
      * @return string returns the original name with the part extension
      *
@@ -168,7 +172,8 @@ class ChunksInRequestUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the percentage of the uploaded file
+     * Returns the percentage of the uploaded file.
+     *
      * @return int
      */
     public function getPercentageDone()

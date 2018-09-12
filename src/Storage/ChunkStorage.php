@@ -2,7 +2,7 @@
 
 namespace Pion\Laravel\ChunkUpload\Storage;
 
-use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Support\Collection;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\FilesystemInterface;
@@ -12,10 +12,11 @@ use RuntimeException;
 
 class ChunkStorage
 {
-    const CHUNK_EXTENSION = "part";
+    const CHUNK_EXTENSION = 'part';
 
     /**
-     * Returns the application instance of the chunk storage
+     * Returns the application instance of the chunk storage.
+     *
      * @return ChunkStorage
      */
     public static function storage()
@@ -29,7 +30,7 @@ class ChunkStorage
     protected $config;
 
     /**
-     * The disk that holds the chunk files
+     * The disk that holds the chunk files.
      *
      * @var FilesystemAdapter
      */
@@ -41,19 +42,19 @@ class ChunkStorage
     protected $diskAdapter;
 
     /**
-     * Is provided disk a local drive
+     * Is provided disk a local drive.
+     *
      * @var bool
      */
     protected $isLocalDisk;
 
-
     /**
      * ChunkStorage constructor.
      *
-     * @param FilesystemAdapter $disk the desired disk for chunk storage
-     * @param AbstractConfig    $config
+     * @param FilesystemContract $disk   the desired disk for chunk storage
+     * @param AbstractConfig     $config
      */
-    public function __construct(FilesystemAdapter $disk, $config)
+    public function __construct(FilesystemContract $disk, $config)
     {
         // save the config
         $this->config = $config;
@@ -61,12 +62,11 @@ class ChunkStorage
         // cache the storage path
         $this->disk = $disk;
 
-
         $driver = $this->driver();
 
         // try to get the adapter
-        if (!method_exists($driver, "getAdapter")) {
-            throw new RuntimeException("FileSystem driver must have an adapter implemented");
+        if (!method_exists($driver, 'getAdapter')) {
+            throw new RuntimeException('FileSystem driver must have an adapter implemented');
         }
 
         // get the disk adapter
@@ -77,7 +77,7 @@ class ChunkStorage
     }
 
     /**
-     * The current path for chunks directory
+     * The current path for chunks directory.
      *
      * @return string
      *
@@ -89,20 +89,21 @@ class ChunkStorage
             return $this->diskAdapter->getPathPrefix();
         }
 
-        throw new RuntimeException("The full path is not supported on current disk - local adapter supported only");
+        throw new RuntimeException('The full path is not supported on current disk - local adapter supported only');
     }
 
     /**
-     * The current chunks directory
+     * The current chunks directory.
+     *
      * @return string
      */
     public function directory()
     {
-        return $this->config->chunksStorageDirectory()."/";
+        return $this->config->chunksStorageDirectory().'/';
     }
 
     /**
-     * Returns an array of files in the chunks directory
+     * Returns an array of files in the chunks directory.
      *
      * @param \Closure|null $rejectClosure
      *
@@ -118,19 +119,20 @@ class ChunkStorage
 
         return $filesCollection->reject(function ($file) use ($rejectClosure) {
             // ensure the file ends with allowed extension
-            $shouldReject = !preg_match("/.".self::CHUNK_EXTENSION."$/", $file);
+            $shouldReject = !preg_match('/.'.self::CHUNK_EXTENSION.'$/', $file);
             if ($shouldReject) {
                 return true;
             }
             if (is_callable($rejectClosure)) {
                 return $rejectClosure($file);
             }
+
             return false;
         });
     }
 
     /**
-     * Returns the old chunk files
+     * Returns the old chunk files.
      *
      * @return Collection<ChunkFile> collection of a ChunkFile objects
      */
@@ -157,6 +159,7 @@ class ChunkStorage
                 $collection->push(new ChunkFile($file, $modified, $this));
             }
         });
+
         return $collection;
     }
 
@@ -177,7 +180,7 @@ class ChunkStorage
     }
 
     /**
-     * Returns the driver
+     * Returns the driver.
      *
      * @return FilesystemInterface
      */

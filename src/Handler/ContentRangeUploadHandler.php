@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
@@ -10,44 +11,45 @@ use Pion\Laravel\ChunkUpload\Exceptions\ContentRangeValueToLargeException;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
- * Class ContentRangeUploadHandler
+ * Class ContentRangeUploadHandler.
  *
  * Upload receiver that detects the content range by the the header value.
  *
  * Works with:
  * - blueimp-file-upload - partial support (simple chunked and single upload)
  *   https://github.com/blueimp/jQuery-File-Upload
- *
- *
- * @package Pion\Laravel\ChunkUpload\Handler
  */
 class ContentRangeUploadHandler extends AbstractUploadHandler
 {
     /**
-     * The index for the header
+     * The index for the header.
      */
-    const CONTENT_RANGE_INDEX = "content-range";
+    const CONTENT_RANGE_INDEX = 'content-range';
 
     /**
-     * Determines if the upload is via chunked upload
+     * Determines if the upload is via chunked upload.
+     *
      * @var bool
      */
     protected $chunkedUpload = false;
 
     /**
-     * Current chunk start bytes
+     * Current chunk start bytes.
+     *
      * @var int
      */
     protected $bytesStart = 0;
 
     /**
-     * Current chunk bytes end
+     * Current chunk bytes end.
+     *
      * @var int
      */
     protected $bytesEnd = 0;
 
     /**
-     * The files total bytes
+     * The files total bytes.
+     *
      * @var int
      */
     protected $bytesTotal = 0;
@@ -71,11 +73,12 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Checks if the current abstract handler can be used via HandlerFactory
+     * Checks if the current abstract handler can be used via HandlerFactory.
      *
      * @param Request $request
      *
      * @return bool
+     *
      * @throws ContentRangeValueToLargeException
      */
     public static function canBeUsedForRequest(Request $request)
@@ -84,11 +87,12 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the chunk save instance for saving
+     * Returns the chunk save instance for saving.
      *
-     * @param ChunkStorage    $chunkStorage the chunk storage
+     * @param ChunkStorage $chunkStorage the chunk storage
      *
      * @return ChunkSave
+     *
      * @throws ChunkSaveException
      */
     public function startSaving($chunkStorage)
@@ -97,7 +101,7 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Tries to parse the content range from the string
+     * Tries to parse the content range from the string.
      *
      * @param string $contentRange
      *
@@ -122,13 +126,14 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
      * @param string $value
      *
      * @return float
+     *
      * @throws ContentRangeValueToLargeException
      */
     protected function convertToNumericValue($value)
     {
         $floatVal = floatval($value);
 
-        if ($floatVal === INF) {
+        if (INF === $floatVal) {
             throw new ContentRangeValueToLargeException();
         }
 
@@ -136,16 +141,17 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the first chunk
+     * Returns the first chunk.
+     *
      * @return bool
      */
     public function isFirstChunk()
     {
-        return $this->bytesStart == 0;
+        return 0 == $this->bytesStart;
     }
 
     /**
-     * Returns the chunks count
+     * Returns the chunks count.
      *
      * @return int
      */
@@ -156,7 +162,7 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the current chunk index
+     * Returns the current chunk index.
      *
      * @return bool
      */
@@ -190,7 +196,7 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the chunk file name. Uses the original client name and the total bytes
+     * Returns the chunk file name. Uses the original client name and the total bytes.
      *
      * @return string returns the original name with the part extension
      *
@@ -207,7 +213,7 @@ class ContentRangeUploadHandler extends AbstractUploadHandler
     public function getPercentageDone()
     {
         // Check that we have received total bytes
-        if ($this->getBytesTotal() == 0) {
+        if (0 == $this->getBytesTotal()) {
             return 0;
         }
 

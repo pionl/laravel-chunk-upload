@@ -11,6 +11,7 @@ use Pion\Laravel\ChunkUpload\Handler\DropZoneUploadHandler;
 class DropZoneUploadHandlerTest extends TestCase
 {
     protected $file = null;
+
     protected function setUp()
     {
         parent::setUp();
@@ -30,7 +31,7 @@ class DropZoneUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when data is missing
+     * Checks if canBeUsedForRequest returns false when data is missing.
      */
     public function testCanBeUsedForInvalidRequest()
     {
@@ -39,25 +40,25 @@ class DropZoneUploadHandlerTest extends TestCase
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is missing
+     * Checks if canBeUsedForRequest returns false when content-range is missing.
      */
     public function testCanBeUsedForInvalidRequestPartDaata()
     {
         $request = Request::create('test', 'POST', [
-            DropZoneUploadHandler::CHUNK_UUID_INDEX => 'test'
+            DropZoneUploadHandler::CHUNK_UUID_INDEX => 'test',
         ], [], [], []);
         $this->assertFalse(DropZoneUploadHandler::canBeUsedForRequest($request));
     }
 
     /**
-     * Checks if canBeUsedForRequest returns false when content-range is missing
+     * Checks if canBeUsedForRequest returns false when content-range is missing.
      */
     public function testCanBeUsedOnValidRequest()
     {
         $request = Request::create('test', 'POST', [
             DropZoneUploadHandler::CHUNK_UUID_INDEX => 'test',
             DropZoneUploadHandler::CHUNK_INDEX => '1',
-            DropZoneUploadHandler::CHUNK_TOTAL_INDEX => '2'
+            DropZoneUploadHandler::CHUNK_TOTAL_INDEX => '2',
         ], [], [], []);
         $this->assertTrue(DropZoneUploadHandler::canBeUsedForRequest($request));
     }
@@ -67,7 +68,7 @@ class DropZoneUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [
             DropZoneUploadHandler::CHUNK_UUID_INDEX => 'test',
             DropZoneUploadHandler::CHUNK_INDEX => '0',
-            DropZoneUploadHandler::CHUNK_TOTAL_INDEX => '2'
+            DropZoneUploadHandler::CHUNK_TOTAL_INDEX => '2',
         ], [], [], []);
 
         $contentRange = new DropZoneUploadHandler($request, $this->file, new FileConfig());
@@ -85,7 +86,7 @@ class DropZoneUploadHandlerTest extends TestCase
         $request = Request::create('test', 'POST', [
             DropZoneUploadHandler::CHUNK_UUID_INDEX => 'test',
             DropZoneUploadHandler::CHUNK_INDEX => '1',
-            DropZoneUploadHandler::CHUNK_TOTAL_INDEX => '2'
+            DropZoneUploadHandler::CHUNK_TOTAL_INDEX => '2',
         ], [], [], []);
 
         $contentRange = new DropZoneUploadHandler($request, $this->file, new FileConfig());

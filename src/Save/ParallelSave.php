@@ -13,17 +13,16 @@ use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
- * Class ParallelSave
+ * Class ParallelSave.
  *
  * @method HandleParallelUploadTrait|AbstractUploadHandler handler()
- *
- * @package Pion\Laravel\ChunkUpload\Save
  */
 class ParallelSave extends ChunkSave
 {
     protected $totalChunks;
     /**
-     * Stored on construct - the file is moved and isValid will return false
+     * Stored on construct - the file is moved and isValid will return false.
+     *
      * @var bool
      */
     protected $isFileValid;
@@ -56,9 +55,8 @@ class ParallelSave extends ChunkSave
         return $this->isFileValid;
     }
 
-
     /**
-     * Moves the uploaded chunk file to separate chunk file for merging
+     * Moves the uploaded chunk file to separate chunk file for merging.
      *
      * @param string $file Relative path to chunk
      *
@@ -68,6 +66,7 @@ class ParallelSave extends ChunkSave
     {
         // Move the uploaded file to chunk folder
         $this->file->move($this->getChunkDirectory(true), $this->chunkFileName);
+
         return $this;
     }
 
@@ -77,17 +76,18 @@ class ParallelSave extends ChunkSave
     }
 
     /**
-     * Searches for all chunk files
+     * Searches for all chunk files.
      *
      * @return \Illuminate\Support\Collection
      */
     protected function getSavedChunksFiles()
     {
         $chunkFileName = preg_replace(
-            "/\.[\d]+\.".ChunkStorage::CHUNK_EXTENSION."$/", '', $this->handler()->getChunkFileName()
+            "/\.[\d]+\.".ChunkStorage::CHUNK_EXTENSION.'$/', '', $this->handler()->getChunkFileName()
         );
+
         return $this->chunkStorage->files(function ($file) use ($chunkFileName) {
-            return str_contains($file, $chunkFileName) === false;
+            return false === str_contains($file, $chunkFileName);
         });
     }
 
@@ -99,7 +99,7 @@ class ParallelSave extends ChunkSave
     {
         $chunkFiles = $this->getSavedChunksFiles()->all();
 
-        if (count($chunkFiles) === 0) {
+        if (0 === count($chunkFiles)) {
             throw new MissingChunkFilesException();
         }
 

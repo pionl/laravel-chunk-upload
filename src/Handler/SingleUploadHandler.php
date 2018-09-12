@@ -1,4 +1,5 @@
 <?php
+
 namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
@@ -6,17 +7,14 @@ use Pion\Laravel\ChunkUpload\Save\SingleSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
- * Class SingleUploadHandler
+ * Class SingleUploadHandler.
  *
  * The simple single upload handler as the default fallback
- *
- * @package Pion\Laravel\ChunkUpload\Handler
  */
 class SingleUploadHandler extends AbstractUploadHandler
 {
-
     /**
-     * Returns the chunks ave instance for saving
+     * Returns the chunks ave instance for saving.
      *
      * @param ChunkStorage   $chunkStorage the chunk storage
      * @param AbstractConfig $config       the config manager
@@ -29,7 +27,7 @@ class SingleUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the chunk file name for a storing the tmp file
+     * Returns the chunk file name for a storing the tmp file.
      *
      * @return string
      */
@@ -39,7 +37,7 @@ class SingleUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Checks if the request has first chunk
+     * Checks if the request has first chunk.
      *
      * @return bool
      */
@@ -49,7 +47,7 @@ class SingleUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Checks if the current request has the last chunk
+     * Checks if the current request has the last chunk.
      *
      * @return bool
      */
@@ -59,7 +57,7 @@ class SingleUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Checks if the current request is chunked upload
+     * Checks if the current request is chunked upload.
      *
      * @return bool
      */
@@ -69,7 +67,7 @@ class SingleUploadHandler extends AbstractUploadHandler
     }
 
     /**
-     * Returns the percentage of the upload file
+     * Returns the percentage of the upload file.
      *
      * @return int
      */

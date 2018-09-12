@@ -10,7 +10,7 @@ upload and progress.
 ## Pull Requests
 
 - **Use the [PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).**
-  The easiest way to apply the conventions is to install [PHP Code Sniffer](http://pear.php.net/package/PHP_CodeSniffer).
+  The easiest way to apply the conventions is to use `composer run lint:fix`.
 
 - **Consider our release cycle.**  We try to follow [SemVer v2.0.0](http://semver.org/). 
 
@@ -20,6 +20,14 @@ upload and progress.
 - **Create feature branches.**  Don't ask us to pull from your master branch.
 
 - **One pull request per feature.**  If you want to do more than one thing, send multiple pull requests.
+
+### Before pull-request do:
+
+1. Rebase your changes on master branch
+2. Lint project `composer run lint`
+3. Run tests `composer run test`
+4. (recommended) Write tests
+5. (optinal) Rebase your commits to fewer commits
   
 **Thank you!**
 

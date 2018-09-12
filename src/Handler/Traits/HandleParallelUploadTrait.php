@@ -11,11 +11,12 @@ trait HandleParallelUploadTrait
     protected $percentageDone = 0;
 
     /**
-     * Returns the chunk save instance for saving
+     * Returns the chunk save instance for saving.
      *
-     * @param ChunkStorage    $chunkStorage the chunk storage
+     * @param ChunkStorage $chunkStorage the chunk storage
      *
      * @return ParallelSave
+     *
      * @throws ChunkSaveException
      */
     public function startSaving($chunkStorage)

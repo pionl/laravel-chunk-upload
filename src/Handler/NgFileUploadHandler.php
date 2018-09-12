@@ -6,51 +6,49 @@ use Pion\Laravel\ChunkUpload\Exceptions\ChunkInvalidValueException;
 use Illuminate\Http\Request;
 
 /**
- * Class NgFileUploadHandler
+ * Class NgFileUploadHandler.
  *
  * Upload receiver that detects the content range from he request value - chunks
  * Works with:
  * - ng-file-upload: https://github.com/danialfarid/ng-file-upload
- *
- * @package Pion\Laravel\ChunkUpload\Handler
  */
 class NgFileUploadHandler extends ChunksInRequestUploadHandler
 {
-
     /**
-     * Key for number of sending chunk
+     * Key for number of sending chunk.
      *
      * @static string
      */
     const KEY_CHUNK_NUMBER = '_chunkNumber';
 
     /**
-     * Key for total size of all chunks
+     * Key for total size of all chunks.
      *
      * @static string
      */
     const KEY_TOTAL_SIZE = '_totalSize';
 
     /**
-     * Key for every chunk size
+     * Key for every chunk size.
      *
      * @static string
      */
     const KEY_CHUNK_SIZE = '_chunkSize';
 
     /**
-     * Key for current chunk size
+     * Key for current chunk size.
      *
      * @static string
      */
     const KEY_CHUNK_CURRENT_SIZE = '_currentChunkSize';
 
     /**
-     * Checks if the current handler can be used via HandlerFactory
+     * Checks if the current handler can be used via HandlerFactory.
      *
      * @param Request $request
      *
      * @return bool
+     *
      * @throws ChunkInvalidValueException
      */
     public static function canBeUsedForRequest(Request $request)
@@ -80,6 +78,7 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      * @param Request $request
      *
      * @return bool
+     *
      * @throws ChunkInvalidValueException
      */
     protected static function checkChunkParams($request)
@@ -105,7 +104,7 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * Returns current chunk from the request
+     * Returns current chunk from the request.
      *
      * @param Request $request
      *

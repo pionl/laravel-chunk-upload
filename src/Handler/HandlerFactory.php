@@ -1,7 +1,4 @@
 <?php
-/**
- *
- */
 
 namespace Pion\Laravel\ChunkUpload\Handler;
 
@@ -11,19 +8,21 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 abstract class HandlerFactory
 {
     /**
-     * List of current handlers
+     * List of current handlers.
+     *
      * @var array
      */
-    static protected $handlers = [];
+    protected static $handlers = [];
 
     /**
-     * The fallback handler to use
+     * The fallback handler to use.
+     *
      * @var string
      */
-    static protected $fallbackHandler = null;
+    protected static $fallbackHandler = null;
 
     /**
-     * Returns handler class based on the request or the fallback handler
+     * Returns handler class based on the request or the fallback handler.
      *
      * @param Request     $request
      * @param string|null $fallbackClass
@@ -52,7 +51,7 @@ abstract class HandlerFactory
     }
 
     /**
-     * Adds a custom handler class
+     * Adds a custom handler class.
      *
      * @param string $handlerClass
      */
@@ -62,7 +61,27 @@ abstract class HandlerFactory
     }
 
     /**
-     * Sets the default fallback handler when the detection fails
+     * Overrides the handler list.
+     *
+     * @param array $handlers
+     */
+    public static function setHandlers($handlers)
+    {
+        static::$handlers = $handlers;
+    }
+
+    /**
+     * Returns the handler list.
+     *
+     * @return array
+     */
+    public static function getHandlers()
+    {
+        return static::$handlers;
+    }
+
+    /**
+     * Sets the default fallback handler when the detection fails.
      *
      * @param string $fallbackHandler
      */
