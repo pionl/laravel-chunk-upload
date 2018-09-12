@@ -4,11 +4,14 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 class CheckHandlerFactory extends HandlerFactory
 {
     /**
-     * List of current handlers
-     * @var array
+     * Decides if the implementation of the factory supports a specific handler or not.
+     *
+     * @param $handlerClass
+     *
+     * @return bool
      */
-    static protected $handlers = [
-        ResumableJSCheckHandler::class,
-        FileCheckHandler::class,
-    ];
+    protected static function filterHandler($handlerClass)
+    {
+        return is_subclass_of($handlerClass, AbstractCheckHandler::class);
+    }
 }

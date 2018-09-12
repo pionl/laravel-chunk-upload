@@ -11,14 +11,18 @@ use Mockery\Mock;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Config\FileConfig;
+use Pion\Laravel\ChunkUpload\Handler\CheckHandlerFactory;
 use Pion\Laravel\ChunkUpload\Handler\ChunksInRequestSimpleUploadHandler;
 use Pion\Laravel\ChunkUpload\Handler\ChunksInRequestUploadHandler;
 use Pion\Laravel\ChunkUpload\Handler\ContentRangeUploadHandler;
 use Pion\Laravel\ChunkUpload\Handler\DropZoneUploadHandler;
+use Pion\Laravel\ChunkUpload\Handler\FileCheckHandler;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Handler\NgFileUploadHandler;
+use Pion\Laravel\ChunkUpload\Handler\ResumableJSCheckHandler;
 use Pion\Laravel\ChunkUpload\Handler\ResumableJSUploadHandler;
 use Pion\Laravel\ChunkUpload\Handler\SingleUploadHandler;
+use Pion\Laravel\ChunkUpload\Handler\UploadHandlerFactory;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
@@ -58,6 +62,48 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
         $this->service->shouldAllowMockingProtectedMethods();
     }
 
+    public function testHandlersOfUploadHandlerFactory()
+    {
+        $this->app->shouldNotReceive('booted');
+        $this->config->shouldReceive('scheduleConfig')
+            ->once()
+            ->andReturn([]);
+
+        $this->config->shouldReceive('handlers')
+            ->once()
+            ->andReturn([]);
+
+        $this->service->boot();
+
+        $this->assertEquals([
+            ContentRangeUploadHandler::class,
+            ChunksInRequestUploadHandler::class,
+            ResumableJSUploadHandler::class,
+            DropZoneUploadHandler::class,
+            ChunksInRequestSimpleUploadHandler::class,
+            NgFileUploadHandler::class,
+        ], UploadHandlerFactory::getHandlers());
+    }
+
+    public function testHandlersOfCheckHandlerFactory()
+    {
+        $this->app->shouldNotReceive('booted');
+        $this->config->shouldReceive('scheduleConfig')
+            ->once()
+            ->andReturn([]);
+
+        $this->config->shouldReceive('handlers')
+            ->once()
+            ->andReturn([]);
+
+        $this->service->boot();
+
+        $this->assertEquals([
+            ResumableJSCheckHandler::class,
+            FileCheckHandler::class,
+        ], CheckHandlerFactory::getHandlers());
+    }
+
     public function testBootWithEmptyScheduleAndRegisterEmptyHandlers()
     {
         $this->app->shouldNotReceive('booted');
@@ -78,6 +124,9 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
             DropZoneUploadHandler::class,
             ChunksInRequestSimpleUploadHandler::class,
             NgFileUploadHandler::class,
+
+            ResumableJSCheckHandler::class,
+            FileCheckHandler::class,
         ], HandlerFactory::getHandlers());
     }
 
@@ -106,6 +155,10 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
             DropZoneUploadHandler::class,
             ChunksInRequestSimpleUploadHandler::class,
             NgFileUploadHandler::class,
+
+            ResumableJSCheckHandler::class,
+            FileCheckHandler::class,
+
             SingleUploadHandler::class,
             SingleUploadHandler::class,
         ], HandlerFactory::getHandlers());

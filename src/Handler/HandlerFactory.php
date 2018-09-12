@@ -12,7 +12,17 @@ abstract class HandlerFactory
      *
      * @var array
      */
-    protected static $handlers = [];
+    protected static $handlers = [
+        ContentRangeUploadHandler::class,
+        ChunksInRequestUploadHandler::class,
+        ResumableJSUploadHandler::class,
+        DropZoneUploadHandler::class,
+        ChunksInRequestSimpleUploadHandler::class,
+        NgFileUploadHandler::class,
+
+        ResumableJSCheckHandler::class,
+        FileCheckHandler::class,
+    ];
 
     /**
      * The fallback handler to use.
@@ -32,7 +42,7 @@ abstract class HandlerFactory
     public static function classFromRequest(Request $request, $fallbackClass = null)
     {
         /** @var AbstractUploadHandler $handlerClass */
-        foreach (static::$handlers as $handlerClass) {
+        foreach (static::getHandlers() as $handlerClass) {
             if ($handlerClass::canBeUsedForRequest($request)) {
                 return $handlerClass;
                 break;
@@ -48,6 +58,18 @@ abstract class HandlerFactory
         }
 
         return $fallbackClass;
+    }
+
+    /**
+     * Decides if the implementation of the factory supports a specific handler or not.
+     *
+     * @param $handlerClass
+     *
+     * @return bool
+     */
+    protected static function filterHandler($handlerClass)
+    {
+        return true;
     }
 
     /**
@@ -77,7 +99,15 @@ abstract class HandlerFactory
      */
     public static function getHandlers()
     {
-        return static::$handlers;
+        $handlers = static::$handlers;
+
+        foreach ($handlers as $key => $handlerClass) {
+            if (! static::filterHandler($handlerClass)) {
+                unset($handlers[$key]);
+            }
+        }
+
+        return array_values($handlers);
     }
 
     /**

@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Config\FileConfig;
-use Pion\Laravel\ChunkUpload\Handler\CheckHandlerFactory;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Handler\UploadHandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\CheckReceiver;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -96,7 +96,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
             $request = $app->make('request');
 
             // Build the check receiver
-            return new CheckReceiver($request, CheckHandlerFactory::classFromRequest($request));
+            return new CheckReceiver($request, HandlerFactory::classFromRequest($request));
         });
     }
 
