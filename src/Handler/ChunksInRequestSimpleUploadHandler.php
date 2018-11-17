@@ -2,6 +2,8 @@
 
 namespace Pion\Laravel\ChunkUpload\Handler;
 
+use Illuminate\Http\Request;
+
 /**
  * Class ChunksInRequestSimpleUploadHandler.
  *
@@ -24,4 +26,17 @@ class ChunksInRequestSimpleUploadHandler extends ChunksInRequestUploadHandler
      * @static string
      */
     const KEY_ALL_CHUNKS = 'totalChunks';
+
+    /**
+     * Returns current chunk from the request.
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getCurrentChunkFromRequest(Request $request)
+    {
+        // the chunk is indexed from 1 (for 5 chunks: 1,2,3,4,5)
+        return intval($request->get(static::KEY_CHUNK_NUMBER));
+    }
 }
