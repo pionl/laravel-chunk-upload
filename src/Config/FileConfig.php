@@ -21,7 +21,7 @@ class FileConfig extends AbstractConfig
      */
     public function handlers()
     {
-        return $this->get('hanlders', []);
+        return $this->get('handlers', []);
     }
 
     /**
