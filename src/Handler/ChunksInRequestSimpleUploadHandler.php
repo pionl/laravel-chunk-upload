@@ -2,6 +2,8 @@
 
 namespace Pion\Laravel\ChunkUpload\Handler;
 
+use Illuminate\Http\Request;
+
 /**
  * Class ChunksInRequestSimpleUploadHandler.
  *
