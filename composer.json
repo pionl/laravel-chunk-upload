@@ -15,14 +15,14 @@
     "test": "./vendor/bin/phpunit"
   },
   "require": {
-    "illuminate/http": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
-    "illuminate/console": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
-    "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
-    "illuminate/filesystem": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*"
+    "illuminate/http": "5.1 - 5.8",
+    "illuminate/console": "5.1 - 5.8",
+    "illuminate/support": "5.1 - 5.8",
+    "illuminate/filesystem": "5.1 - 5.8"
   },
   "require-dev": {
-    "laravel/laravel": "5.1.* || 5.2.* || 5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
-    "phpunit/phpunit": "5.7 || 6.0 || 7.0",
+    "laravel/laravel": "5.1 - 5.8",
+    "phpunit/phpunit": "5.7 || 6.0 || 7.0 || 7.5",
     "mockery/mockery": "^1.1.0",
     "friendsofphp/php-cs-fixer": "^2.12",
     "overtrue/phplint": "^1.1"
