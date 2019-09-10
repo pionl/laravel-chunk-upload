@@ -44,7 +44,7 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
         parent::__construct($name, $data, $dataName);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->app = Mockery::mock(\Illuminate\Contracts\Container\Container::class);

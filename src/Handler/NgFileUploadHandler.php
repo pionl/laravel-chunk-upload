@@ -2,8 +2,8 @@
 
 namespace Pion\Laravel\ChunkUpload\Handler;
 
-use Pion\Laravel\ChunkUpload\Exceptions\ChunkInvalidValueException;
 use Illuminate\Http\Request;
+use Pion\Laravel\ChunkUpload\Exceptions\ChunkInvalidValueException;
 
 /**
  * Class NgFileUploadHandler.

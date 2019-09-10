@@ -7,7 +7,6 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Application Test Suite">
@@ -18,9 +17,5 @@
         <whitelist>
             <directory suffix=".php">src/</directory>
         </whitelist>
-        <exclude>
-            <directory>vendor/</directory>
-            <directory>tests/</directory>
-        </exclude>
     </filter>
 </phpunit>

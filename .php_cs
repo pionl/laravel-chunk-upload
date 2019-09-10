@@ -14,5 +14,6 @@ return PhpCsFixer\Config::create()
         'align_multiline_comment' => true,
         'array_indentation' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'no_superfluous_phpdoc_tags' => false,
     ))
     ->setFinder($finder);

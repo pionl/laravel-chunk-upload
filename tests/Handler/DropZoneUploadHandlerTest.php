@@ -12,7 +12,7 @@ class DropZoneUploadHandlerTest extends TestCase
 {
     protected $file = null;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->file = UploadedFile::fake()->create('test');
