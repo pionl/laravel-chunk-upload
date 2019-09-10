@@ -79,7 +79,7 @@ class ChunkUploadServiceProvider extends ServiceProvider
             $request = $app->make('request');
 
             // Get the first file object - must be converted instances of UploadedFile
-            $file = array_first($request->allFiles());
+            $file = Arr::first($request->allFiles());
 
             // Build the file receiver
             return new FileReceiver($file, $request, HandlerFactory::classFromRequest($request));
