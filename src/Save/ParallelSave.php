@@ -3,12 +3,13 @@
 namespace Pion\Laravel\ChunkUpload\Save;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\Exceptions\MissingChunkFilesException;
 use Pion\Laravel\ChunkUpload\FileMerger;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
-use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
@@ -87,7 +88,7 @@ class ParallelSave extends ChunkSave
         );
 
         return $this->chunkStorage->files(function ($file) use ($chunkFileName) {
-            return false === str_contains($file, $chunkFileName);
+            return false === Str::contains($file, $chunkFileName);
         });
     }
 

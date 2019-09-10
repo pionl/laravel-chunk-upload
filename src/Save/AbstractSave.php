@@ -2,10 +2,10 @@
 
 namespace Pion\Laravel\ChunkUpload\Save;
 
+use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Symfony\Component\HttpFoundation\File\File;
-use Illuminate\Http\UploadedFile;
 
 /**
  * Class AbstractSave.
@@ -95,7 +95,7 @@ abstract class AbstractSave
     /**
      * Returns always the uploaded chunk file.
      *
-     * @return null|UploadedFile
+     * @return UploadedFile|null
      */
     public function getUploadedFile()
     {

@@ -3,13 +3,13 @@
 namespace Pion\Laravel\ChunkUpload\Receiver;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Save\SingleSave;
-use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 class FileReceiver

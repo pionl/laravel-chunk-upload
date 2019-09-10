@@ -2,11 +2,11 @@
 
 namespace Pion\Laravel\ChunkUpload\Save;
 
+use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\FileMerger;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
-use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 class ChunkSave extends AbstractSave
@@ -122,7 +122,7 @@ class ChunkSave extends AbstractSave
      * Returns the uploaded file if the chunk if is not completed, otherwise passes the
      * final chunk file.
      *
-     * @return null|UploadedFile
+     * @return UploadedFile|null
      */
     public function getFile()
     {
