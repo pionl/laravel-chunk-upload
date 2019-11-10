@@ -32,7 +32,7 @@ class ChunkStorage
     /**
      * The disk that holds the chunk files.
      *
-     * @var FilesystemAdapter
+     * @var \Illuminate\Filesystem\FilesystemAdapter
      */
     protected $disk;
 
@@ -172,7 +172,7 @@ class ChunkStorage
     }
 
     /**
-     * @return FilesystemAdapter
+     * @return \Illuminate\Filesystem\FilesystemAdapter
      */
     public function disk()
     {

@@ -25,7 +25,10 @@
     "phpunit/phpunit": "5.7 || 6.0 || 7.0 || 7.5 || 8.4",
     "mockery/mockery": "^1.1.0",
     "friendsofphp/php-cs-fixer": "^2.16.0",
-    "overtrue/phplint": "^1.1"
+    "overtrue/phplint": "^1.1",
+    "nunomaduro/larastan": "^0.4.3",
+    "phpstan/phpstan-shim": "^0.11.19",
+    "orchestra/testbench": "^4.3"
   },
   "autoload": {
     "psr-4": {
