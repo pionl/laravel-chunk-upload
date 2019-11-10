@@ -17,7 +17,6 @@ class SingleUploadHandler extends AbstractHandler
      * Returns the chunks ave instance for saving.
      *
      * @param ChunkStorage   $chunkStorage the chunk storage
-     * @param AbstractConfig $config       the config manager
      *
      * @return SingleSave
      */

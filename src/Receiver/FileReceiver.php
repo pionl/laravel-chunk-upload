@@ -97,6 +97,6 @@ class FileReceiver
             return false;
         }
 
-        return $this->handler->startSaving($this->chunkStorage, $this->config);
+        return $this->handler->startSaving($this->chunkStorage);
     }
 }
