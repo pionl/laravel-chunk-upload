@@ -3,6 +3,7 @@
 namespace Pion\Laravel\ChunkUpload\Save;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
@@ -31,10 +32,10 @@ class ParallelSave extends ChunkSave
     /**
      * ParallelSave constructor.
      *
-     * @param UploadedFile                              $file         the uploaded file (chunk file)
-     * @param AbstractHandler|HandleParallelUploadTrait $handler      the handler that detected the correct save method
-     * @param ChunkStorage                              $chunkStorage the chunk storage
-     * @param AbstractConfig                            $config       the config manager
+     * @param UploadedFile    $file         the uploaded file (chunk file)
+     * @param AbstractHandler $handler      the handler that detected the correct save method
+     * @param ChunkStorage    $chunkStorage the chunk storage
+     * @param AbstractConfig  $config       the config manager
      *
      * @throws ChunkSaveException
      */
@@ -79,7 +80,7 @@ class ParallelSave extends ChunkSave
     /**
      * Searches for all chunk files.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     protected function getSavedChunksFiles()
     {

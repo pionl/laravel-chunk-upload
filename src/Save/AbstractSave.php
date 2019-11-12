@@ -105,8 +105,8 @@ abstract class AbstractSave
     /**
      * Passes all the function into the file.
      *
-     * @param $name      string
-     * @param $arguments array
+     * @param string $name
+     * @param array  $arguments
      *
      * @return mixed
      *

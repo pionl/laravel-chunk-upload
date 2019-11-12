@@ -2,6 +2,7 @@
 
 namespace Pion\Laravel\ChunkUpload\Save;
 
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
@@ -154,7 +155,7 @@ class ChunkSave extends AbstractSave
         $file = $this->getChunkFilePath();
 
         $this->handleChunkFile($file)
-            ->tryToBuildFullFileFromChunks();
+             ->tryToBuildFullFileFromChunks();
     }
 
     /**
@@ -242,7 +243,7 @@ class ChunkSave extends AbstractSave
     /**
      * Returns the disk adapter for the chunk.
      *
-     * @return \Illuminate\Filesystem\FilesystemAdapter
+     * @return FilesystemContract
      */
     public function chunkDisk()
     {

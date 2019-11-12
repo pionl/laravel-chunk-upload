@@ -47,7 +47,7 @@ abstract class AbstractConfig
     /**
      * Returns the schedule config array.
      *
-     * @return array<enable,cron>
+     * @return array{enable: bool, cron: string}
      */
     abstract public function scheduleConfig();
 

@@ -37,7 +37,7 @@ class HandlerFactory
      */
     public static function classFromRequest(Request $request, $fallbackClass = null)
     {
-        /** @var AbstractHandler $handlerClass */
+        /** @var AbstractHandler|string $handlerClass */
         foreach (static::$handlers as $handlerClass) {
             if ($handlerClass::canBeUsedForRequest($request)) {
                 return $handlerClass;

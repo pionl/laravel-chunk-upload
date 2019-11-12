@@ -32,7 +32,7 @@ class ChunkStorage
     /**
      * The disk that holds the chunk files.
      *
-     * @var FilesystemAdapter
+     * @var FilesystemContract
      */
     protected $disk;
 
@@ -172,7 +172,7 @@ class ChunkStorage
     }
 
     /**
-     * @return FilesystemAdapter
+     * @return FilesystemContract
      */
     public function disk()
     {
