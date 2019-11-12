@@ -11,7 +11,7 @@
   "scripts": {
     "lint:fix": "./vendor/bin/php-cs-fixer fix --config=.php_cs --using-cache false",
     "lint:check": "./vendor/bin/phplint",
-    "lint": "composer run-script lint && composer run-script lint:check",
+    "lint": "composer run-script lint:fix && composer run-script lint:check",
     "test": "./vendor/bin/phpunit"
   },
   "require": {
