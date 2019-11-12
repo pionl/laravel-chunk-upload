@@ -187,7 +187,7 @@ class ChunkStorage
     }
 
     /**
-     * @return \Illuminate\Filesystem\FilesystemAdapter
+     * @return FilesystemContract
      */
     public function disk()
     {

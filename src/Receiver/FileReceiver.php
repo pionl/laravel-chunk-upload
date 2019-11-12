@@ -25,7 +25,7 @@ class FileReceiver
     protected $file;
 
     /**
-     * The handler that detects what upload proccess is beeing used.
+     * The handler that detects what upload process is being used.
      *
      * @var AbstractHandler
      */
@@ -93,7 +93,7 @@ class FileReceiver
      */
     public function receive()
     {
-        if (false === is_object($this->handler)) {
+        if (false == is_object($this->handler)) {
             return false;
         }
 

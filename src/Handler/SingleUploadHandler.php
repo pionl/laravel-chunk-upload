@@ -2,7 +2,6 @@
 
 namespace Pion\Laravel\ChunkUpload\Handler;
 
-use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Save\SingleSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
@@ -16,7 +15,7 @@ class SingleUploadHandler extends AbstractHandler
     /**
      * Returns the chunks ave instance for saving.
      *
-     * @param ChunkStorage   $chunkStorage the chunk storage
+     * @param ChunkStorage $chunkStorage the chunk storage
      *
      * @return SingleSave
      */
@@ -32,7 +31,7 @@ class SingleUploadHandler extends AbstractHandler
      */
     public function getChunkFileName()
     {
-        return null; // never used
+        return ''; // never used
     }
 
     /**

@@ -125,7 +125,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     /**
      * Checks if the chunk is last.
      *
-     * @return int
+     * @return bool
      */
     public function isLastChunk()
     {

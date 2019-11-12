@@ -36,21 +36,21 @@ class ContentRangeUploadHandler extends AbstractHandler
     /**
      * Current chunk start bytes.
      *
-     * @var int
+     * @var float
      */
     protected $bytesStart = 0;
 
     /**
      * Current chunk bytes end.
      *
-     * @var int
+     * @var float
      */
     protected $bytesEnd = 0;
 
     /**
      * The files total bytes.
      *
-     * @var int
+     * @var float
      */
     protected $bytesTotal = 0;
 
@@ -153,7 +153,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     /**
      * Returns the chunks count.
      *
-     * @return int
+     * @return bool
      */
     public function isLastChunk()
     {
@@ -172,7 +172,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int returns the starting bytes for current request
+     * @return float returns the starting bytes for current request
      */
     public function getBytesStart()
     {
@@ -180,7 +180,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int returns the ending bytes for current request
+     * @return float returns the ending bytes for current request
      */
     public function getBytesEnd()
     {
@@ -188,7 +188,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int returns the total bytes for the file
+     * @return float returns the total bytes for the file
      */
     public function getBytesTotal()
     {
