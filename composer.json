@@ -1,5 +1,5 @@
 {
-  "name": "pion/laravel-chunk-upload",
+  "name": "netipar/laravel-chunk-upload",
   "description": "Service for chunked upload with several js providers",
   "license": "MIT",
   "authors": [
@@ -43,6 +43,5 @@
            "Pion\\Laravel\\ChunkUpload\\Providers\\ChunkUploadServiceProvider"
         ]
      }
-  },
-  "minimum-stability": "stable"
+  }
 }
