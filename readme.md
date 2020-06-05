@@ -1,4 +1,4 @@
-# Laravel chunked upload
+# Laravel Chunk Upload
 
 [![Total Downloads](https://poser.pugx.org/pion/laravel-chunk-upload/downloads?format=flat)](https://packagist.org/packages/pion/laravel-chunk-upload)
 [![Build Status](https://travis-ci.org/pionl/laravel-chunk-upload.svg?branch=master)](https://travis-ci.org/pionl/laravel-chunk-upload)
@@ -8,11 +8,15 @@
 
 ## Introduction
 
-Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. Currently supports **Laravel 5+ (with 5.5 Auto discovery)** with features as [cross domains requests](https://github.com/pionl/laravel-chunk-upload/wiki/cross-domain-requests), automatic clean schedule and easy usage.
+> Supports Laravel from 5.2 to 7.
 
+Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. 
 
-> Currently working on Laravel 7.* support (with older Laraver versions) - change the composer.json repository with desired pull request + new integration testing to help me update the package quicker.
+Supports feature as [cross domains requests](https://github.com/pionl/laravel-chunk-upload/wiki/cross-domain-requests), automatic clean schedule and easy usage.
 
+Example repository with integration test can be found in [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example).
+
+> Before adding pull requests read CONTRIBUTION.md
 
 ## Installation
 
@@ -21,26 +25,19 @@ Easy to use service/library for chunked upload with supporting multiple JS libra
 ```
 composer require pion/laravel-chunk-upload
 ```
-    
-**2. Add the service provider (Laravel 5.4 and below - supports Auto discovery)**
 
-```php
-\Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class
-```    
-
-**3. Publish the config (Laravel 5.2 and above, optional)**
+**2. Publish the config (Optional)**
 
 ```
 php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
 ```
 
-
 ## Usage
 
-Setup is composed in 3 steps:
+Setup consists of 3 steps:
 
 1. Integrate your controller that will handle the file upload. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/controller)
-2. Setting route for the controller. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/routing)
+2. Set a route for the controller. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/routing)
 2. Choose your front-end provider below (we support multiple providers in single controller) 
 
 | Library | Wiki | single & chunk upload | simultaneous uploads | In [example project](https://github.com/pionl/laravel-chunk-upload-example) | Author |
@@ -54,7 +51,7 @@ Setup is composed in 3 steps:
 
 **Simultaneous uploads:** The library must send last chunk as last, otherwise the merging will not work correctly.
 
-**Custom disk:** At this moment I recommend to use the basic storage setup (not linking public folder). It is not tested (Have free time to ensure it is working? PR the changes!).
+**Custom disk:** At this moment I recommend using the basic storage setup (not linking public folder). It is not tested (Have free time to ensure it is working? PR the changes!).
 
 For more detailed information (tips) use the [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki) or for working example continue to separate repository with [example](https://github.com/pionl/laravel-chunk-upload-example).
 
@@ -63,7 +60,23 @@ For more detailed information (tips) use the [Wiki](https://github.com/pionl/lar
 Can be found in [releases](https://github.com/pionl/laravel-chunk-upload/releases).
 
 ## Contribution or extending
+
+> Read contribution before your PR (and use example repository to run integration tests).
+
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contributions are welcome.
+
+## Compatibility
+
+* 7.* (last tested on v7.16.1)
+* 6.* (last tested on v6.18.20)
+* 5.8.* (last tested on v5.8.38)
+* 5.7.* (last tested on v5.7.29)
+* 5.6.* (last tested on v5.6.40)
+* 5.5.* (last tested on v5.5.49)
+* 5.4.* (last tested on v5.4.36)
+* 5.3.* (last tested on v5.3.31)
+* 5.2.* (last tested on v5.2.45)
+
 
 ## Copyright and License
 
@@ -71,4 +84,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contri
 was written by [Martin Kluska](http://kluska.cz) and is released under the 
 [MIT License](LICENSE.md).
 
-Copyright (c) 2016-2018 Martin Kluska
+Copyright (c) 2016 and beyond Martin Kluska
