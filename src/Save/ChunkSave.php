@@ -221,7 +221,6 @@ class ChunkSave extends AbstractSave
             $finalPath,
             $this->file->getClientOriginalName(),
             $this->file->getClientMimeType(),
-            filesize($finalPath),
             $this->file->getError(),
             // we must pass the true as test to force the upload file
             // to use a standard copy method, not move uploaded file

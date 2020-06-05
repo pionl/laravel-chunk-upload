@@ -1,4 +1,4 @@
-# Laravel chunked upload
+# Laravel Chunk Upload
 
 [![Total Downloads](https://poser.pugx.org/pion/laravel-chunk-upload/downloads?format=flat)](https://packagist.org/packages/pion/laravel-chunk-upload)
 [![Build Status](https://travis-ci.org/pionl/laravel-chunk-upload.svg?branch=master)](https://travis-ci.org/pionl/laravel-chunk-upload)
@@ -8,8 +8,12 @@
 
 ## Introduction
 
-Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. Currently supports **Laravel 5+ (with 5.5 Auto discovery)** with features as [cross domains requests](https://github.com/pionl/laravel-chunk-upload/wiki/cross-domain-requests), automatic clean schedule and easy usage.
+Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. 
+Currently supports **Laravel 7+** with features as [cross domains requests](https://github.com/pionl/laravel-chunk-upload/wiki/cross-domain-requests), automatic clean schedule and easy usage.
 
+## Compatibility
+Laravel Chunk Upload ^2.0 requires php 7.2 - 7.4 and Laravel ^7.0.
+For compatibility with older versions of Laravel, please use the ^1.0 version of this project.
 
 ## Installation
 
@@ -18,14 +22,8 @@ Easy to use service/library for chunked upload with supporting multiple JS libra
 ```
 composer require pion/laravel-chunk-upload
 ```
-    
-**2. Add the service provider (Laravel 5.4 and below - supports Auto discovery)**
 
-```php
-\Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class
-```    
-
-**3. Publish the config (Laravel 5.2 and above, optional)**
+**2. Publish the config (Optional)**
 
 ```
 php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
@@ -34,10 +32,10 @@ php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkU
 
 ## Usage
 
-Setup is composed in 3 steps:
+Setup consists of 3 steps:
 
 1. Integrate your controller that will handle the file upload. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/controller)
-2. Setting route for the controller. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/routing)
+2. Set a route for the controller. [How to](https://github.com/pionl/laravel-chunk-upload/wiki/routing)
 2. Choose your front-end provider below (we support multiple providers in single controller) 
 
 | Library | Wiki | single & chunk upload | simultaneous uploads | In [example project](https://github.com/pionl/laravel-chunk-upload-example) | Author |
