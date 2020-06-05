@@ -1,4 +1,5 @@
 # Contribution or overriding
+
 Are welcome. To add a new provider just add a new Handler (which extends AbstractHandler). Then implement the chunk
 upload and progress.
 
@@ -6,6 +7,7 @@ upload and progress.
 2. Create your bugfix/feature branch and write your (try well-commented) code.
 3. Commit your changes (and your tests) and push to your branch.
 4. Create a new pull request against this package's `master` branch.
+5. **Test your code in [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example)**.
 
 ## Pull Requests
 
