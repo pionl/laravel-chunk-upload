@@ -16,6 +16,7 @@
   },
   "require": {
     "illuminate/http": "5.1 - 5.8|^6.0|^7.0",
+
     "illuminate/console": "5.1 - 5.8|^6.0|^7.0",
     "illuminate/support": "5.1 - 5.8|^6.0|^7.0",
     "illuminate/filesystem": "5.1 - 5.8|^6.0|^7.0"
