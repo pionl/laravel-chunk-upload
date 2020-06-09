@@ -1,5 +1,5 @@
 {
-  "name": "pion/laravel-chunk-upload",
+  "name": "lynxbusiness/laravel-chunk-upload",
   "description": "Service for chunked upload with several js providers",
   "license": "MIT",
   "authors": [
