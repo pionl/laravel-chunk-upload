@@ -16,7 +16,7 @@ Easy to use service/library for chunked upload with supporting multiple JS libra
 **1. Install via composer**
 
 ```
-composer require pion/laravel-chunk-upload
+composer require lynxbusiness/laravel-chunk-upload
 ```
     
 **2. Add the service provider (Laravel 5.4 and below - supports Auto discovery)**
