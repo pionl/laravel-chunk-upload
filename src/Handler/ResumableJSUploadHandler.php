@@ -14,7 +14,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     const CHUNK_UUID_INDEX = 'resumableIdentifier';
     const CHUNK_NUMBER_INDEX = 'resumableChunkNumber';
     const TOTAL_CHUNKS_INDEX = 'resumableTotalChunks';
-
+    const TOTAL_BYTES_INDEX = 'resumableTotalSize';
     /**
      * The Resumable file uuid for unique chunk upload session.
      *
@@ -68,6 +68,18 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     protected function getTotalChunksFromRequest(Request $request)
     {
         return $request->get(self::TOTAL_CHUNKS_INDEX);
+    }
+
+    /**
+     * Returns total bytes from the request.
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getTotalBytesFromRequest(Request $request)
+    {
+        return intval($request->get(self::TOTAL_BYTES_INDEX, 0));
     }
 
     /**

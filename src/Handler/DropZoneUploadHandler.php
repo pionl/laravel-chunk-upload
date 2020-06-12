@@ -73,6 +73,18 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
+     * Returns total bytes from the request.
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getTotalBytesFromRequest(Request $request)
+    {
+        return intval($request->get(self::CHUNK_FILE_SIZE_INDEX, 0));
+    }
+
+    /**
      * Checks if the current abstract handler can be used via HandlerFactory.
      *
      * @param Request $request

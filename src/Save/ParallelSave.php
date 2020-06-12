@@ -110,9 +110,11 @@ class ParallelSave extends ChunkSave
         // Get chunk files that matches the current chunk file name, also sort the chunk
         // files.
         $finalFilePath = $this->getChunkDirectory(true).'./'.$this->handler()->createChunkFileName();
-        // Delete the file if exists
+
+        // In ParallelSave Few Chunks can be with flag isLastChunk = true
+        // If File exists then another process Merging Chunks
         if (file_exists($finalFilePath)) {
-            @unlink($finalFilePath);
+          return;
         }
 
         $fileMerger = new FileMerger($finalFilePath);

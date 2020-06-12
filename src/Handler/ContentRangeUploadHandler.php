@@ -55,6 +55,12 @@ class ContentRangeUploadHandler extends AbstractHandler
     protected $bytesTotal = 0;
 
     /**
+     * @var loadedSize
+     */
+ 
+    protected $loadedSize = 0;
+
+    /**
      * AbstractReceiver constructor.
      *
      * @param Request        $request
@@ -216,7 +222,20 @@ class ContentRangeUploadHandler extends AbstractHandler
         if (0 == $this->getBytesTotal()) {
             return 0;
         }
+        if ($this->loadedSize) {
+          return ceil($this->loadedSize / $this->getBytesTotal() * 100);
+        }
 
         return ceil($this->getBytesEnd() / $this->getBytesTotal() * 100);
+    }
+
+    public function getFullFileSize()
+    {
+        return $this->getBytesTotal();
+    }
+
+    public function setLoadedSize($size)
+    {
+        $this->loadedSize = $size;
     }
 }

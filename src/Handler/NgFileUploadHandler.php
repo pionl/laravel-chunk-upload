@@ -120,4 +120,17 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
             ceil($request->get(static::KEY_TOTAL_SIZE) / $request->get(static::KEY_CHUNK_SIZE))
         );
     }
+
+    /**
+     * Returns total bytes from the request.
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getTotalBytesFromRequest(Request $request)
+    {
+        return intval($request->get(self::KEY_TOTAL_SIZE, 0));
+    }
+
 }

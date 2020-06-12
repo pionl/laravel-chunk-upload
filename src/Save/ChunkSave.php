@@ -3,11 +3,14 @@
 namespace Pion\Laravel\ChunkUpload\Save;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\FileMerger;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ChunkSave extends AbstractSave
 {
@@ -43,6 +46,12 @@ class ChunkSave extends AbstractSave
     protected $chunkStorage;
 
     /**
+     * @var fullFileSize
+     */
+ 
+    protected $fullFileSize;
+
+    /**
      * AbstractUpload constructor.
      *
      * @param UploadedFile    $file         the uploaded file (chunk file)
@@ -59,6 +68,7 @@ class ChunkSave extends AbstractSave
 
         $this->isLastChunk = $handler->isLastChunk();
         $this->chunkFileName = $handler->getChunkFileName();
+        $this->fullFileSize = $handler->getFullFileSize();
 
         // build the full disk path
         $this->chunkFullFilePath = $this->getChunkFilePath(true);
@@ -73,7 +83,8 @@ class ChunkSave extends AbstractSave
      */
     public function isFinished()
     {
-        return parent::isFinished() && $this->isLastChunk;
+        $this->isLastChunk = $this->recalcLastChunk ();
+        return parent::isFinished() && $this->isLastChunk && $this->fullChunkFile;
     }
 
     /**
@@ -126,7 +137,7 @@ class ChunkSave extends AbstractSave
      */
     public function getFile()
     {
-        if ($this->isLastChunk) {
+        if ($this->isLastChunk and $this->fullChunkFile) {
             return $this->fullChunkFile;
         }
 
@@ -165,6 +176,8 @@ class ChunkSave extends AbstractSave
     protected function tryToBuildFullFileFromChunks()
     {
         // build the last file because of the last chunk
+        $this->isLastChunk = $this->recalcLastChunk ();
+
         if ($this->isLastChunk) {
             $this->buildFullFileFromChunks();
         }
@@ -259,5 +272,57 @@ class ChunkSave extends AbstractSave
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
+    }
+
+    // Before Merging we have to check if all chunks are uploaded.
+    // Standart test failes if some chunks are uploaded after LastChunk
+    protected function recalcLastChunk ()
+    {
+        // Lets count number of files first
+	$chunkFileName = preg_replace(
+           "/\.[\d]+\.".ChunkStorage::CHUNK_EXTENSION.'$/', '', $this->chunkFileName
+	);
+	$files = ChunkStorage::storage()->files(function ($file) use ($chunkFileName) {
+            return false === Str::contains($file, $chunkFileName);
+        });
+
+        // Lets calc uploaded size
+        $uploadedsize = 0;
+        foreach ($files as $chunk_file) {
+          $chunk_file = storage_path("app/".$chunk_file);
+          if (file_exists($chunk_file)) {
+            $uploadedsize = $uploadedsize + filesize($chunk_file);
+          }
+        }
+        $this->handler()->setLoadedSize ($uploadedsize);
+
+//        Log::info('recalcLastChunk: ' . 'totalsize: ' . strval($this->fullFileSize) . ' chunkfile: ' . $this->chunkFileName);
+//        Log::info('recalcLastChunk: ' . $chunkFileName . ' totalfiles: ' . strval(count($files)) . ' totalchunks: ' . strval( $this->handler()->getTotalChunks()) );
+//        Log::info('recalcLastChunk: ' . 'uploadsize: ' . strval($uploadedsize));
+
+        // File merged
+        if (count ($files) === 0) { 
+          if ($this->fullChunkFile) {
+            return true; 
+          }
+          else {
+            return false;
+          }
+        }
+        // Cant find all Chunks
+        if (count($files) < $this->handler()->getTotalChunks()) {
+          return false; 
+        }
+
+        // No information from Handler about total size of file  
+        if ($this->fullFileSize === 0) { 
+          return $this->isLastChunk; 
+        }
+
+        if ($this->fullFileSize === $uploadedsize) { 
+          return true; 
+        }
+ 
+        return $this->isLastChunk;
     }
 }

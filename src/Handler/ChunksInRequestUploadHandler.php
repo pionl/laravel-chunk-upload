@@ -33,6 +33,13 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     const KEY_ALL_CHUNKS = 'chunks';
 
     /**
+     * Key for number of all chunks.
+     *
+     * @static string
+     */
+    const KEY_TOTAL_BYTES = 'filesize';
+
+    /**
      * The current chunk progress.
      *
      * @var int
@@ -47,6 +54,19 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     protected $chunksTotal = 0;
 
     /**
+     * The files total bytes.
+     *
+     * @var int
+     */
+    protected $bytesTotal = 0;
+
+    /**
+     * @var loadedSize
+     */
+ 
+    protected $loadedSize = 0;
+
+    /**
      * AbstractReceiver constructor.
      *
      * @param Request        $request
@@ -59,6 +79,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
 
         $this->currentChunk = $this->getCurrentChunkFromRequest($request);
         $this->chunksTotal = $this->getTotalChunksFromRequest($request);
+        $this->bytesTotal = $this->getTotalBytesFromRequest($request);
     }
 
     /**
@@ -110,6 +131,18 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     protected function getTotalChunksFromRequest(Request $request)
     {
         return intval($request->get(static::KEY_ALL_CHUNKS));
+    }
+
+    /**
+     * Returns total bytes from the request.
+     *
+     * @param Request $request
+     *
+     * @return int
+     */
+    protected function getTotalBytesFromRequest(Request $request)
+    {
+        return intval($request->get(static::KEY_TOTAL_BYTES));
     }
 
     /**
@@ -178,6 +211,25 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     public function getPercentageDone()
     {
+        if ($this->loadedSize) {
+          return ceil($this->loadedSize / $this->getBytesTotal() * 100);
+        }
+
         return ceil($this->currentChunk / $this->chunksTotal * 100);
+    }
+
+    public function getBytesTotal()
+    {
+        return $this->bytesTotal;
+    }
+
+    public function getFullFileSize()
+    {
+        return $this->getBytesTotal();
+    }
+
+    public function setLoadedSize($size)
+    {
+        $this->loadedSize = $size;
     }
 }
