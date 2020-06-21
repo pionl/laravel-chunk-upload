@@ -26,6 +26,8 @@ class DropZoneUploadHandlerTest extends TestCase
 
         $this->assertEquals(1, $contentRange->getTotalChunks());
         $this->assertEquals(1, $contentRange->getCurrentChunk());
+        $this->assertEquals(0, $contentRange->getPercentageDone());
+        $contentRange->setPercentageDone(100);
         $this->assertEquals(100, $contentRange->getPercentageDone());
         $this->assertFalse($contentRange->isChunkedUpload());
     }
@@ -75,6 +77,8 @@ class DropZoneUploadHandlerTest extends TestCase
 
         $this->assertEquals(2, $contentRange->getTotalChunks());
         $this->assertEquals(1, $contentRange->getCurrentChunk());
+        $this->assertEquals(0, $contentRange->getPercentageDone());
+        $contentRange->setPercentageDone(50);
         $this->assertEquals(50, $contentRange->getPercentageDone());
         $this->assertTrue($contentRange->isChunkedUpload());
         $this->assertTrue($contentRange->isFirstChunk());
@@ -93,6 +97,8 @@ class DropZoneUploadHandlerTest extends TestCase
 
         $this->assertEquals(2, $contentRange->getTotalChunks());
         $this->assertEquals(2, $contentRange->getCurrentChunk());
+        $this->assertEquals(0, $contentRange->getPercentageDone());
+        $contentRange->setPercentageDone(100);
         $this->assertEquals(100, $contentRange->getPercentageDone());
         $this->assertTrue($contentRange->isChunkedUpload());
         $this->assertFalse($contentRange->isFirstChunk());
