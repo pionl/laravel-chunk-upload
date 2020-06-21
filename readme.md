@@ -11,6 +11,9 @@
 Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. Currently supports **Laravel 5+ (with 5.5 Auto discovery)** with features as [cross domains requests](https://github.com/pionl/laravel-chunk-upload/wiki/cross-domain-requests), automatic clean schedule and easy usage.
 
 
+> Currently working on Laravel 7.* support (with older Laraver versions) - change the composer.json repository with desired pull request + new integration testing to help me update the package quicker.
+
+
 ## Installation
 
 **1. Install via composer**
