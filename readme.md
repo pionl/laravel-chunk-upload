@@ -8,15 +8,15 @@
 
 ## Introduction
 
-> Supports Laravel from 5.2 to 7.
+> Supports Laravel from 5.2 to 7 (covered by integration tests on all versions).
 
 Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. 
 
 Supports feature as [cross domains requests](https://github.com/pionl/laravel-chunk-upload/wiki/cross-domain-requests), automatic clean schedule and easy usage.
 
-Example repository with integration test can be found in [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example).
+Example repository with **integration tests** can be found in [laravel-chunk-upload-example](https://github.com/pionl/laravel-chunk-upload-example).
 
-> Before adding pull requests read CONTRIBUTION.md
+> Before adding pull requests read CONTRIBUTION.md. Help me fix your bugs by debugging your issues using XDEBUG (and try to do a fix - it will help you become better).
 
 ## Installation
 

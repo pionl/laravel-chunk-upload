@@ -11,6 +11,11 @@ trait HandleParallelUploadTrait
     protected $percentageDone = 0;
 
     /**
+     * @return int
+     */
+    abstract public function getTotalChunks();
+
+    /**
      * Returns the chunk save instance for saving.
      *
      * @param ChunkStorage $chunkStorage the chunk storage
@@ -28,5 +33,24 @@ trait HandleParallelUploadTrait
             $chunkStorage,
             $this->config
         );
+    }
+
+    public function getPercentageDone()
+    {
+        return $this->percentageDone;
+    }
+
+    /**
+     * Sets percentegage done - should be calculated from chunks count.
+     *
+     * @param int $percentageDone
+     *
+     * @return HandleParallelUploadTrait
+     */
+    public function setPercentageDone(int $percentageDone)
+    {
+        $this->percentageDone = $percentageDone;
+
+        return $this;
     }
 }

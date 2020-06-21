@@ -20,13 +20,17 @@ use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
  */
 class ParallelSave extends ChunkSave
 {
-    protected $totalChunks;
     /**
      * Stored on construct - the file is moved and isValid will return false.
      *
      * @var bool
      */
     protected $isFileValid;
+
+    /**
+     * @var array
+     */
+    protected $foundChunks = [];
 
     /**
      * ParallelSave constructor.
@@ -68,12 +72,16 @@ class ParallelSave extends ChunkSave
         // Move the uploaded file to chunk folder
         $this->file->move($this->getChunkDirectory(true), $this->chunkFileName);
 
-        return $this;
-    }
+        // Found current number of chunks to determine if we have all chunks (we cant use the
+        // index because order of chunks are different.
+        $this->foundChunks = $this->getSavedChunksFiles()->all();
 
-    protected function tryToBuildFullFileFromChunks()
-    {
-        return parent::tryToBuildFullFileFromChunks();
+        $percentage = floor((count($this->foundChunks)) / $this->handler()->getTotalChunks() * 100);
+        // We need to update the handler with correct percentage
+        $this->handler()->setPercentageDone($percentage);
+        $this->isLastChunk = $percentage >= 100;
+
+        return $this;
     }
 
     /**
@@ -98,7 +106,7 @@ class ParallelSave extends ChunkSave
      */
     protected function buildFullFileFromChunks()
     {
-        $chunkFiles = $this->getSavedChunksFiles()->all();
+        $chunkFiles = $this->foundChunks;
 
         if (0 === count($chunkFiles)) {
             throw new MissingChunkFilesException();
@@ -109,7 +117,9 @@ class ParallelSave extends ChunkSave
 
         // Get chunk files that matches the current chunk file name, also sort the chunk
         // files.
-        $finalFilePath = $this->getChunkDirectory(true).'./'.$this->handler()->createChunkFileName();
+        $rootDirectory = $this->getChunkDirectory(true);
+        $finalFilePath = $rootDirectory.'./'.$this->handler()->createChunkFileName();
+
         // Delete the file if exists
         if (file_exists($finalFilePath)) {
             @unlink($finalFilePath);
