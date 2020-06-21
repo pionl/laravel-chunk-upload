@@ -50,7 +50,9 @@ class ChunkFile
 
     public function getAbsolutePath()
     {
-        return $this->storage->disk()->getDriver()->getAdapter()->getPathPrefix() . $this->path;
+        $pathPrefix = $this->storage->getDiskPathPrefix();
+
+        return $pathPrefix.'/'.$this->path;
     }
 
     /**
