@@ -8,7 +8,7 @@
 
 ## Introduction
 
-> Supports Laravel from 5.2 to 7 (covered by integration tests on all versions).
+> Supports Laravel from 5.2 to 8 (covered by integration tests on all versions).
 
 Easy to use service/library for chunked upload with supporting multiple JS libraries on top of Laravel's file upload with low memory footprint in mind. 
 
@@ -67,6 +67,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contri
 
 ## Compatibility
 
+* 8.* (last tested on v8.0)
 * 7.* (last tested on v7.16.1)
 * 6.* (last tested on v6.18.20)
 * 5.8.* (last tested on v5.8.38)
