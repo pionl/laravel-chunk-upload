@@ -18,6 +18,7 @@ class HandlerFactory
         DropZoneUploadHandler::class,
         ChunksInRequestSimpleUploadHandler::class,
         NgFileUploadHandler::class,
+        FilePondUploadHandler::class
     ];
 
     /**
