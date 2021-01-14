@@ -55,6 +55,19 @@ abstract class AbstractHandler
         return false;
     }
 
+    public static function getUploadedFile($fileIndexOrFile, Request $request)
+    {
+        $file = is_object($fileIndexOrFile)
+            ? $fileIndexOrFile
+            : $request->file($fileIndexOrFile);
+
+        if(is_array($file) && $file[0] instanceof UploadedFile) {
+            $file = $file[0];
+        }
+
+        return $file;
+    }
+
     /**
      * Checks the current setup if session driver was booted - if not, it will generate random hash.
      *
