@@ -9,7 +9,7 @@ return [
          * Returns the folder name of the chunks. The location is in storage/app/{folder_name}
          */
         'chunks' => 'chunks',
-        'disk' => 'local',
+        'disk' => env('CHUNK_UPLOAD_DISK', 'local'),
     ],
     'clear' => [
         /*
@@ -17,7 +17,7 @@ return [
          */
         'timestamp' => '-3 HOURS',
         'schedule' => [
-            'enabled' => true,
+            'enabled' => env('CHUNK_UPLOAD_CLEAR_CHUNKS',  true),
             'cron' => '25 * * * *', // run every hour on the 25th minute
         ],
     ],
