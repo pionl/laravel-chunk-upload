@@ -55,6 +55,15 @@ abstract class AbstractHandler
         return false;
     }
 
+    /**
+     * Determine what was provided for the file input, and make sure we end up with
+     * an UploadedFile instance.
+     *
+     * @param mixed $fileIndexOrFile
+     * @param Request $request
+     *
+     * @return UploadedFile
+     */
     public static function getUploadedFile($fileIndexOrFile, Request $request)
     {
         $file = is_object($fileIndexOrFile)
