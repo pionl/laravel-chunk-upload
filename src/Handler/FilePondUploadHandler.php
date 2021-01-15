@@ -46,12 +46,12 @@ class FilePondUploadHandler extends AbstractHandler
 
         // We need to pretend like we have an UploadedFile, while skipping the normal
         // validation that verifies a file was uploaded properly.
-        return new class($path, $request->header(self::HEADER_UPLOAD_NAME)) extends UploadedFile {
-            public function isValid()
-            {
-                return true;
-            }
-        };
+        return new UploadedFile($path,
+            $request->header(self::HEADER_UPLOAD_NAME),
+            null,
+            \UPLOAD_ERR_OK,
+            true
+        );
     }
 
     /**
