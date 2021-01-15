@@ -113,7 +113,7 @@ class FilePondUploadHandler extends AbstractHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->getFileUUID(), $this->getChunkOffset());
+        return $this->createChunkFileName($this->getFileUUID());
     }
 
     /**
