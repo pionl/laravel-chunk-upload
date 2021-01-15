@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Save\SingleSave;
@@ -70,6 +71,14 @@ class FileReceiver
 
             $this->handler = new $handlerClass($this->request, $this->file, $this->config);
         }
+    }
+
+    public static function factory($fileIndex, Request $request)
+    {
+        $handlerClass = HandlerFactory::classFromRequest($request);
+        $file = $handlerClass::getUploadedFile($fileIndex, $request);
+
+        return new self($file, $request, $handlerClass);
     }
 
     /**
