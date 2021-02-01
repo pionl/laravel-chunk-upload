@@ -14,6 +14,7 @@ class HandlerFactory
     protected static $handlers = [
         ContentRangeUploadHandler::class,
         ChunksInRequestUploadHandler::class,
+        FlowJSUploadHandler::class,
         ResumableJSUploadHandler::class,
         DropZoneUploadHandler::class,
         ChunksInRequestSimpleUploadHandler::class,
