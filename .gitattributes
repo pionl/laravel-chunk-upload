@@ -1,6 +1,11 @@
-tests
-travis.yml
-.php_cs
-.phplint.yml
-phpunit.xml
-CODE_OF_CONDUCT.md
+# Ignore all test and documentation for archive
+/.github             export-ignore
+/.gitattributes      export-ignore
+/.gitignore          export-ignore
+/.scrutinizer.yml    export-ignore
+/phpunit.xml.dist    export-ignore
+/tests               export-ignore
+/docs                export-ignore
+/.php_cs             export-ignore
+/.phplint.yml        export-ignore
+/CODE_OF_CONDUCT.md  export-ignore
