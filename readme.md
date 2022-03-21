@@ -67,15 +67,17 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contri
 
 ## Compatibility
 
-* 7.* (last tested on v7.16.1)
-* 6.* (last tested on v6.18.20)
-* 5.8.* (last tested on v5.8.38)
-* 5.7.* (last tested on v5.7.29)
-* 5.6.* (last tested on v5.6.40)
-* 5.5.* (last tested on v5.5.49)
-* 5.4.* (last tested on v5.4.36)
-* 5.3.* (last tested on v5.3.31)
-* 5.2.* (last tested on v5.2.45)
+> Laravel 5/6 should be still supported but we are not testing them via automation sccripts
+
+| Version | PHP         |
+| ------- | ----------- | 
+| 9.*     | 8.1-node-17 |
+| 9.*     | 8.0-node-17 |
+| 8.*     | 8.1-node-17 |
+| 8.*     | 8.0-node-17 |
+| 8.*     | 7.4-node-17 |
+| 7.*     | 7.4-node-17 |
+
 
 
 ## Copyright and License
