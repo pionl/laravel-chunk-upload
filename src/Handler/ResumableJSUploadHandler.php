@@ -43,7 +43,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->fileUuid, $this->getCurrentChunk());
+        return $this->createChunkFileName(substr($this->fileUuid,0,40), $this->getCurrentChunk());
     }
 
     /**
