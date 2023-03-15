@@ -69,14 +69,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute changes. All contri
 
 > Laravel 5/6 should be still supported but we are not testing them via automation sccripts
 
-| Version | PHP         |
-| ------- | ----------- | 
-| 9.*     | 8.1-node-17 |
-| 9.*     | 8.0-node-17 |
-| 8.*     | 8.1-node-17 |
-| 8.*     | 8.0-node-17 |
-| 8.*     | 7.4-node-17 |
-| 7.*     | 7.4-node-17 |
+| Version | PHP           |
+|---------|---------------| 
+| 10.*    | 8.1, 8.2      |
+| 9.*     | 8.0, 8.1      |
+| 8.*     | 7.4, 8.0, 8.1 |
+| 7.*     | 7.4           |
 
 
 
