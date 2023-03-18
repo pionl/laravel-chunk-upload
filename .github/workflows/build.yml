@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: ['7.2', '7.3', '7.4', '8.0', '8.1']
+        php: ['7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
 
     steps:
       - name: Checkout
@@ -29,4 +29,4 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
       - name: Run unit tests
-        run: vendor/bin/phpunit --verbose --colors=always
+        run: vendor/bin/phpunit --colors=always
