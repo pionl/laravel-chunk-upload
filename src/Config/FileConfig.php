@@ -61,7 +61,7 @@ class FileConfig extends AbstractConfig
     /**
      * Returns the shedule config array.
      *
-     * @return array<enable,cron>
+     * @return array{enable: bool, cron: string}
      */
     public function scheduleConfig()
     {

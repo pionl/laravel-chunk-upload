@@ -1,0 +1,20 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-mockery/extension.neon
+
+parameters:
+
+    parallel:
+        processTimeout: 600.0
+
+    paths:
+        - src
+        - tests
+
+    level: 8
+
+    # it is impossible to map toArray()
+    #checkMissingIterableValueType: false

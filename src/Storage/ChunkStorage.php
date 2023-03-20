@@ -187,7 +187,7 @@ class ChunkStorage
     }
 
     /**
-     * @return FilesystemAdapter
+     * @return FilesystemContract
      */
     public function disk()
     {
@@ -197,7 +197,7 @@ class ChunkStorage
     /**
      * Returns the driver.
      *
-     * @return FilesystemOperator|FilesystemInterface
+     * @return FilesystemInterface
      */
     public function driver()
     {
