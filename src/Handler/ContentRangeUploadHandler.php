@@ -67,7 +67,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     {
         parent::__construct($request, $file, $config);
 
-        $contentRange = $this->request->header(self::CONTENT_RANGE_INDEX);
+        $contentRange = $this->request->header(self::CONTENT_RANGE_INDEX, '');
 
         $this->tryToParseContentRange($contentRange);
     }
