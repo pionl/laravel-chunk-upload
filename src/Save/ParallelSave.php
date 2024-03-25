@@ -79,7 +79,6 @@ class ParallelSave extends ChunkSave
         $percentage = floor((count($this->foundChunks)) / $this->handler()->getTotalChunks() * 100);
         // We need to update the handler with correct percentage
         $this->handler()->setPercentageDone($percentage);
-        $this->isLastChunk = $percentage >= 100;
 
         return $this;
     }
