@@ -92,7 +92,7 @@ abstract class AbstractHandler
     {
         // prepare basic name structure
         $array = [
-            $this->file->getClientOriginalName(),
+            $this->config->chunkUseHashNameForName() ? md5($this->file->getClientOriginalName()) : $this->file->getClientOriginalName(),
         ];
 
         // ensure that the chunk name is for unique for the client session
