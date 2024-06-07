@@ -30,6 +30,7 @@ return [
             'use' => [
                 'session' => true, // should the chunk name use the session id? The uploader must send cookie!,
                 'browser' => false, // instead of session we can use the ip and browser?
+                'hashName' => false // use a hash name instead of the original file name
             ],
         ],
     ],
