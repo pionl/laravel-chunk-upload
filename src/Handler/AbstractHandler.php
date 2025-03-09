@@ -4,10 +4,10 @@ namespace Pion\Laravel\ChunkUpload\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Session;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
-use Session;
 
 /**
  * The handler that will detect if we can continue the chunked upload.
