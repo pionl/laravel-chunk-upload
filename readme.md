@@ -75,7 +75,7 @@ Though not tested via automation scripts, Laravel 5/6 should still be supported.
 
 ### New versions
 
-If there is a new Laravel version and there is not a offical release you can create a PR and then any one can use the PR until offical release is made. Check the PR and and update composer.json with the repository.
+If there is a new Laravel version and there is no a offical release in our package you can create a PR. Then any one can use the PR until offical release is made. Check the PR and and update composer.json with the repository.
 
 ```
 "repositories": [
