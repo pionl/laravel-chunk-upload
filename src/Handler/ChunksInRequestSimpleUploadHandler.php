@@ -37,6 +37,6 @@ class ChunksInRequestSimpleUploadHandler extends ChunksInRequestUploadHandler
     protected function getCurrentChunkFromRequest(Request $request)
     {
         // the chunk is indexed from 1 (for 5 chunks: 1,2,3,4,5)
-        return intval($request->get(static::KEY_CHUNK_NUMBER));
+        return intval($request->input(static::KEY_CHUNK_NUMBER));
     }
 }
