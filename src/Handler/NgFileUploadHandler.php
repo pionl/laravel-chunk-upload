@@ -88,15 +88,15 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
                      && ctype_digit($request->input(static::KEY_CHUNK_SIZE))
                      && ctype_digit($request->input(static::KEY_CHUNK_CURRENT_SIZE));
 
-        if ($request->get(static::KEY_CHUNK_SIZE) < $request->get(static::KEY_CHUNK_CURRENT_SIZE)) {
+        if ($request->input(static::KEY_CHUNK_SIZE) < $request->input(static::KEY_CHUNK_CURRENT_SIZE)) {
             throw new ChunkInvalidValueException();
         }
 
-        if ($request->get(static::KEY_CHUNK_NUMBER) < 0) {
+        if ($request->input(static::KEY_CHUNK_NUMBER) < 0) {
             throw new ChunkInvalidValueException();
         }
 
-        if ($request->get(static::KEY_TOTAL_SIZE) < 0) {
+        if ($request->input(static::KEY_TOTAL_SIZE) < 0) {
             throw new ChunkInvalidValueException();
         }
 
@@ -112,12 +112,12 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        if (!$request->get(static::KEY_CHUNK_SIZE)) {
+        if (!$request->input(static::KEY_CHUNK_SIZE)) {
             return 0;
         }
 
         return intval(
-            ceil($request->get(static::KEY_TOTAL_SIZE) / $request->get(static::KEY_CHUNK_SIZE))
+            ceil($request->input(static::KEY_TOTAL_SIZE) / $request->input(static::KEY_CHUNK_SIZE))
         );
     }
 }
