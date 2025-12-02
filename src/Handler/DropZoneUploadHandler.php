@@ -35,7 +35,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     public function __construct(Request $request, $file, $config)
     {
         parent::__construct($request, $file, $config);
-        $this->fileUuid = $request->get(self::CHUNK_UUID_INDEX);
+        $this->fileUuid = $request->input(self::CHUNK_UUID_INDEX);
     }
 
     /**
@@ -57,7 +57,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getCurrentChunkFromRequest(Request $request)
     {
-        return intval($request->get(self::CHUNK_INDEX, 0)) + 1;
+        return intval($request->input(self::CHUNK_INDEX, 0)) + 1;
     }
 
     /**
@@ -69,7 +69,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return intval($request->get(self::CHUNK_TOTAL_INDEX, 1));
+        return intval($request->input(self::CHUNK_TOTAL_INDEX, 1));
     }
 
     /**
