@@ -33,7 +33,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     {
         parent::__construct($request, $file, $config);
 
-        $this->fileUuid = $request->get(self::CHUNK_UUID_INDEX);
+        $this->fileUuid = $request->input(self::CHUNK_UUID_INDEX);
     }
 
     /**
@@ -55,7 +55,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getCurrentChunkFromRequest(Request $request)
     {
-        return $request->get(self::CHUNK_NUMBER_INDEX);
+        return $request->input(self::CHUNK_NUMBER_INDEX);
     }
 
     /**
@@ -67,7 +67,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return $request->get(self::TOTAL_CHUNKS_INDEX);
+        return $request->input(self::TOTAL_CHUNKS_INDEX);
     }
 
     /**
