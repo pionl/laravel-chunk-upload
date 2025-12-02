@@ -97,7 +97,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     protected function getCurrentChunkFromRequest(Request $request)
     {
         // the chunk is indexed from zero (for 5 chunks: 0,1,2,3,4)
-        return intval($request->get(static::KEY_CHUNK_NUMBER)) + 1;
+        return intval($request->input(static::KEY_CHUNK_NUMBER)) + 1;
     }
 
     /**
@@ -109,7 +109,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return intval($request->get(static::KEY_ALL_CHUNKS));
+        return intval($request->input(static::KEY_ALL_CHUNKS));
     }
 
     /**
