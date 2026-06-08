@@ -8,7 +8,6 @@ use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
 use Pion\Laravel\ChunkUpload\FileMerger;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
-use Symfony\Component\HttpKernel\Kernel as SymfonyKernel;
 
 class ChunkSave extends AbstractSave
 {
@@ -225,14 +224,9 @@ class ChunkSave extends AbstractSave
         $clientMimeType = $this->file->getClientMimeType();
         $error = $this->file->getError();
 
-        // Passing a size as 4th (filesize) argument to the constructor is deprecated since Symfony 4.1.
-        if (SymfonyKernel::VERSION_ID >= 40100) {
-            return new UploadedFile($finalPath, $clientOriginalName, $clientMimeType, $error, $test);
-        }
-
-        $fileSize = filesize($finalPath);
-
-        return new UploadedFile($finalPath, $clientOriginalName, $clientMimeType, $fileSize, $error, $test);
+        // Passing filesize as 4th argument is deprecated since Symfony 4.1; avoid loading
+        // Symfony HttpKernel (breaks when symfony/http-kernel 8.1+ is installed without dependency-injection).
+        return new UploadedFile($finalPath, $clientOriginalName, $clientMimeType, $error, $test);
     }
 
     /**
