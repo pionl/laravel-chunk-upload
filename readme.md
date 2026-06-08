@@ -66,6 +66,7 @@ Though not tested via automation scripts, Laravel 5/6 should still be supported.
 
 | Version | PHP           |
 |---------|---------------| 
+| 13.*    | 8.2, 8.3, 8.4 |
 | 12.*    | 8.2,8.3,8.4   |
 | 11.*    | 8.2,8.3,8.4   |
 | 10.*    | 8.1, 8.2      |
@@ -75,18 +76,23 @@ Though not tested via automation scripts, Laravel 5/6 should still be supported.
 
 ### New versions
 
-If there is a new Laravel version and there is no a offical release in our package you can create a PR. Then any one can use the PR until offical release is made. Check the PR and and update composer.json with the repository.
+If there is a new Laravel version and there is no official release yet, you can open a PR with the updated constraints. Until that is merged and released, anyone can require a forked branch via Composer:
 
-```
+```json
 "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/{!ENTER_USER_NAME!}/laravel-chunk-upload"
+        "type": "vcs",
+        "url": "https://github.com/your-username/laravel-chunk-upload"
     }
-  ]
+],
+"require": {
+    "pion/laravel-chunk-upload": "dev-your-branch-name as 1.5.7"
+}
 ```
 
-Here is [exmplanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer)
+For Laravel 13 before an official release, use branch `laravel-13-support` (or the branch from the open PR).
+
+Here is an [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer).
 
 ## Copyright and License
 
