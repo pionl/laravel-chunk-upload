@@ -22,7 +22,7 @@ Before contributing, familiarize yourself with the guidelines outlined in CONTRI
 Upstream [Packagist](https://packagist.org/packages/pion/laravel-chunk-upload) does not ship Laravel 13 support yet. Point Composer at this fork and install the **tagged release** from `master`:
 
 - Fork: [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload)
-- Latest release: [`1.5.8`](https://github.com/andydev271/laravel-chunk-upload/releases/tag/1.5.8)
+- Latest release: [`1.5.9`](https://github.com/andydev271/laravel-chunk-upload/releases/tag/1.5.9)
 - Default branch: `master` (includes Laravel 13 support)
 
 Add to your Laravel app's `composer.json`:
@@ -35,7 +35,7 @@ Add to your Laravel app's `composer.json`:
     }
 ],
 "require": {
-    "pion/laravel-chunk-upload": "1.5.8"
+    "pion/laravel-chunk-upload": "1.5.9"
 }
 ```
 
@@ -43,7 +43,7 @@ Or from the command line:
 
 ```bash
 composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
-composer require pion/laravel-chunk-upload:1.5.8
+composer require pion/laravel-chunk-upload:1.5.9
 ```
 
 No `minimum-stability: dev` is needed when using a tagged release.
@@ -60,7 +60,7 @@ Keep `laravel-13-support` only if you need commits **after** the latest tag, bef
     }
 ],
 "require": {
-    "pion/laravel-chunk-upload": "dev-laravel-13-support as 1.5.8"
+    "pion/laravel-chunk-upload": "dev-laravel-13-support as 1.5.9"
 },
 "minimum-stability": "dev",
 "prefer-stable": true
@@ -123,7 +123,7 @@ Fork releases for Laravel 13: [andydev271/laravel-chunk-upload releases](https:/
 | `master` | Default branch. Users install tagged releases from here. |
 | `laravel-13-support` | Optional. Use for new Laravel 13 work before the next tag; merge into `master` when ready to release. |
 
-**Publish a new release** (e.g. `1.5.9` after fixes on `laravel-13-support`):
+**Publish a new release** (e.g. `1.6.0` after fixes on `laravel-13-support`):
 
 ```bash
 # 1. Merge development branch into master
@@ -133,33 +133,33 @@ git merge laravel-13-support
 git push origin master
 
 # 2. Tag the new version
-git tag -a 1.5.9 -m "Laravel 13 support"
-git push origin 1.5.9
+git tag -a 1.6.0 -m "Laravel 13 support"
+git push origin 1.6.0
 
 # 3. Create or update the GitHub release
 gh auth login   # first time only
-gh release create 1.5.9 \
+gh release create 1.6.0 \
   --repo andydev271/laravel-chunk-upload \
-  --title "1.5.9 — Laravel 13 support" \
-  --notes "Adds Laravel 13 compatibility. Install: composer require pion/laravel-chunk-upload:1.5.9"
+  --title "1.6.0 — Laravel 13 support" \
+  --notes "Adds Laravel 13 compatibility. Install: composer require pion/laravel-chunk-upload:1.6.0"
 ```
 
 **Update release notes only** (tag already exists):
 
 ```bash
-gh release edit 1.5.8 \
+gh release edit 1.5.9 \
   --repo andydev271/laravel-chunk-upload \
-  --title "1.5.8 — Laravel 13 support" \
+  --title "1.5.9 — Laravel 13 support" \
   --notes "Adds Laravel 13 compatibility.
 
 Install in your Laravel app:
 composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
-composer require pion/laravel-chunk-upload:1.5.8"
+composer require pion/laravel-chunk-upload:1.5.9"
 ```
 
 After publishing a tag, update the version in the [Installation](#installation) section of `readme.md` on both `master` and `laravel-13-support`.
 
-Do not move or delete published tags; publish a new patch version instead (e.g. `1.5.9`).
+Do not move or delete published tags; publish a new patch version instead (e.g. `1.6.0`).
 
 ## Contribution or Extension
 
@@ -188,7 +188,7 @@ Laravel 13 is not yet on [Packagist](https://packagist.org/packages/pion/laravel
 | What | Value |
 |------|-------|
 | Repository | [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload) |
-| Install (recommended) | Tagged release `1.5.8` from `master` |
+| Install (recommended) | Tagged release `1.5.9` from `master` |
 | Install (bleeding edge) | Branch `laravel-13-support` via `dev-laravel-13-support` |
 
 See [Installation](#installation) for Composer commands. See [Creating a release (maintainers)](#creating-a-release-maintainers) to publish updates.
