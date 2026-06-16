@@ -17,7 +17,9 @@ Before contributing, familiarize yourself with the guidelines outlined in CONTRI
 
 **1. Install via Composer**
 
-For Laravel 13 (before an official Packagist release), require this fork's `laravel-13-support` branch. Add the repository to your app's `composer.json`, then install:
+For Laravel 13 (before an official Packagist release), require this fork. Add the VCS repository to your app's `composer.json`, then install a tagged release (recommended) or the branch.
+
+**Option A — tagged release (recommended, stable):**
 
 ```json
 "repositories": [
@@ -27,18 +29,30 @@ For Laravel 13 (before an official Packagist release), require this fork's `lara
     }
 ],
 "require": {
-    "pion/laravel-chunk-upload": "dev-laravel-13-support as 1.5.7"
+    "pion/laravel-chunk-upload": "1.5.8"
+}
+```
+
+```bash
+composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
+composer require pion/laravel-chunk-upload:1.5.8
+```
+
+**Option B — development branch (latest commits, requires `dev` stability):**
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/andydev271/laravel-chunk-upload"
+    }
+],
+"require": {
+    "pion/laravel-chunk-upload": "dev-laravel-13-support as 1.5.8"
 },
 "minimum-stability": "dev",
 "prefer-stable": true
 ```
-
-```bash
-composer require pion/laravel-chunk-upload:dev-laravel-13-support --no-update
-composer update pion/laravel-chunk-upload
-```
-
-Or configure the VCS repository from the command line:
 
 ```bash
 composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
@@ -82,7 +96,34 @@ For detailed information and tips, refer to the [Wiki](https://github.com/pionl/
 
 ## Changelog
 
-View the changelog in [releases](https://github.com/pionl/laravel-chunk-upload/releases).
+View upstream changelog in [releases](https://github.com/pionl/laravel-chunk-upload/releases).
+
+Fork releases for Laravel 13: [andydev271/laravel-chunk-upload releases](https://github.com/andydev271/laravel-chunk-upload/releases).
+
+## Creating a release (maintainers)
+
+Merge Laravel 13 support into `master` first so the default branch matches what users install. Then tag and publish a GitHub release — Composer resolves versions from git tags on the VCS repository.
+
+```bash
+# 1. Merge laravel-13-support into master
+git checkout master
+git pull origin master
+git merge laravel-13-support
+git push origin master
+
+# 2. Create an annotated tag (use the next patch version after upstream, e.g. 1.5.8)
+git tag -a 1.5.8 -m "Laravel 13 support"
+git push origin 1.5.8
+
+# 3. Create a GitHub release from the tag (requires GitHub CLI)
+gh release create 1.5.8 \
+  --title "1.5.8 — Laravel 13 support" \
+  --notes "Adds Laravel 13 compatibility. Install via Composer VCS: https://github.com/andydev271/laravel-chunk-upload"
+```
+
+After the release is published, users can require `pion/laravel-chunk-upload:1.5.8` with only the VCS repository entry — no `minimum-stability: dev` needed.
+
+Optional: set `master` as the default branch in GitHub repo settings if it is not already.
 
 ## Contribution or Extension
 
@@ -108,10 +149,11 @@ Though not tested via automation scripts, Laravel 5/6 should still be supported.
 
 Laravel 13 is not yet available on [Packagist](https://packagist.org/packages/pion/laravel-chunk-upload). Use this fork until an official release:
 
-- Repository: [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload/tree/laravel-13-support)
-- Branch: `laravel-13-support`
+- Repository: [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload)
+- Tagged release: `1.5.8` (recommended)
+- Development branch: `laravel-13-support`
 
-See [Installation](#installation) for the `composer.json` repository and require entries. For background on requiring forked packages, see this [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer).
+See [Installation](#installation) for Composer setup. See [Creating a release (maintainers)](#creating-a-release-maintainers) to publish new versions. For background on requiring forked packages, see this [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer).
 
 ## Copyright and License
 
