@@ -17,6 +17,36 @@ Before contributing, familiarize yourself with the guidelines outlined in CONTRI
 
 **1. Install via Composer**
 
+For Laravel 13 (before an official Packagist release), require this fork's `laravel-13-support` branch. Add the repository to your app's `composer.json`, then install:
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/andydev271/laravel-chunk-upload"
+    }
+],
+"require": {
+    "pion/laravel-chunk-upload": "dev-laravel-13-support as 1.5.7"
+},
+"minimum-stability": "dev",
+"prefer-stable": true
+```
+
+```bash
+composer require pion/laravel-chunk-upload:dev-laravel-13-support --no-update
+composer update pion/laravel-chunk-upload
+```
+
+Or configure the VCS repository from the command line:
+
+```bash
+composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
+composer require pion/laravel-chunk-upload:dev-laravel-13-support
+```
+
+For Laravel 12 and below, install from Packagist:
+
 ```bash
 composer require pion/laravel-chunk-upload
 ```
@@ -74,25 +104,14 @@ Though not tested via automation scripts, Laravel 5/6 should still be supported.
 | 8.*     | 7.4, 8.0, 8.1 |
 | 7.*     | 7.4           |
 
-### New versions
+### Laravel 13 (fork install)
 
-If there is a new Laravel version and there is no official release yet, you can open a PR with the updated constraints. Until that is merged and released, anyone can require a forked branch via Composer:
+Laravel 13 is not yet available on [Packagist](https://packagist.org/packages/pion/laravel-chunk-upload). Use this fork until an official release:
 
-```json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/your-username/laravel-chunk-upload"
-    }
-],
-"require": {
-    "pion/laravel-chunk-upload": "dev-your-branch-name as 1.5.7"
-}
-```
+- Repository: [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload/tree/laravel-13-support)
+- Branch: `laravel-13-support`
 
-For Laravel 13 before an official release, use branch `laravel-13-support` (or the branch from the open PR).
-
-Here is an [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer).
+See [Installation](#installation) for the `composer.json` repository and require entries. For background on requiring forked packages, see this [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer).
 
 ## Copyright and License
 
