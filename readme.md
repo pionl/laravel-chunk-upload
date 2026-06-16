@@ -17,9 +17,15 @@ Before contributing, familiarize yourself with the guidelines outlined in CONTRI
 
 **1. Install via Composer**
 
-For Laravel 13 (before an official Packagist release), require this fork. Add the VCS repository to your app's `composer.json`, then install a tagged release (recommended) or the branch.
+### Laravel 13 — use this fork (recommended)
 
-**Option A — tagged release (recommended, stable):**
+Upstream [Packagist](https://packagist.org/packages/pion/laravel-chunk-upload) does not ship Laravel 13 support yet. Point Composer at this fork and install the **tagged release** from `master`:
+
+- Fork: [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload)
+- Latest release: [`1.5.8`](https://github.com/andydev271/laravel-chunk-upload/releases/tag/1.5.8)
+- Default branch: `master` (includes Laravel 13 support)
+
+Add to your Laravel app's `composer.json`:
 
 ```json
 "repositories": [
@@ -33,12 +39,18 @@ For Laravel 13 (before an official Packagist release), require this fork. Add th
 }
 ```
 
+Or from the command line:
+
 ```bash
 composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
 composer require pion/laravel-chunk-upload:1.5.8
 ```
 
-**Option B — development branch (latest commits, requires `dev` stability):**
+No `minimum-stability: dev` is needed when using a tagged release.
+
+### Laravel 13 — development branch (optional)
+
+Keep `laravel-13-support` only if you need commits **after** the latest tag, before the next release is published. Most users should use the tagged release above.
 
 ```json
 "repositories": [
@@ -59,7 +71,9 @@ composer config repositories.laravel-chunk-upload vcs https://github.com/andydev
 composer require pion/laravel-chunk-upload:dev-laravel-13-support
 ```
 
-For Laravel 12 and below, install from Packagist:
+### Laravel 12 and below
+
+Install from Packagist (no fork needed):
 
 ```bash
 composer require pion/laravel-chunk-upload
@@ -102,28 +116,50 @@ Fork releases for Laravel 13: [andydev271/laravel-chunk-upload releases](https:/
 
 ## Creating a release (maintainers)
 
-Merge Laravel 13 support into `master` first so the default branch matches what users install. Then tag and publish a GitHub release — Composer resolves versions from git tags on the VCS repository.
+**Branch strategy**
+
+| Branch | Purpose |
+|--------|---------|
+| `master` | Default branch. Users install tagged releases from here. |
+| `laravel-13-support` | Optional. Use for new Laravel 13 work before the next tag; merge into `master` when ready to release. |
+
+**Publish a new release** (e.g. `1.5.9` after fixes on `laravel-13-support`):
 
 ```bash
-# 1. Merge laravel-13-support into master
+# 1. Merge development branch into master
 git checkout master
 git pull origin master
 git merge laravel-13-support
 git push origin master
 
-# 2. Create an annotated tag (use the next patch version after upstream, e.g. 1.5.8)
-git tag -a 1.5.8 -m "Laravel 13 support"
-git push origin 1.5.8
+# 2. Tag the new version
+git tag -a 1.5.9 -m "Laravel 13 support"
+git push origin 1.5.9
 
-# 3. Create a GitHub release from the tag (requires GitHub CLI)
-gh release create 1.5.8 \
-  --title "1.5.8 — Laravel 13 support" \
-  --notes "Adds Laravel 13 compatibility. Install via Composer VCS: https://github.com/andydev271/laravel-chunk-upload"
+# 3. Create or update the GitHub release
+gh auth login   # first time only
+gh release create 1.5.9 \
+  --repo andydev271/laravel-chunk-upload \
+  --title "1.5.9 — Laravel 13 support" \
+  --notes "Adds Laravel 13 compatibility. Install: composer require pion/laravel-chunk-upload:1.5.9"
 ```
 
-After the release is published, users can require `pion/laravel-chunk-upload:1.5.8` with only the VCS repository entry — no `minimum-stability: dev` needed.
+**Update release notes only** (tag already exists):
 
-Optional: set `master` as the default branch in GitHub repo settings if it is not already.
+```bash
+gh release edit 1.5.8 \
+  --repo andydev271/laravel-chunk-upload \
+  --title "1.5.8 — Laravel 13 support" \
+  --notes "Adds Laravel 13 compatibility.
+
+Install in your Laravel app:
+composer config repositories.laravel-chunk-upload vcs https://github.com/andydev271/laravel-chunk-upload
+composer require pion/laravel-chunk-upload:1.5.8"
+```
+
+After publishing a tag, update the version in the [Installation](#installation) section of `readme.md` on both `master` and `laravel-13-support`.
+
+Do not move or delete published tags; publish a new patch version instead (e.g. `1.5.9`).
 
 ## Contribution or Extension
 
@@ -147,13 +183,15 @@ Though not tested via automation scripts, Laravel 5/6 should still be supported.
 
 ### Laravel 13 (fork install)
 
-Laravel 13 is not yet available on [Packagist](https://packagist.org/packages/pion/laravel-chunk-upload). Use this fork until an official release:
+Laravel 13 is not yet on [Packagist](https://packagist.org/packages/pion/laravel-chunk-upload). Use this fork:
 
-- Repository: [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload)
-- Tagged release: `1.5.8` (recommended)
-- Development branch: `laravel-13-support`
+| What | Value |
+|------|-------|
+| Repository | [andydev271/laravel-chunk-upload](https://github.com/andydev271/laravel-chunk-upload) |
+| Install (recommended) | Tagged release `1.5.8` from `master` |
+| Install (bleeding edge) | Branch `laravel-13-support` via `dev-laravel-13-support` |
 
-See [Installation](#installation) for Composer setup. See [Creating a release (maintainers)](#creating-a-release-maintainers) to publish new versions. For background on requiring forked packages, see this [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer).
+See [Installation](#installation) for Composer commands. See [Creating a release (maintainers)](#creating-a-release-maintainers) to publish updates.
 
 ## Copyright and License
 
