@@ -11,9 +11,11 @@ use Pion\Laravel\ChunkUpload\Save\ChunkSave;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
 
 /**
- * Class ContentRangeUploadHandler.
- *
- * Upload receiver that detects the content range by the the header value.
+ * Upload receiver that detects the content range by the header value and form data
+ * - content-disposition attachment; filename="6804117-uhd_4096_2160_25fps.mp4"
+ * - content-type multipart/form-data; boundary=----WebKitFormBoundaryJjUYyYYal4tJlBrz
+ * - content-length 1000337
+ * - content-range bytes 63000000-63999999/68402438.
  *
  * Works with:
  * - blueimp-file-upload - partial support (simple chunked and single upload)

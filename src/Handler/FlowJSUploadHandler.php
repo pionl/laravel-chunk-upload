@@ -7,20 +7,26 @@ use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 
+/**
+ * Flow-js implementation that sends data in form-body:
+ * - fixtures/FlowJs-body.txt
+ *
+ * @see https://github.com/flowjs/flow.js
+ */
 class FlowJSUploadHandler extends ChunksInRequestUploadHandler
 {
     use HandleParallelUploadTrait;
 
-    const CHUNK_UUID_INDEX = 'flowIdentifier';
-    const CHUNK_NUMBER_INDEX = 'flowChunkNumber';
-    const TOTAL_CHUNKS_INDEX = 'flowTotalChunks';
+    public const CHUNK_UUID_INDEX = 'flowIdentifier';
+    public const CHUNK_NUMBER_INDEX = 'flowChunkNumber';
+    public const TOTAL_CHUNKS_INDEX = 'flowTotalChunks';
 
     /**
      * The Resumable file uuid for unique chunk upload session.
      *
      * @var string|null
      */
-    protected $fileUuid = null;
+    protected $fileUuid;
 
     /**
      * AbstractReceiver constructor.
@@ -33,7 +39,7 @@ class FlowJSUploadHandler extends ChunksInRequestUploadHandler
     {
         parent::__construct($request, $file, $config);
 
-        $this->fileUuid = $request->get(self::CHUNK_UUID_INDEX);
+        $this->fileUuid = $request->input(self::CHUNK_UUID_INDEX);
     }
 
     /**
@@ -55,7 +61,7 @@ class FlowJSUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getCurrentChunkFromRequest(Request $request)
     {
-        return $request->get(self::CHUNK_NUMBER_INDEX);
+        return $request->input(self::CHUNK_NUMBER_INDEX);
     }
 
     /**
@@ -67,7 +73,7 @@ class FlowJSUploadHandler extends ChunksInRequestUploadHandler
      */
     protected function getTotalChunksFromRequest(Request $request)
     {
-        return $request->get(self::TOTAL_CHUNKS_INDEX);
+        return $request->input(self::TOTAL_CHUNKS_INDEX);
     }
 
     /**
@@ -79,7 +85,7 @@ class FlowJSUploadHandler extends ChunksInRequestUploadHandler
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX) &&
-            $request->has(self::CHUNK_UUID_INDEX);
+        return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX)
+            && $request->has(self::CHUNK_UUID_INDEX);
     }
 }
