@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
-use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearChunksCommand extends Command
@@ -52,14 +51,14 @@ class ClearChunksCommand extends Command
             $this->comment('> '.$file, $verbouse);
 
             // delete the file
-            try{
+            try {
                 if ($file->delete()) {
                     ++$deleted;
                 } else {
                     $this->error('> chunk not deleted: '.$file);
                 }
-            }catch(RuntimeException $err){
-                $this->error('> chunk not deleted: '.$file);
+            } catch (\RuntimeException $err) {
+                $this->error('> chunk not deleted: '.$file.' due an error: '.$err->getMessage());
             }
         }
 
