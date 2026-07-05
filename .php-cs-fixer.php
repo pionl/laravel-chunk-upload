@@ -7,9 +7,8 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules(array(
-        '@PHP56Migration' => true,
         '@Symfony' => true,
         'align_multiline_comment' => true,
         'array_indentation' => true,

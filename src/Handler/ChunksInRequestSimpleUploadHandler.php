@@ -18,14 +18,14 @@ class ChunksInRequestSimpleUploadHandler extends ChunksInRequestUploadHandler
      *
      * @static string
      */
-    const KEY_CHUNK_NUMBER = 'chunkNumber';
+    public const KEY_CHUNK_NUMBER = 'chunkNumber';
 
     /**
      * Key for number of all chunks.
      *
      * @static string
      */
-    const KEY_ALL_CHUNKS = 'totalChunks';
+    public const KEY_ALL_CHUNKS = 'totalChunks';
 
     /**
      * Returns current chunk from the request.

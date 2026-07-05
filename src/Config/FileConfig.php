@@ -12,7 +12,7 @@ class FileConfig extends AbstractConfig
     /**
      * The file name of the config.
      */
-    const FILE_NAME = 'chunk-upload';
+    public const FILE_NAME = 'chunk-upload';
 
     /**
      * Returns a list custom handlers (custom, override).

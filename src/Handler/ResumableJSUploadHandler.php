@@ -11,16 +11,16 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
 {
     use HandleParallelUploadTrait;
 
-    const CHUNK_UUID_INDEX = 'resumableIdentifier';
-    const CHUNK_NUMBER_INDEX = 'resumableChunkNumber';
-    const TOTAL_CHUNKS_INDEX = 'resumableTotalChunks';
+    public const CHUNK_UUID_INDEX = 'resumableIdentifier';
+    public const CHUNK_NUMBER_INDEX = 'resumableChunkNumber';
+    public const TOTAL_CHUNKS_INDEX = 'resumableTotalChunks';
 
     /**
      * The Resumable file uuid for unique chunk upload session.
      *
      * @var string|null
      */
-    protected $fileUuid = null;
+    protected $fileUuid;
 
     /**
      * AbstractReceiver constructor.
@@ -43,7 +43,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName(substr($this->fileUuid,0,40), $this->getCurrentChunk());
+        return $this->createChunkFileName(substr($this->fileUuid, 0, 40), $this->getCurrentChunk());
     }
 
     /**
@@ -79,7 +79,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX) &&
-            $request->has(self::CHUNK_UUID_INDEX);
+        return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX)
+            && $request->has(self::CHUNK_UUID_INDEX);
     }
 }
