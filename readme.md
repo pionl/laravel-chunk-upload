@@ -67,15 +67,15 @@ Refer to [CONTRIBUTING.md](CONTRIBUTING.md) for contribution instructions. All c
 The table below shows which PHP Laravel and PHP version is tested (or was tested). If you see a version
 in the **Supported** column, it means a package version with the last support of the Laravel version. 
 
-| Version | PHP             | Supported | Tested |
-|---------|-----------------|-----------|--------|
+| Version | PHP            | Supported | Tested |
+|---------|----------------|-----------|--------|
+| 13.*    | 8.3,8.4,8.5 | ✅         | ✅      |
 | 12.*    | 8.2,8.3,8.4,8.5 | ✅         | ✅      |
-| 12.*    | 8.2,8.3,8.4,8.5 | ✅         | ✅      |
-| 11.*    | 8.2,8.3,8.4     | ✅         | ✅      |
-| 10.*    | 8.2             | ✅         | ✅      |
-| 9.*     | 8.2             | ✅         | ✅      |
-| 8.*     | 7.4, 8.0, 8.1   | v1.5.6    | 🟥     |
-| 7.*     | 7.4             | v1.5.6    | 🟥     |
+| 11.*    | 8.2,8.3,8.4    | ✅         | ✅      |
+| 10.*    | 8.2            | ✅         | ✅      |
+| 9.*     | 8.2            | ✅         | ✅      |
+| 8.*     | 7.4, 8.0, 8.1  | v1.5.6    | 🟥     |
+| 7.*     | 7.4            | v1.5.6    | 🟥     |
 
 
 
