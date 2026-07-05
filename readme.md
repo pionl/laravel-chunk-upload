@@ -21,11 +21,13 @@ Before contributing, familiarize yourself with the guidelines outlined in CONTRI
 composer require pion/laravel-chunk-upload
 ```
 
-**2. Publish the Configuration (Optional)**
+**2. Publish the Configuration (recommended)**
 
 ```bash
 php artisan vendor:publish --provider="Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider"
 ```
+
+This will force our recommended default values (due to a cross-compatibility, the config can contain different values that the business logic).
 
 ## Usage
 
