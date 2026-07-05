@@ -11,9 +11,16 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 
+/**
+ * Notes:
+ * - all chunks are stored in their own directory
+ * - final file is moved out of the directory (will be later deleted)
+ */
 class ChunkStorage
 {
     public const CHUNK_EXTENSION = 'part';
+    public const UPLOAD_SHARD_LENGTH = 4;
+    public const UPLOAD_SEGMENT_LENGTH = 32;
 
     /**
      * Returns the application instance of the chunk storage.
@@ -115,6 +122,37 @@ class ChunkStorage
     }
 
     /**
+     * Returns the relative directory that stores parts for a single upload.
+     *
+     * @param string $fileId
+     *
+     * @return string
+     */
+    public function directoryForFile(string $fileId)
+    {
+        return $this->directory().implode('/', $this->directorySegmentsForFile($fileId)).'/';
+    }
+
+    /**
+     * Returns the relative merged file path for a single upload.
+     *
+     * @param string $fileId
+     *
+     * @return string
+     */
+    public function mergedFilePathForFile(string $fileId)
+    {
+        $segments = $this->directorySegmentsForFile($fileId);
+        $fileName = array_pop($segments).'.'.self::CHUNK_EXTENSION;
+
+        if (empty($segments)) {
+            return $this->directory().$fileName;
+        }
+
+        return $this->directory().implode('/', $segments).'/'.$fileName;
+    }
+
+    /**
      * Returns an array of files in the chunks directory.
      *
      * @param \Closure|null $rejectClosure
@@ -129,18 +167,23 @@ class ChunkStorage
         // we need to filter files we don't support, lets use the collection
         $filesCollection = new Collection($this->disk->files($this->directory(), false));
 
-        return $filesCollection->reject(function ($file) use ($rejectClosure) {
-            // ensure the file ends with allowed extension
-            $shouldReject = !preg_match('/.'.self::CHUNK_EXTENSION.'$/', $file);
-            if ($shouldReject) {
-                return true;
-            }
-            if (is_callable($rejectClosure)) {
-                return $rejectClosure($file);
-            }
+        return $this->rejectNonChunkFiles($filesCollection, $rejectClosure);
+    }
 
-            return false;
-        });
+    /**
+     * Returns an array of files in the given directory.
+     *
+     * @param string        $directory
+     * @param bool          $recursive
+     * @param \Closure|null $rejectClosure
+     *
+     * @return Collection
+     */
+    public function filesByDirectory(string $directory, bool $recursive = false, $rejectClosure = null)
+    {
+        $filesCollection = new Collection($this->disk->files($directory, $recursive));
+
+        return $this->rejectNonChunkFiles($filesCollection, $rejectClosure);
     }
 
     /**
@@ -150,7 +193,7 @@ class ChunkStorage
      */
     public function oldChunkFiles()
     {
-        $files = $this->files();
+        $files = $this->filesByDirectory($this->directory(), true);
         // if there are no files, lets return the empty collection
         if ($files->isEmpty()) {
             return $files;
@@ -199,5 +242,91 @@ class ChunkStorage
     public function driver()
     {
         return $this->disk()->getDriver();
+    }
+
+    /**
+     * Deletes empty upload directories up to the chunks root.
+     *
+     * @param string $directory
+     *
+     * @return void
+     */
+    public function deleteEmptyDirectories(string $directory)
+    {
+        $rootDirectory = rtrim($this->directory(), '/');
+        $currentDirectory = trim($directory, '/');
+
+        while ('' !== $currentDirectory && str_starts_with($currentDirectory, $rootDirectory) && $currentDirectory !== $rootDirectory) {
+            if (!$this->directoryIsEmpty($currentDirectory)) {
+                return;
+            }
+
+            $this->disk()->deleteDirectory($currentDirectory);
+            $currentDirectory = trim(dirname($currentDirectory), '/');
+        }
+    }
+
+    /**
+     * @param string $fileId
+     *
+     * @return array<int, string>
+     */
+    protected function directorySegmentsForFile(string $fileId)
+    {
+        $sanitizedFileId = preg_replace('/[^A-Za-z0-9._-]/', '_', $fileId);
+        $shard = substr($sanitizedFileId, 0, self::UPLOAD_SHARD_LENGTH);
+        $remainder = substr($sanitizedFileId, self::UPLOAD_SHARD_LENGTH);
+        $segments = ['' === $shard ? '_' : $shard];
+
+        if ('' === $remainder) {
+            $segments[] = $segments[0];
+
+            return $segments;
+        }
+
+        foreach (str_split($remainder, self::UPLOAD_SEGMENT_LENGTH) as $segment) {
+            $segments[] = $segment;
+        }
+
+        return $segments;
+    }
+
+    /**
+     * @param Collection    $filesCollection
+     * @param \Closure|null $rejectClosure
+     *
+     * @return Collection
+     */
+    protected function rejectNonChunkFiles(Collection $filesCollection, $rejectClosure = null)
+    {
+        return $filesCollection->reject(function ($file) use ($rejectClosure) {
+            $shouldReject = !preg_match('/\.'.self::CHUNK_EXTENSION.'$/', $file);
+            if ($shouldReject) {
+                return true;
+            }
+            if (is_callable($rejectClosure)) {
+                return $rejectClosure($file);
+            }
+
+            return false;
+        });
+    }
+
+    /**
+     * @param string $directory
+     *
+     * @return bool
+     */
+    protected function directoryIsEmpty(string $directory)
+    {
+        if (!empty($this->disk()->files($directory))) {
+            return false;
+        }
+
+        if (method_exists($this->disk(), 'directories') && !empty($this->disk()->directories($directory))) {
+            return false;
+        }
+
+        return true;
     }
 }

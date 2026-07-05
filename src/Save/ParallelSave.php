@@ -3,7 +3,6 @@
 namespace Pion\Laravel\ChunkUpload\Save;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Exceptions\ChunkSaveException;
@@ -119,7 +118,9 @@ class ParallelSave extends ChunkSave
     protected function handleChunkFile($file)
     {
         // Move the uploaded file to chunk folder
-        $this->file->move($this->getChunkDirectory(true), $this->chunkFileName);
+        $partFileName = $this->getChunkPartFileName();
+        $this->file->move($this->getChunkDirectory(true), $partFileName);
+        $file = $this->getChunkDirectory().$partFileName;
 
         $percentage = $this->chunkUploadPercentage();
 
@@ -156,13 +157,7 @@ class ParallelSave extends ChunkSave
      */
     protected function getSavedChunksFiles()
     {
-        $chunkFileName = preg_replace(
-            "/\.[\d]+\.".ChunkStorage::CHUNK_EXTENSION.'$/', '', $this->handler()->getChunkFileName()
-        );
-
-        return $this->chunkStorage->files(function ($file) use ($chunkFileName) {
-            return false === Str::contains($file, $chunkFileName);
-        });
+        return $this->chunkStorage->filesByDirectory($this->getChunkDirectory());
     }
 
     /**
@@ -184,16 +179,7 @@ class ParallelSave extends ChunkSave
         // Sort the chunk order
         natcasesort($chunkFiles);
 
-        // Get chunk files that matches the current chunk file name, also sort the chunk
-        // files.
-        $rootDirectory = $this->getChunkDirectory(true);
-        if ('' === $rootDirectory) {
-            $dirSeparator = '.'.DIRECTORY_SEPARATOR;
-        } else {
-            $dirSeparator = str_ends_with($rootDirectory, '/') ? '' : DIRECTORY_SEPARATOR;
-        }
-
-        $finalFilePath = $dirSeparator.$this->handler()->createChunkFileName('');
+        $finalFilePath = $this->getChunkFullFilePath();
 
         // Delete the file if exists
         if (file_exists($finalFilePath)) {
@@ -221,6 +207,7 @@ class ParallelSave extends ChunkSave
         }
 
         $fileMerger->close();
+        $this->chunkDisk()->deleteDirectory($this->getChunkDirectory());
 
         // Build the chunk file instance
         $this->fullChunkFile = $this->createFullChunkFile($finalFilePath);
@@ -242,5 +229,19 @@ class ParallelSave extends ChunkSave
             'total_chunks' => $handler->getTotalChunks(),
             'chunk_name' => $this->chunkFileName,
         ], $context);
+    }
+
+    /**
+     * Returns the part filename relative to the upload-local chunk directory.
+     *
+     * @return string
+     */
+    protected function getChunkPartFileName()
+    {
+        if (preg_match('/\.([\d]+)\.'.ChunkStorage::CHUNK_EXTENSION.'$/', $this->chunkFileName, $matches)) {
+            return $matches[1].'.'.ChunkStorage::CHUNK_EXTENSION;
+        }
+
+        return $this->chunkFileName;
     }
 }

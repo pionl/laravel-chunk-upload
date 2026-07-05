@@ -54,6 +54,7 @@ class ClearChunksCommand extends Command
             try {
                 if ($file->delete()) {
                     ++$deleted;
+                    $storage->deleteEmptyDirectories(dirname($file->getPath()));
                 } else {
                     $this->error('> chunk not deleted: '.$file);
                 }
