@@ -5,7 +5,7 @@ namespace Tests\Providers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Mockery;
 use Mockery\Mock;
 use Pion\Laravel\ChunkUpload\Commands\ClearChunksCommand;
@@ -23,7 +23,6 @@ use Pion\Laravel\ChunkUpload\Handler\SingleUploadHandler;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Storage\ChunkStorage;
-use Tests\FileSystemDriverMock;
 
 class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\MockeryTestCase
 {
@@ -246,10 +245,10 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
                         ->once()
                         ->andReturn('local');
 
-                    $fileSystemMock = \Mockery::mock(FilesystemContract::class);
-                    $fileSystemMock->shouldReceive('getDriver')
+                    $fileSystemMock = \Mockery::mock(FilesystemAdapter::class);
+                    $fileSystemMock->shouldReceive('getAdapter')
                         ->once()
-                        ->andReturn(new FileSystemDriverMock());
+                        ->andReturn($this->localAdapterDouble());
 
                     // Force different file mock
                     $this->service->shouldReceive('disk')
@@ -280,5 +279,19 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
             ->once();
 
         $this->service->register();
+    }
+
+    private function localAdapterDouble()
+    {
+        if (class_exists(\League\Flysystem\Local\LocalFilesystemAdapter::class)) {
+            return \Mockery::mock(\League\Flysystem\Local\LocalFilesystemAdapter::class);
+        }
+
+        if (class_exists(\League\Flysystem\Adapter\Local::class)) {
+            return \Mockery::mock(\League\Flysystem\Adapter\Local::class);
+        }
+
+        return new class {
+        };
     }
 }

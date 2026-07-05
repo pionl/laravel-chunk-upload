@@ -34,6 +34,13 @@ class ChunkSave extends AbstractSave
     protected $chunkFullFilePath;
 
     /**
+     * The merged chunk file path relative to the chunk disk.
+     *
+     * @var string
+     */
+    protected $chunkRelativeFilePath;
+
+    /**
      * @var UploadedFile|null
      */
     protected $fullChunkFile;
@@ -61,8 +68,8 @@ class ChunkSave extends AbstractSave
         $this->isLastChunk = $handler->isLastChunk();
         $this->chunkFileName = $handler->getChunkFileName();
 
-        // build the full disk path
-        $this->chunkFullFilePath = $this->getChunkFilePath(true);
+        $this->chunkRelativeFilePath = $this->getChunkFullFilePathFromStorage();
+        $this->chunkFullFilePath = $this->getChunkFullFilePathFromStorage(true);
 
         $this->handleChunk();
     }
@@ -90,6 +97,26 @@ class ChunkSave extends AbstractSave
     }
 
     /**
+     * Returns the file id used for upload-local storage paths.
+     *
+     * @return string
+     */
+    public function getChunkFileId()
+    {
+        $chunkFileName = $this->chunkFileName;
+
+        if ($this instanceof ParallelSave) {
+            $chunkFileName = preg_replace(
+                '/\.[\d]+\.'.ChunkStorage::CHUNK_EXTENSION.'$/',
+                '',
+                $chunkFileName
+            );
+        }
+
+        return preg_replace('/\.'.ChunkStorage::CHUNK_EXTENSION.'$/', '', $chunkFileName);
+    }
+
+    /**
      * Returns the full file path.
      *
      * @return string
@@ -97,6 +124,16 @@ class ChunkSave extends AbstractSave
     public function getChunkFullFilePath()
     {
         return $this->chunkFullFilePath;
+    }
+
+    /**
+     * Returns the full file path relative to the chunk disk.
+     *
+     * @return string
+     */
+    public function getChunkFullFileRelativePath()
+    {
+        return $this->chunkRelativeFilePath;
     }
 
     /**
@@ -114,7 +151,7 @@ class ChunkSave extends AbstractSave
             $paths[] = $this->chunkStorage()->getDiskPathPrefix();
         }
 
-        $paths[] = $this->chunkStorage()->directory();
+        $paths[] = $this->chunkStorage()->directoryForFile($this->getChunkFileId());
 
         return implode('', $paths);
     }
@@ -185,8 +222,8 @@ class ChunkSave extends AbstractSave
     protected function handleChunkFile($file)
     {
         // delete the old chunk
-        if ($this->handler()->isFirstChunk() && $this->chunkDisk()->exists($file)) {
-            $this->chunkDisk()->delete($file);
+        if ($this->handler()->isFirstChunk() && $this->chunkDisk()->exists($this->getChunkFullFileRelativePath())) {
+            $this->chunkDisk()->delete($this->getChunkFullFileRelativePath());
         }
 
         // Append the data to the file
@@ -267,5 +304,23 @@ class ChunkSave extends AbstractSave
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
+    }
+
+    /**
+     * Returns the path for the merged chunk file.
+     *
+     * @param bool $absolutePath
+     *
+     * @return string
+     */
+    protected function getChunkFullFilePathFromStorage($absolutePath = false)
+    {
+        $path = $this->chunkStorage()->mergedFilePathForFile($this->getChunkFileId());
+
+        if (!$absolutePath) {
+            return $path;
+        }
+
+        return $this->chunkStorage()->getDiskPathPrefix().$path;
     }
 }
