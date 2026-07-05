@@ -225,8 +225,9 @@ class ChunkSave extends AbstractSave
         $clientMimeType = $this->file->getClientMimeType();
         $error = $this->file->getError();
 
-        // Passing a size as 4th (filesize) argument to the constructor is deprecated since Symfony 4.1.
-        if (SymfonyKernel::VERSION_ID >= 40100) {
+        // Passing a size as the 4th (filesize) argument to the constructor is deprecated since Symfony 4.1.
+        // Note: Symfony 8.1+ does not contain Symfony Kernel which is installed on L13 with with PHP 8.4+
+        if (!class_exists(SymfonyKernel::class, false) || SymfonyKernel::VERSION_ID >= 40100) {
             return new UploadedFile($finalPath, $clientOriginalName, $clientMimeType, $error, $test);
         }
 
