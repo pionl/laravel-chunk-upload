@@ -24,7 +24,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     /**
      * The index for the header.
      */
-    const CONTENT_RANGE_INDEX = 'content-range';
+    public const CONTENT_RANGE_INDEX = 'content-range';
 
     /**
      * Determines if the upload is via chunked upload.

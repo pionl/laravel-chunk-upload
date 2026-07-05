@@ -31,7 +31,7 @@ class ChunkSave extends AbstractSave
      *
      * @var string
      */
-    protected $chunkFullFilePath = null;
+    protected $chunkFullFilePath;
 
     /**
      * @var UploadedFile|null

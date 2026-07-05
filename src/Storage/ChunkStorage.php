@@ -3,18 +3,17 @@
 namespace Pion\Laravel\ChunkUpload\Storage;
 
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
-use Illuminate\Support\Collection;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Collection;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Pion\Laravel\ChunkUpload\ChunkFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
-use RuntimeException;
 
 class ChunkStorage
 {
-    const CHUNK_EXTENSION = 'part';
+    public const CHUNK_EXTENSION = 'part';
 
     /**
      * Returns the application instance of the chunk storage.
@@ -48,21 +47,20 @@ class ChunkStorage
     protected $usingDeprecatedLaravel;
 
     /**
-     * @param FilesystemAdapter|FilesystemContract $disk the desired disk for chunk storage
-     * @param AbstractConfig    $config
+     * @param FilesystemAdapter|FilesystemContract $disk   the desired disk for chunk storage
+     * @param AbstractConfig                       $config
      */
     public function __construct($disk, $config)
     {
         // save the config
         $this->config = $config;
-        $this->usingDeprecatedLaravel = class_exists(LocalFilesystemAdapter::class) === false;
+        $this->usingDeprecatedLaravel = false === class_exists(LocalFilesystemAdapter::class);
         $this->disk = $disk;
 
-        if ($this->usingDeprecatedLaravel === false) {
-
+        if (false === $this->usingDeprecatedLaravel) {
             // try to get the adapter
             if (!method_exists($this->disk, 'getAdapter')) {
-                throw new RuntimeException('FileSystem driver must have an adapter implemented');
+                throw new \RuntimeException('FileSystem driver must have an adapter implemented');
             }
 
             // get the disk adapter
@@ -75,7 +73,7 @@ class ChunkStorage
 
             // try to get the adapter
             if (!method_exists($driver, 'getAdapter')) {
-                throw new RuntimeException('FileSystem driver must have an adapter implemented');
+                throw new \RuntimeException('FileSystem driver must have an adapter implemented');
             }
 
             // get the disk adapter
@@ -84,7 +82,6 @@ class ChunkStorage
             // check if its local adapter
             $this->isLocalDisk = $this->diskAdapter instanceof Local;
         }
-
     }
 
     /**
@@ -92,11 +89,11 @@ class ChunkStorage
      *
      * @return string
      *
-     * @throws RuntimeException when the adapter is not local
+     * @throws \RuntimeException when the adapter is not local
      */
     public function getDiskPathPrefix()
     {
-        if ($this->usingDeprecatedLaravel === true && $this->isLocalDisk) {
+        if (true === $this->usingDeprecatedLaravel && $this->isLocalDisk) {
             return $this->diskAdapter->getPathPrefix();
         }
 
@@ -104,7 +101,7 @@ class ChunkStorage
             return $this->disk->path('');
         }
 
-        throw new RuntimeException('The full path is not supported on current disk - local adapter supported only');
+        throw new \RuntimeException('The full path is not supported on current disk - local adapter supported only');
     }
 
     /**
@@ -114,7 +111,7 @@ class ChunkStorage
      */
     public function directory()
     {
-        return $this->config->chunksStorageDirectory() . '/';
+        return $this->config->chunksStorageDirectory().'/';
     }
 
     /**
@@ -134,7 +131,7 @@ class ChunkStorage
 
         return $filesCollection->reject(function ($file) use ($rejectClosure) {
             // ensure the file ends with allowed extension
-            $shouldReject = !preg_match('/.' . self::CHUNK_EXTENSION . '$/', $file);
+            $shouldReject = !preg_match('/.'.self::CHUNK_EXTENSION.'$/', $file);
             if ($shouldReject) {
                 return true;
             }

@@ -10,7 +10,7 @@ use Pion\Laravel\ChunkUpload\Handler\DropZoneUploadHandler;
 
 class DropZoneUploadHandlerTest extends TestCase
 {
-    protected $file = null;
+    protected $file;
 
     protected function setUp(): void
     {

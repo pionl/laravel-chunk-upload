@@ -46,7 +46,7 @@ class ParallelSave extends ChunkSave
         UploadedFile $file,
         AbstractHandler $handler,
         ChunkStorage $chunkStorage,
-        AbstractConfig $config
+        AbstractConfig $config,
     ) {
         // Get current file validation - the file instance is changed
         $this->isFileValid = $file->isValid();
@@ -76,7 +76,7 @@ class ParallelSave extends ChunkSave
         // index because order of chunks are different.
         $this->foundChunks = $this->getSavedChunksFiles()->all();
 
-        $percentage = floor((count($this->foundChunks)) / $this->handler()->getTotalChunks() * 100);
+        $percentage = floor(count($this->foundChunks) / $this->handler()->getTotalChunks() * 100);
         // We need to update the handler with correct percentage
         $this->handler()->setPercentageDone($percentage);
         $this->isLastChunk = $percentage >= 100;

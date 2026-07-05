@@ -29,7 +29,7 @@ class FileReceiver
      *
      * @var AbstractHandler
      */
-    protected $handler = null;
+    protected $handler;
 
     /**
      * The chunk storage.

@@ -43,14 +43,14 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
     {
         parent::setUp();
 
-        $this->app = Mockery::mock(\Illuminate\Contracts\Container\Container::class);
-        $this->config = Mockery::mock(Repository::class);
+        $this->app = \Mockery::mock(\Illuminate\Contracts\Container\Container::class);
+        $this->config = \Mockery::mock(Repository::class);
 
         $this->app->shouldReceive('make')
             ->with(AbstractConfig::class)
             ->andReturn($this->config);
 
-        $this->service = Mockery::mock(ChunkUploadServiceProvider::class, [$this->app])->makePartial();
+        $this->service = \Mockery::mock(ChunkUploadServiceProvider::class, [$this->app])->makePartial();
         $this->service->shouldAllowMockingProtectedMethods();
     }
 
@@ -150,7 +150,7 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
         $scheduleConfig = [
             'enabled' => true,
         ];
-        $scheduleMock = Mockery::mock();
+        $scheduleMock = \Mockery::mock();
         $scheduleMock->shouldReceive('cron')
             ->once()
             ->with('* * * * *');
@@ -188,7 +188,7 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
             'enabled' => true,
             'cron' => '10 * * * *',
         ];
-        $scheduleMock = Mockery::mock();
+        $scheduleMock = \Mockery::mock();
         $scheduleMock->shouldReceive('cron')
             ->once()
             ->with('10 * * * *');
@@ -243,7 +243,7 @@ class ChunkUploadServiceProviderMockTest extends Mockery\Adapter\Phpunit\Mockery
                         ->once()
                         ->andReturn('local');
 
-                    $fileSystemMock = Mockery::mock(FilesystemContract::class);
+                    $fileSystemMock = \Mockery::mock(FilesystemContract::class);
                     $fileSystemMock->shouldReceive('getDriver')
                         ->once()
                         ->andReturn(new FileSystemDriverMock());

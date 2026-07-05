@@ -11,19 +11,19 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
 {
     use HandleParallelUploadTrait;
 
-    const CHUNK_UUID_INDEX = 'dzuuid';
-    const CHUNK_INDEX = 'dzchunkindex';
-    const CHUNK_FILE_SIZE_INDEX = 'dztotalfilesize';
-    const CHUNK_SIZE_INDEX = 'dzchunksize';
-    const CHUNK_TOTAL_INDEX = 'dztotalchunkcount';
-    const CHUNK_OFFSET_INDEX = 'dzchunkbyteoffset';
+    public const CHUNK_UUID_INDEX = 'dzuuid';
+    public const CHUNK_INDEX = 'dzchunkindex';
+    public const CHUNK_FILE_SIZE_INDEX = 'dztotalfilesize';
+    public const CHUNK_SIZE_INDEX = 'dzchunksize';
+    public const CHUNK_TOTAL_INDEX = 'dztotalchunkcount';
+    public const CHUNK_OFFSET_INDEX = 'dzchunkbyteoffset';
 
     /**
      * The DropZone file uuid.
      *
      * @var string|null
      */
-    protected $fileUuid = null;
+    protected $fileUuid;
 
     /**
      * AbstractReceiver constructor.
@@ -81,7 +81,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     public static function canBeUsedForRequest(Request $request)
     {
-        return $request->has(self::CHUNK_UUID_INDEX) && $request->has(self::CHUNK_TOTAL_INDEX) &&
-            $request->has(self::CHUNK_INDEX);
+        return $request->has(self::CHUNK_UUID_INDEX) && $request->has(self::CHUNK_TOTAL_INDEX)
+            && $request->has(self::CHUNK_INDEX);
     }
 }

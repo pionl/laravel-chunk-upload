@@ -19,28 +19,28 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
      *
      * @static string
      */
-    const KEY_CHUNK_NUMBER = '_chunkNumber';
+    public const KEY_CHUNK_NUMBER = '_chunkNumber';
 
     /**
      * Key for total size of all chunks.
      *
      * @static string
      */
-    const KEY_TOTAL_SIZE = '_totalSize';
+    public const KEY_TOTAL_SIZE = '_totalSize';
 
     /**
      * Key for every chunk size.
      *
      * @static string
      */
-    const KEY_CHUNK_SIZE = '_chunkSize';
+    public const KEY_CHUNK_SIZE = '_chunkSize';
 
     /**
      * Key for current chunk size.
      *
      * @static string
      */
-    const KEY_CHUNK_CURRENT_SIZE = '_currentChunkSize';
+    public const KEY_CHUNK_CURRENT_SIZE = '_currentChunkSize';
 
     /**
      * Checks if the current handler can be used via HandlerFactory.
