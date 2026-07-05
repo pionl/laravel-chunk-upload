@@ -37,14 +37,15 @@ The setup involves three steps:
 2. Define a route for the controller. [Instructions](https://github.com/pionl/laravel-chunk-upload/wiki/routing)
 3. Select your preferred frontend provider (multiple providers are supported in a single controller).
 
-| Library                                                             | Wiki                                                                          | Single & Chunk Upload | Simultaneous Uploads     | Included in [Example Project](https://github.com/pionl/laravel-chunk-upload-example) | Author                                   |
-|---------------------------------------------------------------------|-------------------------------------------------------------------------------|-----------------------|--------------------------|--------------------------------------------------------------------------------------|------------------------------------------|
-| [resumable.js](https://github.com/23/resumable.js)                  | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/resumable-js)       | :heavy_check_mark:    | :heavy_check_mark:       | :heavy_check_mark:                                                                   | [@pionl](https://github.com/pionl)       |
-| [DropZone](https://github.com/dropzone/dropzone)                    | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/dropzone)           | :heavy_check_mark:    | :heavy_check_mark:       | :heavy_check_mark:                                                                   | [@pionl](https://github.com/pionl)       |
-| [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload) | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/jquery-file-upload) | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_check_mark:                                                                   | [@pionl](https://github.com/pionl)       |
-| [Plupload](https://github.com/moxiecode/plupload)                   | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/plupload)           | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_multiplication_x:                                                             | [@pionl](https://github.com/pionl)       |
-| [simple uploader](https://github.com/simple-uploader)               | :heavy_multiplication_x:                                                      | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_multiplication_x:                                                             | [@dyktek](https://github.com/dyktek)     |
-| [ng-file-upload](https://github.com/danialfarid/ng-file-upload)     | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/ng-file-upload)     | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_multiplication_x:                                                             | [@L3o-pold](https://github.com/L3o-pold) |
+| Library                                                             | Wiki                                                                          | Single & Chunk Upload | Simultaneous Uploads     | Included in [Example Project](https://github.com/pionl/laravel-chunk-upload-example) | Author                                     |
+|---------------------------------------------------------------------|-------------------------------------------------------------------------------|-----------------------|--------------------------|--------------------------------------------------------------------------------------|--------------------------------------------|
+| [resumable.js](https://github.com/23/resumable.js)                  | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/resumable-js)       | :heavy_check_mark:    | :heavy_check_mark:       | :heavy_check_mark:                                                                   | [@pionl](https://github.com/pionl)         |
+| [flow.js](https://github.com/flowjs/flow.js/)                       | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/FlowJS)             | :heavy_check_mark:    | :heavy_check_mark:       | :heavy_check_mark:                                                                   | [@kcaj-burr](https://github.com/kcaj-burr) |
+| [DropZone](https://github.com/dropzone/dropzone)                    | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/dropzone)           | :heavy_check_mark:    | :heavy_check_mark:       | :heavy_check_mark:                                                                   | [@pionl](https://github.com/pionl)         |
+| [jQuery-File-Upload](https://github.com/blueimp/jQuery-File-Upload) | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/jquery-file-upload) | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_check_mark:                                                                   | [@pionl](https://github.com/pionl)         |
+| [Plupload](https://github.com/moxiecode/plupload)                   | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/plupload)           | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_multiplication_x:                                                             | [@pionl](https://github.com/pionl)         |
+| [simple uploader](https://github.com/simple-uploader)               | :heavy_multiplication_x:                                                      | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_multiplication_x:                                                             | [@dyktek](https://github.com/dyktek)       |
+| [ng-file-upload](https://github.com/danialfarid/ng-file-upload)     | [Wiki](https://github.com/pionl/laravel-chunk-upload/wiki/ng-file-upload)     | :heavy_check_mark:    | :heavy_multiplication_x: | :heavy_multiplication_x:                                                             | [@L3o-pold](https://github.com/L3o-pold)   |
 
 **Simultaneous Uploads:** The library must send the last chunk as the final one to ensure correct merging.
 
@@ -67,15 +68,15 @@ Refer to [CONTRIBUTING.md](CONTRIBUTING.md) for contribution instructions. All c
 The table below shows which PHP Laravel and PHP version is tested (or was tested). If you see a version
 in the **Supported** column, it means a package version with the last support of the Laravel version. 
 
-| Version | PHP            | Supported | Tested |
-|---------|----------------|-----------|--------|
-| 13.*    | 8.3,8.4,8.5 | ✅         | ✅      |
+| Version | PHP             | Supported | Tested |
+|---------|-----------------|-----------|--------|
+| 13.*    | 8.3,8.4,8.5     | ✅         | ✅      |
 | 12.*    | 8.2,8.3,8.4,8.5 | ✅         | ✅      |
-| 11.*    | 8.2,8.3,8.4    | ✅         | ✅      |
-| 10.*    | 8.2            | ✅         | ✅      |
-| 9.*     | 8.2            | ✅         | ✅      |
-| 8.*     | 7.4, 8.0, 8.1  | v1.5.6    | 🟥     |
-| 7.*     | 7.4            | v1.5.6    | 🟥     |
+| 11.*    | 8.2,8.3,8.4     | ✅         | ✅      |
+| 10.*    | 8.2             | ✅         | ✅      |
+| 9.*     | 8.2             | ✅         | ✅      |
+| 8.*     | 7.4, 8.0, 8.1   | v1.5.6    | 🟥     |
+| 7.*     | 7.4             | v1.5.6    | 🟥     |
 
 
 
