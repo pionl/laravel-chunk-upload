@@ -2,9 +2,9 @@
 
 namespace Pion\Laravel\ChunkUpload\Config;
 
+use Illuminate\Support\Facades\Config;
+
 /**
- * Class FileConfig.
- *
  * Enables loading a config settings from the Laravel Config facade.
  */
 class FileConfig extends AbstractConfig
@@ -110,6 +110,6 @@ class FileConfig extends AbstractConfig
      */
     public function get($key, $default = null)
     {
-        return config(self::FILE_NAME.'.'.$key, $default);
+        return Config::get(self::FILE_NAME.'.'.$key, $default);
     }
 }

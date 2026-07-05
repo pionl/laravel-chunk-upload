@@ -1,0 +1,45 @@
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableChunkNumber"
+
+57
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableChunkSize"
+
+1048576
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableCurrentChunkSize"
+
+1048576
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableTotalSize"
+
+68402438
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableType"
+
+video/mp4
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableIdentifier"
+
+68402438-6804117-uhd_4096_2160_25fpsmp4
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableFilename"
+
+6804117-uhd_4096_2160_25fps.mp4
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableRelativePath"
+
+6804117-uhd_4096_2160_25fps.mp4
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="resumableTotalChunks"
+
+65
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="_token"
+
+MJ2yurgxOayXPV0tuHNSyKAtX9P9NFDaKukz4MfP
+------WebKitFormBoundaryuvYshkBOSYK7aa7Z
+Content-Disposition: form-data; name="file"; filename="6804117-uhd_4096_2160_25fps.mp4"
+Content-Type: application/octet-stream
+
+xxx

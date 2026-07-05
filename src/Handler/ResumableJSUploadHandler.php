@@ -7,6 +7,11 @@ use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Config\AbstractConfig;
 use Pion\Laravel\ChunkUpload\Handler\Traits\HandleParallelUploadTrait;
 
+/**
+ * The data is sent using query parameters in URL and form data (same data!), see:
+ * - fixtures/ResumabelUploadHandler-body.txt
+ * - fixtures/ResumableUploadHandler-url.txt
+ */
 class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
 {
     use HandleParallelUploadTrait;

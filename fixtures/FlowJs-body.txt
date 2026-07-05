@@ -1,0 +1,41 @@
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="_token"
+
+MJ2yurgxOayXPV0tuHNSyKAtX9P9NFDaKukz4MfP
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowChunkNumber"
+
+63
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowChunkSize"
+
+1048576
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowCurrentChunkSize"
+
+1048576
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowTotalSize"
+
+68402438
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowIdentifier"
+
+68402438-6804117-uhd_4096_2160_25fpsmp4
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowFilename"
+
+6804117-uhd_4096_2160_25fps.mp4
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowRelativePath"
+
+6804117-uhd_4096_2160_25fps.mp4
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="flowTotalChunks"
+
+65
+------WebKitFormBoundaryHxIM0tMYWTT06YvR
+Content-Disposition: form-data; name="file"; filename="6804117-uhd_4096_2160_25fps.mp4"
+Content-Type: video/mp4
+
+x
