@@ -80,6 +80,7 @@ abstract class AbstractHandler
      * provide custom additional name at the end of the generated file name. All chunk
      * files has .part extension.
      *
+     * @param string      $handlerId
      * @param string|null $additionalName    Make the name more unique (example: use id from request)
      * @param string|null $currentChunkIndex Add the chunk index for parallel upload
      *
@@ -88,11 +89,17 @@ abstract class AbstractHandler
      * @see UploadedFile::getClientOriginalName()
      * @see Session::getId()
      */
-    public function createChunkFileName($additionalName = null, $currentChunkIndex = null)
+    public function createChunkFileName(string $handlerId, ?string $additionalName = null, ?string $currentChunkIndex = null): string
     {
+        // Limit the size of uuid
+        if (null !== $additionalName) {
+            $additionalName = substr($additionalName, 0, 40);
+        }
+
         // prepare basic name structure
         $array = [
-            $this->config->chunkUseHashNameForName() ? md5($this->file->getClientOriginalName()) : $this->file->getClientOriginalName(),
+            $handlerId, // to prevent issue when uploading same file for same user but different frontend
+            md5($this->file->getClientOriginalName()),
         ];
 
         // ensure that the chunk name is for unique for the client session
@@ -178,4 +185,13 @@ abstract class AbstractHandler
      * @return int
      */
     abstract public function getPercentageDone();
+
+    /**
+     * If the frontend requires returning response on the final chunk,
+     * then the save mechanism will ensure that all chunks are processed
+     * within the request.
+     *
+     * @return bool
+     */
+    abstract public function requiresFinalChunkOnLastChunk(): bool;
 }

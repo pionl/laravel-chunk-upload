@@ -48,7 +48,7 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName(substr($this->fileUuid, 0, 40), $this->getCurrentChunk());
+        return $this->createChunkFileName('rjs', $this->fileUuid, $this->getCurrentChunk());
     }
 
     /**
@@ -86,5 +86,10 @@ class ResumableJSUploadHandler extends ChunksInRequestUploadHandler
     {
         return $request->has(self::CHUNK_NUMBER_INDEX) && $request->has(self::TOTAL_CHUNKS_INDEX)
             && $request->has(self::CHUNK_UUID_INDEX);
+    }
+
+    public function requiresFinalChunkOnLastChunk(): bool
+    {
+        return true;
     }
 }

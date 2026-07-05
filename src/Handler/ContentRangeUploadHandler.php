@@ -206,7 +206,7 @@ class ContentRangeUploadHandler extends AbstractHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->bytesTotal);
+        return $this->createChunkFileName('cr', $this->bytesTotal);
     }
 
     /**
@@ -220,5 +220,10 @@ class ContentRangeUploadHandler extends AbstractHandler
         }
 
         return ceil($this->getBytesEnd() / $this->getBytesTotal() * 100);
+    }
+
+    public function requiresFinalChunkOnLastChunk(): bool
+    {
+        return true;
     }
 }

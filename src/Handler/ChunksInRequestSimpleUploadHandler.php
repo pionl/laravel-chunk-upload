@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 /**
  * Class ChunksInRequestSimpleUploadHandler.
  *
- * Upload receiver that detects the content range from he request value - chunks
+ * Upload receiver that detects the content range from the requests value - chunks
  * Works with:
  * - simple-uploader: https://github.com/simple-uploader
  */

@@ -75,4 +75,9 @@ class SingleUploadHandler extends AbstractHandler
     {
         return 100;
     }
+
+    public function requiresFinalChunkOnLastChunk(): bool
+    {
+        return true;
+    }
 }

@@ -63,14 +63,10 @@ class FlowJSUploadHandlerTest extends TestCase
 
         $config = $this->getMockBuilder(FileConfig::class)
             ->onlyMethods([
-                'chunkUseHashNameForName',
                 'chunkUseSessionForName',
                 'chunkUseBrowserInfoForName',
             ])
             ->getMock();
-        $config->expects($this->once())
-            ->method('chunkUseHashNameForName')
-            ->willReturn(false);
         $config->expects($this->once())
             ->method('chunkUseSessionForName')
             ->willReturn(false);
@@ -86,7 +82,7 @@ class FlowJSUploadHandlerTest extends TestCase
         $this->assertTrue($handler->isChunkedUpload());
         $this->assertTrue($handler->isFirstChunk());
         $this->assertFalse($handler->isLastChunk());
-        $this->assertEquals('test-test.1.part', $handler->getChunkFileName());
+        $this->assertEquals('fjs-098f6bcd4621d373cade4e832627b4f6-test.1.part', $handler->getChunkFileName());
     }
 
     public function testValidChunkFinishRequest()

@@ -120,4 +120,9 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
             ceil($request->input(static::KEY_TOTAL_SIZE) / $request->input(static::KEY_CHUNK_SIZE))
         );
     }
+
+    public function requiresFinalChunkOnLastChunk(): bool
+    {
+        return true;
+    }
 }

@@ -45,7 +45,7 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->fileUuid, $this->getCurrentChunk());
+        return $this->createChunkFileName('dz', $this->fileUuid, $this->getCurrentChunk());
     }
 
     /**
@@ -83,5 +83,10 @@ class DropZoneUploadHandler extends ChunksInRequestUploadHandler
     {
         return $request->has(self::CHUNK_UUID_INDEX) && $request->has(self::CHUNK_TOTAL_INDEX)
             && $request->has(self::CHUNK_INDEX);
+    }
+
+    public function requiresFinalChunkOnLastChunk(): bool
+    {
+        return false;
     }
 }

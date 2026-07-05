@@ -152,7 +152,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
      */
     public function getChunkFileName()
     {
-        return $this->createChunkFileName($this->chunksTotal);
+        return $this->createChunkFileName('cnr', $this->chunksTotal);
     }
 
     /**
@@ -179,5 +179,10 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     public function getPercentageDone()
     {
         return ceil($this->currentChunk / $this->chunksTotal * 100);
+    }
+
+    public function requiresFinalChunkOnLastChunk(): bool
+    {
+        return true;
     }
 }
