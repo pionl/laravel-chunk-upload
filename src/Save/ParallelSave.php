@@ -77,11 +77,13 @@ class ParallelSave extends ChunkSave
             $percentage = floor(count($this->foundChunks) / $this->handler()->getTotalChunks() * 100);
             $this->handler()->setPercentageDone($percentage);
 
-            logger()->debug('chunk-upload.parallel.polling', $this->buildChunkDebugContext([
-                'stored_chunk_path' => $file,
-                'found_chunks' => array_values($this->foundChunks),
-                'found_chunks_count' => count($this->foundChunks),
-            ]));
+            if ($this->config()->loggingEnabled()) {
+                logger()->debug('chunk-upload.parallel.polling', $this->buildChunkDebugContext([
+                    'stored_chunk_path' => $file,
+                    'found_chunks' => array_values($this->foundChunks),
+                    'found_chunks_count' => count($this->foundChunks),
+                ]));
+            }
 
             if ($percentage >= 100) {
                 return $percentage;
@@ -120,7 +122,7 @@ class ParallelSave extends ChunkSave
         // Move the uploaded file to chunk folder
         $partFileName = $this->getChunkPartFileName();
         $this->file->move($this->getChunkDirectory(true), $partFileName);
-        $file = $this->getChunkDirectory().$partFileName;
+        $file = $this->getChunkDirectory() . $partFileName;
 
         $percentage = $this->chunkUploadPercentage();
 
@@ -140,12 +142,14 @@ class ParallelSave extends ChunkSave
             $this->isLastChunk = $percentage >= 100;
         }
 
-        logger()->debug('chunk-upload.parallel.chunk-stored', $this->buildChunkDebugContext([
-            'stored_chunk_path' => $file,
-            'found_chunks' => array_values($this->foundChunks),
-            'found_chunks_count' => count($this->foundChunks),
-            'is_last_chunk' => $this->isLastChunk,
-        ]));
+        if ($this->config()->loggingEnabled()) {
+            logger()->debug('chunk-upload.parallel.chunk-stored', $this->buildChunkDebugContext([
+                'stored_chunk_path' => $file,
+                'found_chunks' => array_values($this->foundChunks),
+                'found_chunks_count' => count($this->foundChunks),
+                'is_last_chunk' => $this->isLastChunk,
+            ]));
+        }
 
         return $this;
     }
@@ -169,10 +173,12 @@ class ParallelSave extends ChunkSave
         $chunkFiles = $this->foundChunks;
 
         if (0 === count($chunkFiles)) {
-            logger()->debug('chunk-upload.parallel.merge-missing-chunks', $this->buildChunkDebugContext([
-                'found_chunks' => [],
-                'found_chunks_count' => 0,
-            ]));
+            if ($this->config()->loggingEnabled()) {
+                logger()->debug('chunk-upload.parallel.merge-missing-chunks', $this->buildChunkDebugContext([
+                    'found_chunks' => [],
+                    'found_chunks_count' => 0,
+                ]));
+            }
             throw new MissingChunkFilesException();
         }
 
@@ -186,11 +192,13 @@ class ParallelSave extends ChunkSave
             @unlink($finalFilePath);
         }
 
-        logger()->debug('chunk-upload.parallel.merge-starting', $this->buildChunkDebugContext([
-            'chunk_files' => array_values($chunkFiles),
-            'chunk_files_count' => count($chunkFiles),
-            'final_file_path' => $finalFilePath,
-        ]));
+        if ($this->config()->loggingEnabled()) {
+            logger()->debug('chunk-upload.parallel.merge-starting', $this->buildChunkDebugContext([
+                'chunk_files' => array_values($chunkFiles),
+                'chunk_files_count' => count($chunkFiles),
+                'final_file_path' => $finalFilePath,
+            ]));
+        }
 
         $fileMerger = new FileMerger($finalFilePath);
 
@@ -212,10 +220,12 @@ class ParallelSave extends ChunkSave
         // Build the chunk file instance
         $this->fullChunkFile = $this->createFullChunkFile($finalFilePath);
 
-        logger()->info('chunk-upload.parallel.merge-finished', $this->buildChunkDebugContext([
-            'final_file_path' => $finalFilePath,
-            'chunk_files_count' => count($chunkFiles),
-        ]));
+        if ($this->config()->loggingEnabled()) {
+            logger()->info('chunk-upload.parallel.merge-finished', $this->buildChunkDebugContext([
+                'final_file_path' => $finalFilePath,
+                'chunk_files_count' => count($chunkFiles),
+            ]));
+        }
     }
 
     private function buildChunkDebugContext(array $context = []): array
@@ -238,8 +248,8 @@ class ParallelSave extends ChunkSave
      */
     protected function getChunkPartFileName()
     {
-        if (preg_match('/\.([\d]+)\.'.ChunkStorage::CHUNK_EXTENSION.'$/', $this->chunkFileName, $matches)) {
-            return $matches[1].'.'.ChunkStorage::CHUNK_EXTENSION;
+        if (preg_match('/\.([\d]+)\.' . ChunkStorage::CHUNK_EXTENSION . '$/', $this->chunkFileName, $matches)) {
+            return $matches[1] . '.' . ChunkStorage::CHUNK_EXTENSION;
         }
 
         return $this->chunkFileName;

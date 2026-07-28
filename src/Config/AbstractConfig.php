@@ -64,4 +64,11 @@ abstract class AbstractConfig
      * @return bool
      */
     abstract public function chunkUseBrowserInfoForName();
+
+    /**
+     * Should the debug logging (parallel upload chunk/merge events) be enabled?
+     *
+     * @return bool
+     */
+    abstract public function loggingEnabled();
 }
