@@ -89,6 +89,16 @@ class FileConfig extends AbstractConfig
     }
 
     /**
+     * Should logging be enabled?
+     *
+     * @return bool
+     */
+    public function loggingEnabled()
+    {
+        return $this->get('logging.enabled', false);
+    }
+
+    /**
      * Returns a chunks config value.
      *
      * @param string     $key     the config name is prepended to the key value
