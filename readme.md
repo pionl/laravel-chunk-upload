@@ -95,6 +95,16 @@ If there is a new Laravel version and there is no an official release in our pac
 
 Here is [explanation article](https://putyourlightson.com/articles/requiring-a-forked-repo-with-composer)
 
+## Debuging
+
+For debuging enable debug logs by setting `CHUNK_UPLOAD_LOGGING_ENABLED=true` in `.env`.
+
+Do not forget to run: 
+
+```bash
+php artisan config:cache && php artisan queue:restart
+```
+
 ## Copyright and License
 
 [laravel-chunk-upload](https://github.com/pionl/laravel-chunk-upload) was authored by [Martin Kluska](http://kluska.cz) and is released under the [MIT License](LICENSE.md).
