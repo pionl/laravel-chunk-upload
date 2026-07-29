@@ -1,0 +1,16 @@
+# Disable blank issues so users are forced to choose a template
+blank_issues_enabled: false
+
+# Add custom links to the template chooser screen
+contact_links:
+  - name: Ask a Question / Support
+    url: https://github.com/pionl/laravel-chunk-upload/discussions
+    about: Please use GitHub Discussions for general questions or usage support instead of opening an issue.
+
+  - name: Security Vulnerability
+    url: https://github.com/pionl/laravel-chunk-upload/security/policy
+    about: Please report security vulnerabilities privately following our security policy.
+
+  - name: Documentation
+    url: https://github.com/pionl/laravel-chunk-upload#readme
+    about: Read the package documentation before submitting an issue.
