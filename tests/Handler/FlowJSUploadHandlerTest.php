@@ -85,6 +85,34 @@ class FlowJSUploadHandlerTest extends TestCase
         $this->assertEquals('fjs-098f6bcd4621d373cade4e832627b4f6-test.1.part', $handler->getChunkFileName());
     }
 
+    public function testChunkFileNameStripsUnsafeCharactersFromIdentifier()
+    {
+        // The resumable identifier is client-provided. Soft hyphen (U+00AD), zero-width joiner
+        // (U+200D, present in composite emoji) and directory separators must not reach the path.
+        $request = Request::create('test', 'POST', [
+            FlowJSUploadHandler::CHUNK_UUID_INDEX => "abc\u{00AD}de\u{200D}f/../x",
+            FlowJSUploadHandler::CHUNK_NUMBER_INDEX => '1',
+            FlowJSUploadHandler::TOTAL_CHUNKS_INDEX => '2',
+        ], [], [], []);
+
+        $config = $this->getMockBuilder(FileConfig::class)
+            ->onlyMethods([
+                'chunkUseSessionForName',
+                'chunkUseBrowserInfoForName',
+            ])
+            ->getMock();
+        $config->method('chunkUseSessionForName')->willReturn(false);
+        $config->method('chunkUseBrowserInfoForName')->willReturn(false);
+
+        $handler = new FlowJSUploadHandler($request, $this->file, $config);
+        $name = $handler->getChunkFileName();
+
+        $this->assertDoesNotMatchRegularExpression('#\\p{C}#u', $name);
+        $this->assertStringNotContainsString('/', $name);
+        $this->assertStringNotContainsString('\\', $name);
+        $this->assertSame('fjs-098f6bcd4621d373cade4e832627b4f6-abcdef..x.1.part', $name);
+    }
+
     public function testValidChunkFinishRequest()
     {
         $request = Request::create('test', 'POST', [

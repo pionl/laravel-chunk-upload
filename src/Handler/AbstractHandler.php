@@ -91,8 +91,14 @@ abstract class AbstractHandler
      */
     public function createChunkFileName(string $handlerId, ?string $additionalName = null, ?string $currentChunkIndex = null): string
     {
-        // Limit the size of uuid
         if (null !== $additionalName) {
+            // The additional name is derived from client-provided data (e.g. the resumable
+            // identifier). Strip characters that are illegal or unsafe in a storage path -
+            // control and format characters (\p{C}) and directory separators - otherwise the
+            // chunk file is written under a path that flysystem later refuses to list, throwing
+            // CorruptedPathDetected and breaking the uploads:clear command.
+            $additionalName = preg_replace('#[\p{C}/\\\\]+#u', '', $additionalName) ?? '';
+            // Limit the size of uuid
             $additionalName = substr($additionalName, 0, 40);
         }
 
