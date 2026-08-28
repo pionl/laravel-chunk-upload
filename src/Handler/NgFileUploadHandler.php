@@ -62,7 +62,7 @@ class NgFileUploadHandler extends ChunksInRequestUploadHandler
     }
 
     /**
-     * @return int
+     * @inheritDoc
      */
     public function getPercentageDone()
     {

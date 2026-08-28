@@ -35,6 +35,9 @@ trait HandleParallelUploadTrait
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getPercentageDone()
     {
         return $this->percentageDone;
