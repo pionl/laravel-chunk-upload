@@ -188,7 +188,7 @@ abstract class AbstractHandler
     /**
      * Returns the percentage of the upload file.
      *
-     * @return int
+     * @return float|int
      */
     abstract public function getPercentageDone();
 

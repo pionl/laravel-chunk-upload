@@ -67,9 +67,7 @@ class SingleUploadHandler extends AbstractHandler
     }
 
     /**
-     * Returns the percentage of the upload file.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getPercentageDone()
     {

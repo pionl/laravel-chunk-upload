@@ -172,9 +172,7 @@ class ChunksInRequestUploadHandler extends AbstractHandler
     }
 
     /**
-     * Returns the percentage of the uploaded file.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getPercentageDone()
     {

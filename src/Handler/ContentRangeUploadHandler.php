@@ -210,7 +210,7 @@ class ContentRangeUploadHandler extends AbstractHandler
     }
 
     /**
-     * @return int
+     * @inheritDoc
      */
     public function getPercentageDone()
     {
